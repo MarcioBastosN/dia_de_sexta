@@ -58,72 +58,74 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: <Widget>[
-                Container(
-                  width: tamanhoWidth * 0.5,
-                  height: tamanhoHeight,
-                  color: const Color.fromARGB(155, 11, 28, 208),
-                  child: Column(
-                    children: [
-                      Text(
-                        '$_pontosDireita',
-                        style: GoogleFonts.getFont('Play'),
-                        textScaleFactor: scalaDoTexto,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _counterDireita(true),
-                            child: const Icon(Icons.add),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _counterDireita(false),
-                            child: const Icon(Icons.remove),
-                          ),
-                        ],
-                      ),
-                    ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: tamanhoWidth * 0.5,
+                    height: tamanhoHeight,
+                    color: const Color.fromARGB(155, 11, 28, 208),
+                    child: Column(
+                      children: [
+                        Text(
+                          '$_pontosDireita',
+                          style: GoogleFonts.getFont('Play'),
+                          textScaleFactor: scalaDoTexto,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => _counterDireita(true),
+                              child: const Icon(Icons.add),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => _counterDireita(false),
+                              child: const Icon(Icons.remove),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  width: tamanhoWidth * 0.5,
-                  height: tamanhoHeight,
-                  color: const Color.fromARGB(155, 18, 208, 11),
-                  child: Column(
-                    children: [
-                      Text(
-                        '$_pontosEsquerda',
-                        style: GoogleFonts.getFont('Play'),
-                        textScaleFactor: scalaDoTexto,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _counterEsquerda(true),
-                            child: const Icon(Icons.add),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _counterEsquerda(false),
-                            child: const Icon(Icons.remove),
-                          ),
-                        ],
-                      ),
-                    ],
+                  Container(
+                    width: tamanhoWidth * 0.5,
+                    height: tamanhoHeight,
+                    color: const Color.fromARGB(155, 18, 208, 11),
+                    child: Column(
+                      children: [
+                        Text(
+                          '$_pontosEsquerda',
+                          style: GoogleFonts.getFont('Play'),
+                          textScaleFactor: scalaDoTexto,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => _counterEsquerda(true),
+                              child: const Icon(Icons.add),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => _counterEsquerda(false),
+                              child: const Icon(Icons.remove),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            // ElevatedButton(
-            //   onPressed: _zerarContadores,
-            //   child: const Text('Restart'),
-            // ),
-          ],
+                ],
+              ),
+              // ElevatedButton(
+              //   onPressed: _zerarContadores,
+              //   child: const Text('Restart'),
+              // ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
