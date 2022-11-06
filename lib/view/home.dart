@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     width: tamanhoWidth * 0.5,
                     height: tamanhoHeight,
-                    color: const Color.fromARGB(155, 11, 28, 208),
+                    color: Theme.of(context).copyWith().primaryColor,
                     child: Column(
                       children: [
                         Text(
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     width: tamanhoWidth * 0.5,
                     height: tamanhoHeight,
-                    color: const Color.fromARGB(155, 18, 208, 11),
+                    color: Theme.of(context).copyWith().primaryColor,
                     child: Column(
                       children: [
                         Text(
@@ -120,17 +120,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              // ElevatedButton(
-              //   onPressed: _zerarContadores,
-              //   child: const Text('Restart'),
-              // ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        splashColor: Colors.red,
+        backgroundColor: Colors.cyanAccent,
         onPressed: _zerarContadores,
-        child: const Icon(Icons.restart_alt),
+        child: const Icon(
+          Icons.restart_alt,
+          color: Colors.white,
+        ),
       ),
     );
   }
