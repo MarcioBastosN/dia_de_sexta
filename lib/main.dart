@@ -71,14 +71,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text(widget.title),
+    );
+
     final tamanhoWidth = MediaQuery.of(context).size.width;
-    final tamanhoHeight = MediaQuery.of(context).size.height;
+    final tamanhoHeight =
+        MediaQuery.of(context).size.height - appBar.preferredSize.height;
     const scalaDoTexto = 12.0;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
