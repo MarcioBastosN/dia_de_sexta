@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           '/': (context) => Home(),
           'placar': (context) => const Placar(title: 'Dia de Sexta'),
         },
-        // home: const Placar(title: 'Dia de Sexta'),
       ),
     );
   }
