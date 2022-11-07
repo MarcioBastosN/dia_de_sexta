@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/view/home.dart';
+import 'package:dia_de_sexta/view/placar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,16 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     return MaterialApp(
       title: 'Dia de Sexta',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Dia de Sexta'),
+      routes: {
+        '/': (context) => Home(),
+        'placar': (context) => const Placar(title: 'Dia de Sexta'),
+      },
+      // home: const Placar(title: 'Dia de Sexta'),
     );
   }
 }
