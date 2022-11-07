@@ -1,136 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Home extends StatelessWidget {
+  Home({super.key});
 
-  final String title;
+  final _time1 = TextEditingController();
+  final _time2 = TextEditingController();
+  final _pontos = TextEditingController();
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _pontosDireita = 0;
-  int _pontosEsquerda = 0;
-
-  void _zerarContadores() {
-    setState(() {
-      _pontosDireita = 0;
-      _pontosEsquerda = 0;
-    });
-  }
-
-  void _counterDireita(bool condicao) {
-    setState(() {
-      if (condicao) {
-        _pontosDireita++;
-      } else {
-        if (_pontosDireita > 0) {
-          _pontosDireita--;
-        }
-      }
-    });
-  }
-
-  void _counterEsquerda(bool condicao) {
-    setState(() {
-      if (condicao) {
-        _pontosEsquerda++;
-      } else {
-        if (_pontosEsquerda > 0) {
-          _pontosEsquerda--;
-        }
-      }
-    });
+  void _iniciaJogo(context) {
+    if (_time1.text.toString().trim().isNotEmpty &&
+        _time2.text.toString().trim().isNotEmpty) {
+      Navigator.of(context).popAndPushNamed('placar');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: Text(widget.title),
-    );
-
-    final tamanhoWidth = MediaQuery.of(context).size.width;
-    final tamanhoHeight =
-        MediaQuery.of(context).size.height - appBar.preferredSize.height;
-    const scalaDoTexto = 12.0;
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
-      appBar: appBar,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: tamanhoWidth * 0.5,
-                    height: tamanhoHeight,
-                    color: Theme.of(context).copyWith().primaryColor,
-                    child: Column(
-                      children: [
-                        Text(
-                          '$_pontosDireita',
-                          style: GoogleFonts.getFont('Play'),
-                          textScaleFactor: scalaDoTexto,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () => _counterDireita(true),
-                              child: const Icon(Icons.add),
-                            ),
-                            ElevatedButton(
-                              onPressed: () => _counterDireita(false),
-                              child: const Icon(Icons.remove),
-                            ),
-                          ],
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            const Text(
+              'Dia de Sexta',
+              style: TextStyle(fontSize: 32),
+            ),
+            const Text(
+              'seu placar do Vôlei',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      label: Text("Time 1"),
                     ),
+                    controller: _time1,
+                    keyboardType: TextInputType.text,
                   ),
-                  Container(
-                    width: tamanhoWidth * 0.5,
-                    height: tamanhoHeight,
-                    color: Theme.of(context).copyWith().primaryColor,
-                    child: Column(
-                      children: [
-                        Text(
-                          '$_pontosEsquerda',
-                          style: GoogleFonts.getFont('Play'),
-                          textScaleFactor: scalaDoTexto,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () => _counterEsquerda(true),
-                              child: const Icon(Icons.add),
-                            ),
-                            ElevatedButton(
-                              onPressed: () => _counterEsquerda(false),
-                              child: const Icon(Icons.remove),
-                            ),
-                          ],
-                        ),
-                      ],
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      label: Text("Time 2"),
+                    ),
+                    controller: _time2,
+                    keyboardType: TextInputType.text,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      label: Text("Pontos"),
+                    ),
+                    maxLength: 2,
+                    controller: _pontos,
+                    keyboardType: TextInputType.number,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => _iniciaJogo(context),
+                    // Navigator.of(context).popAndPushNamed('placar'),
+                    child: const Text(
+                      'Iniciar',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 8.0,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        splashColor: Colors.red,
-        backgroundColor: Colors.cyanAccent,
-        onPressed: _zerarContadores,
-        child: const Icon(
-          Icons.restart_alt,
-          color: Colors.white,
+            ),
+          ],
         ),
       ),
     );
