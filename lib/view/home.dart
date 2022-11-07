@@ -9,11 +9,10 @@ class Home extends StatelessWidget {
   final _time2 = TextEditingController();
   final _pontos = TextEditingController();
 
-
   void _iniciaJogo(context) {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
-    if ( eq1.isNotEmpty && eq2.isNotEmpty) {
+    if (eq1.isNotEmpty && eq2.isNotEmpty) {
       Jogo jogo = Jogo();
       jogo.equipe_1 = eq1;
       jogo.equipe_2 = eq2;
@@ -21,7 +20,28 @@ class Home extends StatelessWidget {
       jogo.pontosEquipe_2 = 0;
       jogo.fimJogo = int.parse(_pontos.text.toString());
       Navigator.of(context).popAndPushNamed('placar', arguments: jogo);
+    } else {
+      _alertdialog(context);
     }
+  }
+
+  void _alertdialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Ops!"),
+        content: const Text('verifique os campos'),
+        actions: <Widget>[
+          FloatingActionButton(
+            child: const Text("fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
