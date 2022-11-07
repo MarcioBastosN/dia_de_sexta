@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,10 +9,18 @@ class Home extends StatelessWidget {
   final _time2 = TextEditingController();
   final _pontos = TextEditingController();
 
+
   void _iniciaJogo(context) {
-    if (_time1.text.toString().trim().isNotEmpty &&
-        _time2.text.toString().trim().isNotEmpty) {
-      Navigator.of(context).popAndPushNamed('placar');
+    final eq1 = _time1.text.toString().trim();
+    final eq2 = _time2.text.toString().trim();
+    if ( eq1.isNotEmpty && eq2.isNotEmpty) {
+      Jogo jogo = Jogo();
+      jogo.equipe_1 = eq1;
+      jogo.equipe_2 = eq2;
+      jogo.pontosEquipe_1 = 0;
+      jogo.pontosEquipe_2 = 0;
+      jogo.fimJogo = int.parse(_pontos.text.toString());
+      Navigator.of(context).popAndPushNamed('placar', arguments: jogo);
     }
   }
 

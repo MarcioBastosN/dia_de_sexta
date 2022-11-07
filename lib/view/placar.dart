@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,11 +24,43 @@ class _PlacarState extends State<Placar> {
     });
   }
 
+  void verificaPlacar(int valor) {
+    if (valor == concluiJogo) {
+      _alertdialog(context);
+    }
+  }
+
+  void _alertdialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Fim de Jogo"),
+        content: const Text('jogo encerado'),
+        actions: <Widget>[
+          FloatingActionButton(
+            child: const Text("fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          FloatingActionButton(
+            child: const Text("Novo Jogo"),
+            onPressed: () {
+              Navigator.of(context).popAndPushNamed('/');
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   void _counterDireita(bool condicao) {
     setState(() {
       if (condicao) {
         if (_pontosDireita < concluiJogo) {
           _pontosDireita++;
+          verificaPlacar(_pontosDireita);
         }
       } else {
         if (_pontosDireita > 0) {
@@ -42,6 +75,7 @@ class _PlacarState extends State<Placar> {
       if (condicao) {
         if (_pontosEsquerda < concluiJogo) {
           _pontosEsquerda++;
+          verificaPlacar(_pontosEsquerda);
         }
       } else {
         if (_pontosEsquerda > 0) {
@@ -53,6 +87,9 @@ class _PlacarState extends State<Placar> {
 
   @override
   Widget build(BuildContext context) {
+    final jogo = ModalRoute.of(context)!.settings.arguments as Jogo;
+    concluiJogo = jogo.fimJogo;
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -82,7 +119,12 @@ class _PlacarState extends State<Placar> {
                     child: Column(
                       children: [
                         Text(
+                          jogo.equipe_1.toString(),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        Text(
                           '$_pontosDireita',
+                          // jogo.pontosEquipe_1.toString(),
                           style: GoogleFonts.getFont('Play'),
                           textScaleFactor: scalaDoTexto,
                         ),
@@ -91,10 +133,12 @@ class _PlacarState extends State<Placar> {
                           children: [
                             ElevatedButton(
                               onPressed: () => _counterDireita(true),
+                              // onPressed: () => jogo.adicionaPontosEqp1(),
                               child: const Icon(Icons.add),
                             ),
                             ElevatedButton(
                               onPressed: () => _counterDireita(false),
+                              // onPressed: () => jogo.removePontosEquipe_1(),
                               child: const Icon(Icons.remove),
                             ),
                           ],
@@ -108,6 +152,10 @@ class _PlacarState extends State<Placar> {
                     color: Theme.of(context).copyWith().primaryColor,
                     child: Column(
                       children: [
+                        Text(
+                          jogo.equipe_2.toString(),
+                          style: const TextStyle(fontSize: 20),
+                        ),
                         Text(
                           '$_pontosEsquerda',
                           style: GoogleFonts.getFont('Play'),
