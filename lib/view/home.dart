@@ -27,13 +27,11 @@ class _HomeState extends State<Home> {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
     if (eq1.isNotEmpty && eq2.isNotEmpty) {
-      Jogo jogo = Jogo();
-      jogo = Provider.of<Jogo>(context, listen: false);
-      jogo.equipe_1 = eq1;
-      jogo.equipe_2 = eq2;
-      jogo.pontosEquipe_1 = 0;
-      jogo.pontosEquipe_2 = 0;
-      jogo.fimJogo = int.parse(_pontos.text.toString());
+      Provider.of<Jogo>(context, listen: false).iniciaJogo(
+        eq1,
+        eq2,
+        int.parse(_pontos.text.toString()),
+      );
       Navigator.of(context).popAndPushNamed('placar');
     } else {
       _alertdialog(context);
@@ -41,13 +39,11 @@ class _HomeState extends State<Home> {
   }
 
   void inicioRapido() {
-    Jogo jogo = Jogo();
-    jogo = Provider.of<Jogo>(context, listen: false);
-    jogo.equipe_1 = "equipe_1";
-    jogo.equipe_2 = "equipe_2";
-    jogo.pontosEquipe_1 = 0;
-    jogo.pontosEquipe_2 = 0;
-    jogo.fimJogo = 10;
+    Provider.of<Jogo>(context, listen: false).iniciaJogo(
+      "equipe_1",
+      "equipe_2",
+      10,
+    );
     Navigator.of(context).popAndPushNamed('placar');
   }
 
@@ -89,7 +85,7 @@ class _HomeState extends State<Home> {
       DeviceOrientation.portraitUp,
     ]);
     return Scaffold(
-      appBar: appBar,
+      // appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

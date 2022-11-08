@@ -29,16 +29,13 @@ class _PlacarState extends State<Placar> {
 
     final appBar = AppBar(
       title: Text(widget.title),
-      actions: [
-        ButtonBar(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
-              icon: const Icon(Icons.list),
-            )
-          ],
-        )
-      ],
+      // actions: [
+      //   ButtonBar(children: [
+      //     IconButton(
+      //         onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
+      //         icon: const Icon(Icons.list))
+      //   ])
+      // ],
     );
 
     final tamanhoWidth = MediaQuery.of(context).size.width;
