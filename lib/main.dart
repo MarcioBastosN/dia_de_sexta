@@ -1,6 +1,7 @@
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/provider/providerJogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
+import 'package:dia_de_sexta/view/listaPlacar.dart';
 import 'package:dia_de_sexta/view/placar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +30,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          '/': (context) => Home(),
+          '/': (context) => const Home(),
           'placar': (context) => const Placar(title: 'Dia de Sexta'),
+          'lista': (context) => const ListaPlacar(),
         },
       ),
     );
