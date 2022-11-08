@@ -15,6 +15,11 @@ class Placar extends StatefulWidget {
 
 class _PlacarState extends State<Placar> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Jogo jogo = Provider.of<Jogo>(context);
 
@@ -24,6 +29,16 @@ class _PlacarState extends State<Placar> {
 
     final appBar = AppBar(
       title: Text(widget.title),
+      actions: [
+        ButtonBar(
+          children: [
+            IconButton(
+              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
+              icon: const Icon(Icons.list),
+            )
+          ],
+        )
+      ],
     );
 
     final tamanhoWidth = MediaQuery.of(context).size.width;

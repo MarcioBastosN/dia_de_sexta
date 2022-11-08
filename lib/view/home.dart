@@ -3,18 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
-  Home({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final _time1 = TextEditingController();
   final _time2 = TextEditingController();
   final _pontos = TextEditingController();
+
+  @override
+  void dispose() {
+    _time1.dispose();
+    _time2.dispose();
+    _pontos.dispose();
+    super.dispose();
+  }
 
   void _iniciaJogo(context) {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
     if (eq1.isNotEmpty && eq2.isNotEmpty) {
-      Jogo jogo = Provider.of<Jogo>(context, listen: false);
+      Jogo jogo = Jogo();
+      jogo = Provider.of<Jogo>(context, listen: false);
       jogo.equipe_1 = eq1;
       jogo.equipe_2 = eq2;
       jogo.pontosEquipe_1 = 0;
@@ -24,6 +38,17 @@ class Home extends StatelessWidget {
     } else {
       _alertdialog(context);
     }
+  }
+
+  void inicioRapido() {
+    Jogo jogo = Jogo();
+    jogo = Provider.of<Jogo>(context, listen: false);
+    jogo.equipe_1 = "equipe_1";
+    jogo.equipe_2 = "equipe_2";
+    jogo.pontosEquipe_1 = 0;
+    jogo.pontosEquipe_2 = 0;
+    jogo.fimJogo = 10;
+    Navigator.of(context).popAndPushNamed('placar');
   }
 
   void _alertdialog(BuildContext context) {
@@ -47,10 +72,24 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      actions: [
+        ButtonBar(
+          children: [
+            IconButton(
+              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
+              icon: const Icon(Icons.list),
+            )
+          ],
+        )
+      ],
+    );
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,9 +102,7 @@ class Home extends StatelessWidget {
             ),
             const Text(
               'seu placar do Vôlei',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             Container(
@@ -73,30 +110,24 @@ class Home extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: const InputDecoration(
-                      label: Text("Time 1"),
-                    ),
+                    decoration: const InputDecoration(label: Text("Time 1")),
                     controller: _time1,
                     keyboardType: TextInputType.text,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                      label: Text("Time 2"),
-                    ),
+                    decoration: const InputDecoration(label: Text("Time 2")),
                     controller: _time2,
                     keyboardType: TextInputType.text,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
-                      label: Text("Pontos"),
-                    ),
+                        label: Text("Quantos Ponto vai o Jogo?")),
                     maxLength: 2,
                     controller: _pontos,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.phone,
                   ),
                   ElevatedButton(
                     onPressed: () => _iniciaJogo(context),
-                    // Navigator.of(context).popAndPushNamed('placar'),
                     child: const Text(
                       'Iniciar',
                       style: TextStyle(
@@ -106,6 +137,11 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // const SizedBox(height: 20),
+                  // ElevatedButton(
+                  //   onPressed: inicioRapido,
+                  //   child: const Text('Jogo rapido, 10 pontos'),
+                  // ),
                 ],
               ),
             ),
