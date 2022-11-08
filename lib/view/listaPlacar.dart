@@ -1,4 +1,4 @@
-import 'package:dia_de_sexta/provider/providerJogo.dart';
+import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ class _MyWidgetState extends State<ListaPlacar> {
 
   @override
   Widget build(BuildContext context) {
-    final listJogos = Provider.of<ProviderJogo>(context);
+    final listJogos = Provider.of<Jogo>(context);
 
     final appBar = AppBar(
       actions: [
