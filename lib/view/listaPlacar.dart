@@ -17,7 +17,7 @@ class _MyWidgetState extends State<ListaPlacar> {
 
   @override
   Widget build(BuildContext context) {
-    final listJogos = Provider.of<Jogo>(context);
+    final lista = Provider.of<Jogo>(context);
 
     final appBar = AppBar(
       actions: [
@@ -36,7 +36,7 @@ class _MyWidgetState extends State<ListaPlacar> {
       appBar: appBar,
       body: ListView.builder(
           padding: const EdgeInsets.all(8.0),
-          itemCount: listJogos.tamanhoListaJogos(),
+          itemCount: lista.tamanhoListaJogos(),
           itemBuilder: (context, int index) {
             return Container(
               margin: const EdgeInsets.all(8.0),
@@ -49,12 +49,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '${listJogos.jogos[index].equipe_1}',
+                        '${lista.listaJogos[index].equipe_1}',
                         style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
-                      Text('Pontos: ${listJogos.jogos[index].pontosEquipe_1}'),
+                      Text('Pontos: ${lista.listaJogos[index].pontosEquipe_1}'),
                     ],
                   ),
                   Column(
@@ -62,12 +62,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        '${listJogos.jogos[index].equipe_2}',
+                        '${lista.listaJogos[index].equipe_2}',
                         style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
-                      Text('Pontos: ${listJogos.jogos[index].pontosEquipe_2}'),
+                      Text('Pontos: ${lista.listaJogos[index].pontosEquipe_2}'),
                     ],
                   ),
                 ],
