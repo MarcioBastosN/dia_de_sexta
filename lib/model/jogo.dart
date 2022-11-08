@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 
 class Jogo with ChangeNotifier {
-  List<Jogo> jogos = [];
-  get listaJogos => [...jogos];
-
-  int tamanhoListaJogos() {
-    return jogos.length;
-  }
-
-  createJogo(Jogo jogo) {
-    print("imprime Jogo recebido ${jogo.imprimeJogo()}");
-    jogos.add(jogo);
-    notifyListeners();
-    print("Adicionou novo jogo na lista");
-    print("Imprime o jogo adicionado ${jogo.imprimeJogo()}");
-    print("=========================================");
-  }
+  List<Jogo> _jogos = [];
+  get listaJogos => [..._jogos];
 
   String? equipe_1;
   String? equipe_2;
   late int pontosEquipe_1 = 0;
   late int pontosEquipe_2 = 0;
   late int fimJogo;
+
+  int tamanhoListaJogos() {
+    return _jogos.length;
+  }
+
+  createJogo(Jogo jogo) {
+    print("imprime Jogo recebido ${jogo.imprimeJogo()}");
+    _jogos.add(jogo);
+    notifyListeners();
+    print("Adicionou novo jogo na lista");
+    print("Imprime o jogo adicionado ${jogo.imprimeJogo()}");
+    print("=========================================");
+  }
 
   iniciaJogo(String eq1, String eq2, int pontosSet) {
     print('Iniciou um Jogo');
@@ -95,6 +95,7 @@ class Jogo with ChangeNotifier {
               //   print("Lista de jogo ${element.imprimeJogo()}");
               // }
               // print("===========FIM - LISTA===============");
+              Navigator.of(context).pop();
               Navigator.of(context).popAndPushNamed('/');
             },
           ),
