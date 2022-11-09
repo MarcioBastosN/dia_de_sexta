@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/textFormCompoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -86,63 +87,100 @@ class _HomeState extends State<Home> {
     ]);
     return Scaffold(
       // appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-            const Text(
-              'Dia de Sexta',
-              style: TextStyle(fontSize: 32),
+      backgroundColor: Colors.cyan,
+      body: Column(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      fontSize: 46,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Dia de ",
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Sexta',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text.rich(TextSpan(
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Seu placar do vôlei",
+                      ),
+                    ])),
+              ],
             ),
-            const Text(
-              'seu placar do Vôlei',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-            Container(
-              padding: const EdgeInsets.all(10.0),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.lightBlue,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 28),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormField(
-                    decoration: const InputDecoration(label: Text("Time 1")),
+                  TextFormCompoment(
+                    label: "Time 1",
                     controller: _time1,
-                    keyboardType: TextInputType.text,
+                    inputType: TextInputType.text,
+                    perfixIcon: Icons.person,
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(label: Text("Time 2")),
+                  TextFormCompoment(
+                    label: "Time 2",
                     controller: _time2,
-                    keyboardType: TextInputType.text,
+                    inputType: TextInputType.text,
+                    perfixIcon: Icons.person,
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                        label: Text("Quantos Ponto vai o Jogo?")),
+                  TextFormCompoment(
+                    label: "Quantos Pontos vai o Jogo?",
                     maxLength: 2,
                     controller: _pontos,
-                    keyboardType: TextInputType.phone,
+                    inputType: TextInputType.phone,
                   ),
-                  ElevatedButton(
-                    onPressed: () => _iniciaJogo(context),
-                    child: const Text(
-                      'Iniciar',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 8.0,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () => _iniciaJogo(context),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                          ),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                          ),
+                        ),
+                        child: const Text(
+                          'Iniciar',
+                        ),
                       ),
                     ),
                   ),
-                  // const SizedBox(height: 20),
-                  // ElevatedButton(
-                  //   onPressed: inicioRapido,
-                  //   child: const Text('Jogo rapido, 10 pontos'),
-                  // ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
