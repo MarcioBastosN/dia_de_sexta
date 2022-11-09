@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Jogo with ChangeNotifier {
   List<Jogo> _jogos = [];
@@ -32,6 +33,16 @@ class Jogo with ChangeNotifier {
     pontosEquipe_2 = 0;
     fimJogo = pontosSet;
     imprimeJogo();
+  }
+
+  vaiUm() {
+    fimJogo++;
+    notifyListeners();
+  }
+
+  vaiDois() {
+    fimJogo += 2;
+    notifyListeners();
   }
 
   imprimeJogo() {
@@ -82,6 +93,31 @@ class Jogo with ChangeNotifier {
         titulo: "Fim de Jogo",
         mensagem: "jogo encerado",
         listaCompomentes: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text("Vai a Um"),
+            onPressed: () {
+              Provider.of<Jogo>(context, listen: false).vaiUm();
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.amber,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text("Vai a Dois"),
+            onPressed: () {
+              Provider.of<Jogo>(context, listen: false).vaiDois();
+              Navigator.of(context).pop();
+            },
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
