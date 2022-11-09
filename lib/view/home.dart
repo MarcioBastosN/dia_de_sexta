@@ -1,134 +1,243 @@
+import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
+import 'package:dia_de_sexta/view/compoment/textFormCompoment.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _pontosDireita = 0;
-  int _pontosEsquerda = 0;
+class _HomeState extends State<Home> {
+  final _time1 = TextEditingController();
+  final _time2 = TextEditingController();
+  final _pontos = TextEditingController();
+  final _focusP1 = FocusNode();
+  final _focusP2 = FocusNode();
+  final _focusPontos = FocusNode();
 
-  void _zerarContadores() {
-    setState(() {
-      _pontosDireita = 0;
-      _pontosEsquerda = 0;
-    });
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
-  void _counterDireita(bool condicao) {
-    setState(() {
-      if (condicao) {
-        _pontosDireita++;
-      } else {
-        if (_pontosDireita > 0) {
-          _pontosDireita--;
-        }
-      }
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _time1.dispose();
+    _time2.dispose();
+    _pontos.dispose();
+    _focusPontos.dispose();
+    _focusP1.dispose();
+    _focusP2.dispose();
   }
 
-  void _counterEsquerda(bool condicao) {
-    setState(() {
-      if (condicao) {
-        _pontosEsquerda++;
-      } else {
-        if (_pontosEsquerda > 0) {
-          _pontosEsquerda--;
-        }
-      }
-    });
+  void _iniciaJogo() {
+    final eq1 = _time1.text.toString().trim();
+    final eq2 = _time2.text.toString().trim();
+    if (eq1.isNotEmpty &&
+        eq2.isNotEmpty &&
+        _pontos.text.toString().isNotEmpty) {
+      Provider.of<Jogo>(context, listen: false).iniciaJogo(
+        eq1,
+        eq2,
+        int.parse(_pontos.text.toString()),
+      );
+      Navigator.of(context).popAndPushNamed('placar');
+    } else {
+      _alertdialog(context);
+    }
+  }
+
+  void inicioRapido() {
+    Provider.of<Jogo>(context, listen: false).iniciaJogo(
+      "equipe_1",
+      "equipe_2",
+      10,
+    );
+    Navigator.of(context).popAndPushNamed('placar');
+  }
+
+  void _alertdialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => DialogComponent(
+        titulo: "Ops!",
+        mensagem: "Verifique os campos.",
+        listaCompomentes: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text("fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text(widget.title),
+      actions: [
+        ButtonBar(
+          children: [
+            IconButton(
+              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
+              icon: const Icon(Icons.list),
+            )
+          ],
+        )
+      ],
     );
 
-    final tamanhoWidth = MediaQuery.of(context).size.width;
-    final tamanhoHeight =
-        MediaQuery.of(context).size.height - appBar.preferredSize.height;
-    const scalaDoTexto = 12.0;
-
     return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+      // appBar: appBar,
+      backgroundColor: Colors.cyan,
+      body: SafeArea(
         child: Column(
           children: [
-            Row(
-              children: <Widget>[
-                Container(
-                  width: tamanhoWidth * 0.5,
-                  height: tamanhoHeight,
-                  color: const Color.fromARGB(155, 11, 28, 208),
-                  child: Column(
-                    children: [
-                      Text(
-                        '$_pontosDireita',
-                        style: GoogleFonts.getFont('Play'),
-                        textScaleFactor: scalaDoTexto,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: 46,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _counterDireita(true),
-                            child: const Icon(Icons.add),
+                      children: [
+                        TextSpan(
+                          text: "Dia de ",
+                          style: TextStyle(
+                            color: Colors.blue,
                           ),
-                          ElevatedButton(
-                            onPressed: () => _counterDireita(false),
-                            child: const Icon(Icons.remove),
+                        ),
+                        TextSpan(
+                          text: 'Sexta',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  width: tamanhoWidth * 0.5,
-                  height: tamanhoHeight,
-                  color: const Color.fromARGB(155, 18, 208, 11),
-                  child: Column(
-                    children: [
-                      Text(
-                        '$_pontosEsquerda',
-                        style: GoogleFonts.getFont('Play'),
-                        textScaleFactor: scalaDoTexto,
+                  Text.rich(TextSpan(
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => _counterEsquerda(true),
-                            child: const Icon(Icons.add),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _counterEsquerda(false),
-                            child: const Icon(Icons.remove),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                      children: [
+                        TextSpan(
+                          text: "Seu placar do vôlei",
+                        ),
+                      ])),
+                ],
+              ),
             ),
-            // ElevatedButton(
-            //   onPressed: _zerarContadores,
-            //   child: const Text('Restart'),
-            // ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormCompoment(
+                      label: "Time 1",
+                      controller: _time1,
+                      inputType: TextInputType.text,
+                      perfixIcon: Icons.people,
+                      focus: _focusP1,
+                      submit: () {
+                        setState(() {
+                          _focusP2.requestFocus();
+                        });
+                      },
+                    ),
+                    TextFormCompoment(
+                      label: "Time 2",
+                      controller: _time2,
+                      inputType: TextInputType.text,
+                      perfixIcon: Icons.people,
+                      focus: _focusP2,
+                      submit: () {
+                        setState(() {
+                          _focusPontos.requestFocus();
+                        });
+                      },
+                    ),
+                    TextFormCompoment(
+                      label: "Quantos Pontos vai o Jogo?",
+                      maxLength: 2,
+                      controller: _pontos,
+                      inputType: TextInputType.phone,
+                      focus: _focusPontos,
+                      // submit: () => _iniciaJogo(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () => _iniciaJogo(),
+                          style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          ),
+                          child: const Text(
+                            'Iniciar',
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () => inicioRapido(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white30,
+                            foregroundColor: Colors.amber,
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          ),
+                          child: const Text(
+                            'Jogo Rapido 10 pontos',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _zerarContadores,
-        child: const Icon(Icons.restart_alt),
       ),
     );
   }
