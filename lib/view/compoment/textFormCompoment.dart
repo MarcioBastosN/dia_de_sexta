@@ -6,6 +6,8 @@ class TextFormCompoment extends StatefulWidget {
   final TextInputType inputType;
   final int maxLength;
   final IconData? perfixIcon;
+  final void Function()? submit;
+  final FocusNode? focus;
 
   const TextFormCompoment({
     super.key,
@@ -14,6 +16,8 @@ class TextFormCompoment extends StatefulWidget {
     required this.inputType,
     this.perfixIcon,
     this.maxLength = 0,
+    this.submit,
+    this.focus,
   });
 
   @override
@@ -26,6 +30,8 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: TextFormField(
+        onEditingComplete: widget.submit,
+        focusNode: widget.focus,
         cursorColor: Colors.white,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(

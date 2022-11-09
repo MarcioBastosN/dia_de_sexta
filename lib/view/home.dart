@@ -16,6 +16,9 @@ class _HomeState extends State<Home> {
   final _time1 = TextEditingController();
   final _time2 = TextEditingController();
   final _pontos = TextEditingController();
+  final _focusP1 = FocusNode();
+  final _focusP2 = FocusNode();
+  final _focusPontos = FocusNode();
 
   @override
   void initState() {
@@ -29,15 +32,17 @@ class _HomeState extends State<Home> {
     _time1.dispose();
     _time2.dispose();
     _pontos.dispose();
-    // SystemChrome.setPreferredOrientations(
-    //   [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
-    // );
+    _focusPontos.dispose();
+    _focusP1.dispose();
+    _focusP2.dispose();
   }
 
   void _iniciaJogo() {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
-    if (eq1.isNotEmpty && eq2.isNotEmpty) {
+    if (eq1.isNotEmpty &&
+        eq2.isNotEmpty &&
+        _pontos.text.toString().isNotEmpty) {
       Provider.of<Jogo>(context, listen: false).iniciaJogo(
         eq1,
         eq2,
@@ -155,19 +160,33 @@ class _HomeState extends State<Home> {
                       label: "Time 1",
                       controller: _time1,
                       inputType: TextInputType.text,
-                      perfixIcon: Icons.person,
+                      perfixIcon: Icons.people,
+                      focus: _focusP1,
+                      submit: () {
+                        setState(() {
+                          _focusP2.requestFocus();
+                        });
+                      },
                     ),
                     TextFormCompoment(
                       label: "Time 2",
                       controller: _time2,
                       inputType: TextInputType.text,
-                      perfixIcon: Icons.person,
+                      perfixIcon: Icons.people,
+                      focus: _focusP2,
+                      submit: () {
+                        setState(() {
+                          _focusPontos.requestFocus();
+                        });
+                      },
                     ),
                     TextFormCompoment(
                       label: "Quantos Pontos vai o Jogo?",
                       maxLength: 2,
                       controller: _pontos,
                       inputType: TextInputType.phone,
+                      focus: _focusPontos,
+                      // submit: () => _iniciaJogo(),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
