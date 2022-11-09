@@ -87,7 +87,7 @@ class Jogo with ChangeNotifier {
   void _alertdialog(BuildContext context) {
     print("finalizou a partida");
     showDialog(
-      barrierDismissible: true,
+      barrierDismissible: false,
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
