@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:dia_de_sexta/view/compoment/textFormCompoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,18 +19,19 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    // ]);
     super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override
   void dispose() {
+    super.dispose();
     _time1.dispose();
     _time2.dispose();
     _pontos.dispose();
-    super.dispose();
+    // SystemChrome.setPreferredOrientations(
+    //   [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
+    // );
   }
 
   void _iniciaJogo() {
@@ -60,19 +62,10 @@ class _HomeState extends State<Home> {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.lightBlue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        title: const Text(
-          "Ops!",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        content: const Text('verifique os campos'),
-        actions: <Widget>[
+      builder: (context) => DialogComponent(
+        titulo: "Ops!",
+        mensagem: "Verifique os campos.",
+        listaCompomentes: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -91,10 +84,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-
     final appBar = AppBar(
       actions: [
         ButtonBar(
@@ -111,121 +100,125 @@ class _HomeState extends State<Home> {
     return Scaffold(
       // appBar: appBar,
       backgroundColor: Colors.cyan,
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text.rich(
-                  TextSpan(
-                    style: TextStyle(
-                      fontSize: 46,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Dia de ",
-                        style: TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Sexta',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Text.rich(TextSpan(
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Seu placar do vôlei",
-                      ),
-                    ])),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.lightBlue,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormCompoment(
-                    label: "Time 1",
-                    controller: _time1,
-                    inputType: TextInputType.text,
-                    perfixIcon: Icons.person,
-                  ),
-                  TextFormCompoment(
-                    label: "Time 2",
-                    controller: _time2,
-                    inputType: TextInputType.text,
-                    perfixIcon: Icons.person,
-                  ),
-                  TextFormCompoment(
-                    label: "Quantos Pontos vai o Jogo?",
-                    maxLength: 2,
-                    controller: _pontos,
-                    inputType: TextInputType.phone,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () => _iniciaJogo(),
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(18)),
-                          ),
-                        ),
-                        child: const Text(
-                          'Iniciar',
-                        ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: 46,
                       ),
+                      children: [
+                        TextSpan(
+                          text: "Dia de ",
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Sexta',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () => inicioRapido(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white30,
-                          foregroundColor: Colors.amber,
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                          ),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(18)),
-                          ),
-                        ),
-                        child: const Text(
-                          'Jogo Rapido 10 pontos',
-                        ),
+                  Text.rich(TextSpan(
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                    ),
-                  ),
+                      children: [
+                        TextSpan(
+                          text: "Seu placar do vôlei",
+                        ),
+                      ])),
                 ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormCompoment(
+                      label: "Time 1",
+                      controller: _time1,
+                      inputType: TextInputType.text,
+                      perfixIcon: Icons.person,
+                    ),
+                    TextFormCompoment(
+                      label: "Time 2",
+                      controller: _time2,
+                      inputType: TextInputType.text,
+                      perfixIcon: Icons.person,
+                    ),
+                    TextFormCompoment(
+                      label: "Quantos Pontos vai o Jogo?",
+                      maxLength: 2,
+                      controller: _pontos,
+                      inputType: TextInputType.phone,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () => _iniciaJogo(),
+                          style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          ),
+                          child: const Text(
+                            'Iniciar',
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () => inicioRapido(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white30,
+                            foregroundColor: Colors.amber,
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          ),
+                          child: const Text(
+                            'Jogo Rapido 10 pontos',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

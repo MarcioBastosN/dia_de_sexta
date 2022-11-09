@@ -2,7 +2,6 @@ import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/mostradorPlacarCompoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Placar extends StatefulWidget {
@@ -16,17 +15,22 @@ class Placar extends StatefulWidget {
 
 class _PlacarState extends State<Placar> {
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
+    );
+  }
+
+  @override
   void dispose() {
     super.dispose();
+    // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override
   Widget build(BuildContext context) {
     Jogo jogo = Provider.of<Jogo>(context);
-
-    SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
-    );
 
     final appBar = AppBar(
       title: Text(widget.title),

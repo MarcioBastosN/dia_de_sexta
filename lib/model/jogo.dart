@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
 
 class Jogo with ChangeNotifier {
@@ -77,14 +78,10 @@ class Jogo with ChangeNotifier {
     showDialog(
       barrierDismissible: true,
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.lightBlue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        title: const Text("Fim de Jogo"),
-        content: const Text('jogo encerado'),
-        actions: <Widget>[
+      builder: (context) => DialogComponent(
+        titulo: "Fim de Jogo",
+        mensagem: "jogo encerado",
+        listaCompomentes: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
