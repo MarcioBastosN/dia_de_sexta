@@ -17,6 +17,14 @@ class _HomeState extends State<Home> {
   final _pontos = TextEditingController();
 
   @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _time1.dispose();
     _time2.dispose();
@@ -53,10 +61,24 @@ class _HomeState extends State<Home> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Ops!"),
+        backgroundColor: Colors.lightBlue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        title: const Text(
+          "Ops!",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
         content: const Text('verifique os campos'),
         actions: <Widget>[
-          FloatingActionButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             child: const Text("fechar"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -82,9 +104,6 @@ class _HomeState extends State<Home> {
       ],
     );
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     return Scaffold(
       // appBar: appBar,
       backgroundColor: Colors.cyan,
