@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  void _iniciaJogo(context) {
+  void _iniciaJogo() {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
     if (eq1.isNotEmpty && eq2.isNotEmpty) {
@@ -161,7 +161,7 @@ class _HomeState extends State<Home> {
                     child: SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () => _iniciaJogo(context),
+                        onPressed: () => _iniciaJogo(),
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                             fontSize: 18,
@@ -172,6 +172,28 @@ class _HomeState extends State<Home> {
                         ),
                         child: const Text(
                           'Iniciar',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () => inicioRapido(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white30,
+                          foregroundColor: Colors.amber,
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                          ),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                          ),
+                        ),
+                        child: const Text(
+                          'Jogo Rapido 10 pontos',
                         ),
                       ),
                     ),

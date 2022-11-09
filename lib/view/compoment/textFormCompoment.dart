@@ -26,6 +26,7 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: TextFormField(
+        cursorColor: Colors.white,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           prefixIcon:
