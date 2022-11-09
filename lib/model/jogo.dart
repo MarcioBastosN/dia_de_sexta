@@ -78,23 +78,21 @@ class Jogo with ChangeNotifier {
       barrierDismissible: true,
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.lightBlue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
         title: const Text("Fim de Jogo"),
         content: const Text('jogo encerado'),
         actions: <Widget>[
-          FloatingActionButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             child: const Text("Novo Jogo"),
             onPressed: () {
-              // print("Iniciou um novo Jogo!");
-              // print("+++++++++++++++++++++");
-              // print(
-              //   "Tamanho lista ${jogo.tamanhoListaJogos()}",
-              // );
-              // // Provider.of<Jogo>(context, listen: false).createJogo();
-              // print("===========LISTA===============");
-              // for (Jogo element in jogo.listaJogos) {
-              //   print("Lista de jogo ${element.imprimeJogo()}");
-              // }
-              // print("===========FIM - LISTA===============");
               Navigator.of(context).pop();
               Navigator.of(context).popAndPushNamed('/');
             },
