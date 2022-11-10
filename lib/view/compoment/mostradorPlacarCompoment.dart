@@ -34,12 +34,13 @@ class _MyWidgetState extends State<PlacarComponent> {
         children: [
           Text(
             widget.titulo,
-            style: const TextStyle(fontSize: 30),
+            style: Theme.of(context).textTheme.headline4,
           ),
           Text(
             widget.placar,
-            style: GoogleFonts.getFont('Play'),
-            textScaleFactor: 12,
+            style: Theme.of(context).textTheme.headline1,
+            // style: GoogleFonts.getFont('Play'),
+            textScaleFactor: 2,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

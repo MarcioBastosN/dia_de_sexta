@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
 import 'package:dia_de_sexta/view/placar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,7 +36,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -50,8 +48,18 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primaryColor: Colors.black87,
+            primarySwatch: Colors.lightBlue,
+            backgroundColor: Colors.cyan,
+            textTheme: const TextTheme(
+                headline1: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                headline4: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                ))),
         routes: {
           '/': (context) => const Home(),
           'placar': (context) => const Placar(title: 'Dia de Sexta'),
