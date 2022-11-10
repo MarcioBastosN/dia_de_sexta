@@ -58,6 +58,19 @@ class Jogo with ChangeNotifier {
       notifyListeners();
       _alertdialog(context);
     }
+    if (verificaplacar()) {
+      _alertSegueJogo(context);
+    }
+  }
+
+  bool verificaplacar() {
+    int valor = (fimJogo - 1);
+    bool compara = false;
+    if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
+      compara = true;
+    }
+    print("func compara: $compara");
+    return compara;
   }
 
   adicionaPontosEqp2(BuildContext context) {
@@ -67,6 +80,9 @@ class Jogo with ChangeNotifier {
     } else {
       notifyListeners();
       _alertdialog(context);
+    }
+    if (verificaplacar()) {
+      _alertSegueJogo(context);
     }
   }
 
@@ -99,6 +115,31 @@ class Jogo with ChangeNotifier {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
+            child: const Text("Novo Jogo"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).popAndPushNamed('/');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _alertSegueJogo(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) => DialogComponent(
+        titulo: "Empate ultimo pomto!",
+        mensagem: "Como deseja continuar?",
+        listaCompomentes: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             child: const Text("Vai a Um"),
             onPressed: () {
               Provider.of<Jogo>(context, listen: false).vaiUm();
@@ -124,10 +165,9 @@ class Jogo with ChangeNotifier {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text("Novo Jogo"),
+            child: const Text("continuar"),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).popAndPushNamed('/');
             },
           ),
         ],
