@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
         theme: ThemeData(
           primarySwatch: Colors.blue,
