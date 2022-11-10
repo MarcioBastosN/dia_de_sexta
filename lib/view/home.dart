@@ -20,6 +20,8 @@ class _HomeState extends State<Home> {
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
 
+  bool shouldPop = true;
+
   @override
   void initState() {
     super.initState();
@@ -80,6 +82,9 @@ class _HomeState extends State<Home> {
             child: const Text("fechar"),
             onPressed: () {
               Navigator.of(context).pop();
+              setState(() {
+                _focusP1.requestFocus();
+              });
             },
           ),
         ],
@@ -102,141 +107,174 @@ class _HomeState extends State<Home> {
       ],
     );
 
-    return Scaffold(
-      // appBar: appBar,
-      backgroundColor: Colors.cyan,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        fontSize: 46,
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => DialogComponent(
+              mensagem: "Exit app",
+              titulo: "Você deseja sair do Dia de sexta?",
+              listaCompomentes: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  //return false when click on "NO"
+                  child: const Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  //return true when click on "Yes"
+                  child: const Text('Yes'),
+                ),
+              ],
+            ),
+          ) ??
+          false; //if showDialouge had returned null, then return false
+    }
+
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        // appBar: appBar,
+        backgroundColor: Theme.of(context).copyWith().backgroundColor,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: 46,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Dia de ",
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Sexta',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                    Text.rich(TextSpan(
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Seu placar do vôlei",
+                          ),
+                        ])),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                        bottom: Radius.circular(30),
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        TextSpan(
-                          text: "Dia de ",
-                          style: TextStyle(
-                            color: Colors.blue,
+                        TextFormCompoment(
+                          label: "Time 1",
+                          controller: _time1,
+                          inputType: TextInputType.text,
+                          perfixIcon: Icons.people,
+                          focus: _focusP1,
+                          submit: () {
+                            setState(() {
+                              _focusP2.requestFocus();
+                            });
+                          },
+                        ),
+                        TextFormCompoment(
+                          label: "Time 2",
+                          controller: _time2,
+                          inputType: TextInputType.text,
+                          perfixIcon: Icons.people,
+                          focus: _focusP2,
+                          submit: () {
+                            setState(() {
+                              _focusPontos.requestFocus();
+                            });
+                          },
+                        ),
+                        TextFormCompoment(
+                          label: "Quantos Pontos vai o Jogo?",
+                          maxLength: 2,
+                          controller: _pontos,
+                          inputType: TextInputType.phone,
+                          focus: _focusPontos,
+                          // submit: () => _iniciaJogo(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () => _iniciaJogo(),
+                              style: ElevatedButton.styleFrom(
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(18)),
+                                ),
+                              ),
+                              child: const Text(
+                                'Iniciar',
+                              ),
+                            ),
                           ),
                         ),
-                        TextSpan(
-                          text: 'Sexta',
-                          style: TextStyle(
-                            color: Colors.white,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () => inicioRapido(),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white30,
+                                foregroundColor: Colors.amber,
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(18)),
+                                ),
+                              ),
+                              child: const Text(
+                                'Jogo Rapido 10 pontos',
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Text.rich(TextSpan(
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Seu placar do vôlei",
-                        ),
-                      ])),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.lightBlue,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextFormCompoment(
-                      label: "Time 1",
-                      controller: _time1,
-                      inputType: TextInputType.text,
-                      perfixIcon: Icons.people,
-                      focus: _focusP1,
-                      submit: () {
-                        setState(() {
-                          _focusP2.requestFocus();
-                        });
-                      },
-                    ),
-                    TextFormCompoment(
-                      label: "Time 2",
-                      controller: _time2,
-                      inputType: TextInputType.text,
-                      perfixIcon: Icons.people,
-                      focus: _focusP2,
-                      submit: () {
-                        setState(() {
-                          _focusPontos.requestFocus();
-                        });
-                      },
-                    ),
-                    TextFormCompoment(
-                      label: "Quantos Pontos vai o Jogo?",
-                      maxLength: 2,
-                      controller: _pontos,
-                      inputType: TextInputType.phone,
-                      focus: _focusPontos,
-                      // submit: () => _iniciaJogo(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () => _iniciaJogo(),
-                          style: ElevatedButton.styleFrom(
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(18)),
-                            ),
-                          ),
-                          child: const Text(
-                            'Iniciar',
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () => inicioRapido(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white30,
-                            foregroundColor: Colors.amber,
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                            ),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(18)),
-                            ),
-                          ),
-                          child: const Text(
-                            'Jogo Rapido 10 pontos',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
