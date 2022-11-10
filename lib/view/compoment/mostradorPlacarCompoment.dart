@@ -40,7 +40,7 @@ class _MyWidgetState extends State<PlacarComponent> {
             widget.placar,
             style: Theme.of(context).textTheme.headline1,
             // style: GoogleFonts.getFont('Play'),
-            textScaleFactor: 2,
+            textScaleFactor: 1.5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

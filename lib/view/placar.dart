@@ -53,17 +53,19 @@ class _PlacarState extends State<Placar> {
             context: context,
             builder: (context) => DialogComponent(
               mensagem: "Exit app",
-              titulo: "Você deseja sair do Dia de sexta?",
+              titulo: "Você deseja sair ?",
               listaCompomentes: [
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  //return false when click on "NO"
-                  child: const Text('No'),
+                  onPressed: () => {
+                    Navigator.of(context).pop(),
+                    Navigator.of(context).popAndPushNamed('/'),
+                  },
+                  child: const Text('Ir para o inicio'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
                   //return true when click on "Yes"
-                  child: const Text('Yes'),
+                  child: const Text('Sair'),
                 ),
               ],
             ),
