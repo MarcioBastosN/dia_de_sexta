@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
                 ))),
         routes: {
           '/': (context) => const Home(),
-          'placar': (context) => const Placar(title: 'Dia de Sexta'),
+          'placar': (context) => const Placar(title: "Seu Placar vai à:"),
           // 'lista': (context) => const ListaPlacar(),
         },
       ),

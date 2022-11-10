@@ -34,7 +34,7 @@ class _PlacarState extends State<Placar> {
     Jogo jogo = Provider.of<Jogo>(context);
 
     final appBar = AppBar(
-      title: Text(widget.title),
+      title: Text("${widget.title} ${jogo.fimJogo.toString()} pontos"),
       // actions: [
       //   ButtonBar(children: [
       //     IconButton(
