@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
   final _focusP1 = FocusNode();
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
+  Jogo? jogo;
 
   double _currentSliderValue = 10;
 
@@ -41,17 +42,22 @@ class _HomeState extends State<Home> {
     _focusP2.dispose();
   }
 
-  void _iniciaJogo() {
+  _iniciaJogo() {
     final eq1 = _time1.text.toString().trim();
     final eq2 = _time2.text.toString().trim();
     if (eq1.isNotEmpty &&
         eq2.isNotEmpty &&
         _pontos.text.toString().isNotEmpty) {
-      Provider.of<Jogo>(context, listen: false).iniciaJogo(
-        eq1,
-        eq2,
-        int.parse(_pontos.text.toString()),
+      Provider.of<Jogo>(context, listen: false).criarjgo(
+        Jogo(
+          equipe_1: eq1,
+          equipe_2: eq2,
+          pontosEquipe_1: 0,
+          pontosEquipe_2: 0,
+          fimJogo: int.parse(_pontos.text.toString()),
+        ),
       );
+
       Navigator.of(context).popAndPushNamed('placar');
     } else {
       _alertdialog(context);
@@ -59,10 +65,14 @@ class _HomeState extends State<Home> {
   }
 
   void inicioRapido() {
-    Provider.of<Jogo>(context, listen: false).iniciaJogo(
-      "equipe_1",
-      "equipe_2",
-      10,
+    Provider.of<Jogo>(context, listen: false).criarjgo(
+      Jogo(
+        equipe_1: "equipe_1",
+        equipe_2: "equipe_2",
+        pontosEquipe_1: 0,
+        pontosEquipe_2: 0,
+        fimJogo: 10,
+      ),
     );
     Navigator.of(context).popAndPushNamed('placar');
   }
@@ -216,7 +226,6 @@ class _HomeState extends State<Home> {
                           controller: _pontos,
                           inputType: TextInputType.phone,
                           focus: _focusPontos,
-                          // submit: () => _iniciaJogo(),
                         ),
                         // Slider(
                         //   value: _currentSliderValue,

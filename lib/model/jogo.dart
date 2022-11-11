@@ -8,15 +8,15 @@ class Jogo with ChangeNotifier {
 
   String? equipe_1;
   String? equipe_2;
-  int pontosEquipe_1 = 0;
-  int pontosEquipe_2 = 0;
+  int? pontosEquipe_1;
+  int? pontosEquipe_2;
   int fimJogo;
 
   Jogo({
     this.equipe_1,
     this.equipe_2,
-    pontosEquipe_1,
-    pontosEquipe_2,
+    this.pontosEquipe_1,
+    this.pontosEquipe_2,
     this.fimJogo = 10,
   });
 
@@ -33,20 +33,13 @@ class Jogo with ChangeNotifier {
     print("=========================================");
   }
 
-  iniciaJogo(String eq1, String eq2, int pontosSet) {
-    print('Iniciou um Jogo');
-
-    _jogos.add(Jogo(
-      equipe_1: eq1,
-      equipe_2: eq2,
-      fimJogo: pontosSet,
-    ));
-    equipe_1 = eq1;
-    equipe_2 = eq2;
-    pontosEquipe_1 = 0;
-    pontosEquipe_2 = 0;
-    fimJogo = pontosSet;
-    imprimeJogo();
+  criarjgo(Jogo jogo) {
+    equipe_1 = jogo.equipe_1;
+    equipe_2 = jogo.equipe_2;
+    pontosEquipe_1 = jogo.pontosEquipe_1;
+    pontosEquipe_2 = jogo.pontosEquipe_2;
+    fimJogo = jogo.fimJogo;
+    notifyListeners();
   }
 
   vaiUm() {
@@ -75,8 +68,8 @@ class Jogo with ChangeNotifier {
   }
 
   adicionaPontosEqp1(BuildContext context) {
-    pontosEquipe_1++;
-    if (pontosEquipe_1 <= (fimJogo - 1)) {
+    pontosEquipe_1 = pontosEquipe_1! + 1;
+    if (pontosEquipe_1! <= (fimJogo - 1)) {
       notifyListeners();
     } else {
       notifyListeners();
@@ -88,8 +81,8 @@ class Jogo with ChangeNotifier {
   }
 
   adicionaPontosEqp2(BuildContext context) {
-    pontosEquipe_2++;
-    if (pontosEquipe_2 <= (fimJogo - 1)) {
+    pontosEquipe_2 = pontosEquipe_2! + 1;
+    if (pontosEquipe_2! <= (fimJogo - 1)) {
       notifyListeners();
     } else {
       notifyListeners();
@@ -101,15 +94,15 @@ class Jogo with ChangeNotifier {
   }
 
   removePontosEquipe_1() {
-    if (pontosEquipe_1 > 0) {
-      pontosEquipe_1--;
+    if (pontosEquipe_1! > 0) {
+      pontosEquipe_1 = pontosEquipe_1! - 1;
     }
     notifyListeners();
   }
 
   removePontosEquipe_2() {
-    if (pontosEquipe_2 > 0) {
-      pontosEquipe_2--;
+    if (pontosEquipe_2! > 0) {
+      pontosEquipe_2 = pontosEquipe_2! - 1;
     }
     notifyListeners();
   }
@@ -136,16 +129,22 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              Provider.of<Jogo>(context, listen: false).createJogo(Jogo(
+              createJogo(
+                Jogo(
+                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+                  pontosEquipe_1:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+                  pontosEquipe_2:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                ),
+              );
+              Jogo(
                 equipe_1: "equipe_1",
                 equipe_2: "equipe_2",
                 fimJogo: 10,
-              ));
-              // Provider.of<Jogo>(context, listen: false).iniciaJogo(
-              //   "equipe_1",
-              //   "equipe_2",
-              //   10,
-              // );
+              );
               Navigator.of(context).popAndPushNamed('placar');
             },
           ),
@@ -158,6 +157,18 @@ class Jogo with ChangeNotifier {
             child: const Text("Novo Jogo"),
             onPressed: () {
               Navigator.of(context).pop();
+              print("registra ultimo jogo");
+              createJogo(
+                Jogo(
+                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+                  pontosEquipe_1:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+                  pontosEquipe_2:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                ),
+              );
               Navigator.of(context).popAndPushNamed('/');
             },
           ),

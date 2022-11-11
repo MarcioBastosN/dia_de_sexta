@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:math';
 
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,77 +39,103 @@ class _MyWidgetState extends State<ListaPlacar> {
 
     final listaJogo = Provider.of<Jogo>(context).listaJogos;
 
-    return Scaffold(
-      appBar: appBar,
-      body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
-          ? ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: listaJogo.length,
-              // itemCount: Provider.of<Jogo>(context).tamanhoListaJogos(),
-              itemBuilder: (context, int index) {
-                return Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Card(
-                        elevation: 2.0,
-                        color: Colors.orange,
-                        child: Row(
-                          children: [
-                            Column(
-                              children: [
-                                Text(listaJogo[index].equipe_1.toString()),
-                                Text(
-                                    listaJogo[index].pontosEquipe_1.toString()),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(listaJogo[index].equipe_2.toString()),
-                                Text(
-                                    listaJogo[index].pontosEquipe_2.toString()),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Column(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   crossAxisAlignment: CrossAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       '${lista.listaJogos[index].equipe_2.toString()}',
-                      //       style: const TextStyle(
-                      //         fontSize: 20,
-                      //       ),
-                      //     ),
-                      //     Text('Pontos: ${lista.listaJogos[index].pontosEquipe_2}'),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-                );
-              })
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text("REACT NATIVE É MELHOR"),
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => DialogComponent(
+              mensagem: "Exit app",
+              titulo: "Você deseja sair ?",
+              listaCompomentes: [
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.of(context).pop(),
+                    Navigator.of(context).popAndPushNamed('/'),
+                  },
+                  child: const Text('Ir para o inicio'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  //return true when click on "Yes"
+                  child: const Text('Sair'),
+                ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Provider.of<Jogo>(context, listen: false).createJogo(
-          Jogo(
-            equipe_1: "teste001",
-            equipe_2: "teste002",
-            pontosEquipe_1: Random().nextInt(4),
-            pontosEquipe_2: Random().nextInt(3),
-            fimJogo: 3,
-          ),
-        ),
-        elevation: 10.0,
-        child: const Icon(Icons.add),
+          ) ??
+          false; //if showDialouge had returned null, then return false
+    }
+
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        appBar: appBar,
+        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+            ? ListView.builder(
+                reverse: true,
+                addRepaintBoundaries: true,
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: listaJogo.length,
+                // itemCount: Provider.of<Jogo>(context).tamanhoListaJogos(),
+                itemBuilder: (context, int index) {
+                  return Container(
+                    margin: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Card(
+                          elevation: 2.0,
+                          color: Theme.of(context).copyWith().backgroundColor,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Text(listaJogo[index].equipe_1.toString()),
+                                    Text(listaJogo[index]
+                                        .pontosEquipe_1
+                                        .toString()),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Text(listaJogo[index].equipe_2.toString()),
+                                    Text(listaJogo[index]
+                                        .pontosEquipe_2
+                                        .toString()),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                })
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Ainda não tem jogo"),
+                ],
+              ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () => Provider.of<Jogo>(context, listen: false).createJogo(
+        //     Jogo(
+        //       equipe_1: "teste001",
+        //       equipe_2: "teste002",
+        //       pontosEquipe_1: Random().nextInt(10),
+        //       pontosEquipe_2: Random().nextInt(10),
+        //       fimJogo: 10,
+        //     ),
+        //   ),
+        //   elevation: 10.0,
+        //   child: const Icon(Icons.add),
+        // ),
       ),
     );
   }
