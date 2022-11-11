@@ -48,18 +48,39 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
         theme: ThemeData(
-            primaryColor: Colors.black87,
-            primarySwatch: Colors.lightBlue,
-            backgroundColor: Colors.cyan,
-            textTheme: const TextTheme(
-                headline1: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                headline4: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                ))),
+          primaryColor: Colors.black87,
+          primarySwatch: Colors.lightBlue,
+          backgroundColor: Colors.cyan,
+          textTheme: const TextTheme(
+            headline1: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            headline4: TextStyle(
+              fontSize: 30,
+              color: Colors.white,
+            ),
+          ),
+          sliderTheme: const SliderThemeData(
+            thumbColor: Colors.lightBlue,
+            valueIndicatorColor: Colors.lightBlue,
+            inactiveTrackColor: Colors.amber,
+            inactiveTickMarkColor: Colors.white,
+            valueIndicatorTextStyle: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue,
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(fontSize: 18),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+            ),
+          ),
+        ),
         routes: {
           '/': (context) => const Home(),
           'placar': (context) => const Placar(title: "Seu Placar vai à:"),

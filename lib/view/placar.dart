@@ -26,7 +26,6 @@ class _PlacarState extends State<Placar> {
   @override
   void dispose() {
     super.dispose();
-    // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override

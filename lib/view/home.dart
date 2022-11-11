@@ -20,6 +20,8 @@ class _HomeState extends State<Home> {
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
 
+  double _currentSliderValue = 10;
+
   bool shouldPop = true;
 
   @override
@@ -144,34 +146,26 @@ class _HomeState extends State<Home> {
                   children: const [
                     Text.rich(
                       TextSpan(
-                        style: TextStyle(
-                          fontSize: 46,
-                        ),
+                        style: TextStyle(fontSize: 46),
                         children: [
                           TextSpan(
-                            text: "Dia de ",
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          ),
+                              text: "Dia de ",
+                              style: TextStyle(color: Colors.blue)),
                           TextSpan(
                             text: 'Sexta',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
                     ),
-                    Text.rich(TextSpan(
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(fontSize: 20),
                         children: [
-                          TextSpan(
-                            text: "Seu placar do vôlei",
-                          ),
-                        ])),
+                          TextSpan(text: "Seu placar do vôlei"),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -224,21 +218,24 @@ class _HomeState extends State<Home> {
                           focus: _focusPontos,
                           // submit: () => _iniciaJogo(),
                         ),
+                        // Slider(
+                        //   value: _currentSliderValue,
+                        //   max: 25,
+                        //   min: 1,
+                        //   divisions: 26,
+                        //   label: _currentSliderValue.round().toString(),
+                        //   onChanged: (double value) {
+                        //     setState(() {
+                        //       _currentSliderValue = value;
+                        //     });
+                        //   },
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: SizedBox(
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () => _iniciaJogo(),
-                              style: ElevatedButton.styleFrom(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(18)),
-                                ),
-                              ),
                               child: const Text(
                                 'Iniciar',
                               ),
@@ -254,17 +251,8 @@ class _HomeState extends State<Home> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white30,
                                 foregroundColor: Colors.amber,
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(18)),
-                                ),
                               ),
-                              child: const Text(
-                                'Jogo Rapido 10 pontos',
-                              ),
+                              child: const Text('Jogo Rapido 10 pontos'),
                             ),
                           ),
                         ),
