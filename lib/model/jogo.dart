@@ -8,13 +8,15 @@ class Jogo with ChangeNotifier {
 
   String? equipe_1;
   String? equipe_2;
-  late int pontosEquipe_1 = 0;
-  late int pontosEquipe_2 = 0;
-  late int fimJogo;
+  int pontosEquipe_1 = 0;
+  int pontosEquipe_2 = 0;
+  int fimJogo;
 
   Jogo({
     this.equipe_1,
     this.equipe_2,
+    pontosEquipe_1,
+    pontosEquipe_2,
     this.fimJogo = 10,
   });
 
@@ -33,6 +35,12 @@ class Jogo with ChangeNotifier {
 
   iniciaJogo(String eq1, String eq2, int pontosSet) {
     print('Iniciou um Jogo');
+
+    _jogos.add(Jogo(
+      equipe_1: eq1,
+      equipe_2: eq2,
+      fimJogo: pontosSet,
+    ));
     equipe_1 = eq1;
     equipe_2 = eq2;
     pontosEquipe_1 = 0;
@@ -52,8 +60,8 @@ class Jogo with ChangeNotifier {
   }
 
   imprimeJogo() {
-    print("eq_1: ${equipe_1}, pontos_1: ${pontosEquipe_1}, " +
-        "eq_2: ${equipe_2}, pontos_2: ${pontosEquipe_2},  fim: ${fimJogo}");
+    print("eq_1: $equipe_1, pontos_1: $pontosEquipe_1, " +
+        "eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
   }
 
   bool verificaplacar() {

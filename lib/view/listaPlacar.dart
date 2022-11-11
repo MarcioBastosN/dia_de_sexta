@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:math';
+
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,14 +20,10 @@ class _MyWidgetState extends State<ListaPlacar> {
 
   @override
   Widget build(BuildContext context) {
-    final lista = Provider.of<Jogo>(context);
-    Jogo jogo = Jogo(
-      equipe_1: "a",
-      equipe_2: "b",
-    );
-
     final appBar = AppBar(
-      title: Text(lista.tamanhoListaJogos().toString()),
+      title: Text(Provider.of<Jogo>(context, listen: false)
+          .tamanhoListaJogos()
+          .toString()),
       actions: [
         ButtonBar(
           children: [
@@ -37,12 +36,15 @@ class _MyWidgetState extends State<ListaPlacar> {
       ],
     );
 
+    final listaJogo = Provider.of<Jogo>(context).listaJogos;
+
     return Scaffold(
       appBar: appBar,
       body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
           ? ListView.builder(
               padding: const EdgeInsets.all(8.0),
-              itemCount: Provider.of<Jogo>(context).tamanhoListaJogos(),
+              itemCount: listaJogo.length,
+              // itemCount: Provider.of<Jogo>(context).tamanhoListaJogos(),
               itemBuilder: (context, int index) {
                 return Container(
                   margin: const EdgeInsets.all(8.0),
@@ -50,19 +52,27 @@ class _MyWidgetState extends State<ListaPlacar> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "lista",
-                            style: const TextStyle(
-                              fontSize: 20,
+                      Card(
+                        elevation: 2.0,
+                        color: Colors.orange,
+                        child: Row(
+                          children: [
+                            Column(
+                              children: [
+                                Text(listaJogo[index].equipe_1.toString()),
+                                Text(
+                                    listaJogo[index].pontosEquipe_1.toString()),
+                              ],
                             ),
-                          ),
-                          // Text(
-                          //     'Pontos: ${lista.listaJogos[index].pontosEquipe_1}'),
-                        ],
+                            Column(
+                              children: [
+                                Text(listaJogo[index].equipe_2.toString()),
+                                Text(
+                                    listaJogo[index].pontosEquipe_2.toString()),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       // Column(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,14 +93,20 @@ class _MyWidgetState extends State<ListaPlacar> {
               })
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "REACT NATIVE É MELHOR ${lista}",
-                ),
+              children: const [
+                Text("REACT NATIVE É MELHOR"),
               ],
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => jogo.createJogo(jogo),
+        onPressed: () => Provider.of<Jogo>(context, listen: false).createJogo(
+          Jogo(
+            equipe_1: "teste001",
+            equipe_2: "teste002",
+            pontosEquipe_1: Random().nextInt(4),
+            pontosEquipe_2: Random().nextInt(3),
+            fimJogo: 3,
+          ),
+        ),
         elevation: 10.0,
         child: const Icon(Icons.add),
       ),
