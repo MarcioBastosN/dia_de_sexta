@@ -135,7 +135,7 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-        // appBar: appBar,
+        appBar: appBar,
         backgroundColor: Theme.of(context).copyWith().backgroundColor,
         body: SafeArea(
           child: Column(
@@ -146,7 +146,7 @@ class _HomeState extends State<Home> {
                   children: const [
                     Text.rich(
                       TextSpan(
-                        style: TextStyle(fontSize: 46),
+                        style: TextStyle(fontSize: 48),
                         children: [
                           TextSpan(
                               text: "Dia de ",

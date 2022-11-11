@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Jogo with ChangeNotifier {
-  List<Jogo> _jogos = [];
-  get listaJogos => [..._jogos];
+  final List<Jogo> _jogos = [];
+  List<Jogo> get listaJogos => [..._jogos];
 
   String? equipe_1;
   String? equipe_2;
@@ -12,16 +12,22 @@ class Jogo with ChangeNotifier {
   late int pontosEquipe_2 = 0;
   late int fimJogo;
 
+  Jogo({
+    this.equipe_1,
+    this.equipe_2,
+    this.fimJogo = 10,
+  });
+
   int tamanhoListaJogos() {
     return _jogos.length;
   }
 
   createJogo(Jogo jogo) {
-    print("imprime Jogo recebido ${imprimeJogo()}");
+    print("imprime Jogo recebido ");
+    imprimeJogo();
     _jogos.add(jogo);
     notifyListeners();
     print("Adicionou novo jogo na lista");
-    print("Imprime o jogo adicionado ${imprimeJogo()}");
     print("=========================================");
   }
 
@@ -33,7 +39,6 @@ class Jogo with ChangeNotifier {
     pontosEquipe_2 = 0;
     fimJogo = pontosSet;
     imprimeJogo();
-    // createJogo(jogo);
   }
 
   vaiUm() {
@@ -51,6 +56,16 @@ class Jogo with ChangeNotifier {
         "eq_2: ${equipe_2}, pontos_2: ${pontosEquipe_2},  fim: ${fimJogo}");
   }
 
+  bool verificaplacar() {
+    int valor = (fimJogo - 1);
+    bool compara = false;
+    if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
+      compara = true;
+    }
+    print("func compara: $compara");
+    return compara;
+  }
+
   adicionaPontosEqp1(BuildContext context) {
     pontosEquipe_1++;
     if (pontosEquipe_1 <= (fimJogo - 1)) {
@@ -62,16 +77,6 @@ class Jogo with ChangeNotifier {
     if (verificaplacar()) {
       _alertSegueJogo(context);
     }
-  }
-
-  bool verificaplacar() {
-    int valor = (fimJogo - 1);
-    bool compara = false;
-    if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
-      compara = true;
-    }
-    print("func compara: $compara");
-    return compara;
   }
 
   adicionaPontosEqp2(BuildContext context) {
@@ -123,11 +128,16 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              Provider.of<Jogo>(context, listen: false).iniciaJogo(
-                "equipe_1",
-                "equipe_2",
-                10,
-              );
+              Provider.of<Jogo>(context, listen: false).createJogo(Jogo(
+                equipe_1: "equipe_1",
+                equipe_2: "equipe_2",
+                fimJogo: 10,
+              ));
+              // Provider.of<Jogo>(context, listen: false).iniciaJogo(
+              //   "equipe_1",
+              //   "equipe_2",
+              //   10,
+              // );
               Navigator.of(context).popAndPushNamed('placar');
             },
           ),
