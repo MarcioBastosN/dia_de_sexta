@@ -17,11 +17,11 @@ class Jogo with ChangeNotifier {
   }
 
   createJogo(Jogo jogo) {
-    print("imprime Jogo recebido ${jogo.imprimeJogo()}");
+    print("imprime Jogo recebido ${imprimeJogo()}");
     _jogos.add(jogo);
     notifyListeners();
     print("Adicionou novo jogo na lista");
-    print("Imprime o jogo adicionado ${jogo.imprimeJogo()}");
+    print("Imprime o jogo adicionado ${imprimeJogo()}");
     print("=========================================");
   }
 
@@ -33,6 +33,7 @@ class Jogo with ChangeNotifier {
     pontosEquipe_2 = 0;
     fimJogo = pontosSet;
     imprimeJogo();
+    // createJogo(jogo);
   }
 
   vaiUm() {
@@ -46,8 +47,8 @@ class Jogo with ChangeNotifier {
   }
 
   imprimeJogo() {
-    print(
-        "eq_1: $equipe_1, pontos_1: $pontosEquipe_1, eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
+    print("eq_1: ${equipe_1}, pontos_1: ${pontosEquipe_1}, " +
+        "eq_2: ${equipe_2}, pontos_2: ${pontosEquipe_2},  fim: ${fimJogo}");
   }
 
   adicionaPontosEqp1(BuildContext context) {
@@ -109,6 +110,27 @@ class Jogo with ChangeNotifier {
         titulo: "Fim de Jogo",
         mensagem: "jogo encerado",
         listaCompomentes: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white30,
+              foregroundColor: Colors.amber,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text(
+              "Jogo Rapido",
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Provider.of<Jogo>(context, listen: false).iniciaJogo(
+                "equipe_1",
+                "equipe_2",
+                10,
+              );
+              Navigator.of(context).popAndPushNamed('placar');
+            },
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
