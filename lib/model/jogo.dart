@@ -140,11 +140,16 @@ class Jogo with ChangeNotifier {
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
-              Jogo(
-                equipe_1: "equipe_1",
-                equipe_2: "equipe_2",
-                fimJogo: 10,
+              Provider.of<Jogo>(context, listen: false).criarjgo(
+                Jogo(
+                  equipe_1: "equipe_1",
+                  equipe_2: "equipe_2",
+                  pontosEquipe_1: 0,
+                  pontosEquipe_2: 0,
+                  fimJogo: 10,
+                ),
               );
+
               Navigator.of(context).popAndPushNamed('placar');
             },
           ),

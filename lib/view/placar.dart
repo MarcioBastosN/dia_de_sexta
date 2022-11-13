@@ -43,9 +43,9 @@ class _PlacarState extends State<Placar> {
       ],
     );
 
-    final tamanhoWidth = MediaQuery.of(context).size.width;
-    final tamanhoHeight =
-        (MediaQuery.of(context).size.height - appBar.preferredSize.height);
+    final mediaScreen = MediaQuery.of(context).size;
+    // final tamanhoHeight = MediaQuery.of(context).size.height;
+    // (MediaQuery.of(context).size.height - appBar.preferredSize.height);
 
     Future<bool> showExitPopup() async {
       return await showDialog(
@@ -76,31 +76,21 @@ class _PlacarState extends State<Placar> {
       onWillPop: showExitPopup,
       child: Scaffold(
         appBar: appBar,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Row(
-                children: <Widget>[
-                  PlacarComponent(
-                    tamanhoHeight: tamanhoHeight,
-                    tamanhoWidth: tamanhoWidth * 0.5,
-                    titulo: jogo.equipe_1.toString(),
-                    placar: jogo.pontosEquipe_1.toString(),
-                    adciona: () => jogo.adicionaPontosEqp1(context),
-                    decrementa: () => jogo.removePontosEquipe_1(),
-                  ),
-                  PlacarComponent(
-                    tamanhoHeight: tamanhoHeight,
-                    tamanhoWidth: tamanhoWidth * 0.5,
-                    titulo: jogo.equipe_2.toString(),
-                    placar: jogo.pontosEquipe_2.toString(),
-                    adciona: () => jogo.adicionaPontosEqp2(context),
-                    decrementa: () => jogo.removePontosEquipe_2(),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        body: Row(
+          children: <Widget>[
+            PlacarComponent(
+              titulo: jogo.equipe_1.toString(),
+              placar: jogo.pontosEquipe_1.toString(),
+              adciona: () => jogo.adicionaPontosEqp1(context),
+              decrementa: () => jogo.removePontosEquipe_1(),
+            ),
+            PlacarComponent(
+              titulo: jogo.equipe_2.toString(),
+              placar: jogo.pontosEquipe_2.toString(),
+              adciona: () => jogo.adicionaPontosEqp2(context),
+              decrementa: () => jogo.removePontosEquipe_2(),
+            ),
+          ],
         ),
       ),
     );

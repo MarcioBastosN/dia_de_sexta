@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ListaPlacar extends StatefulWidget {
@@ -15,6 +16,12 @@ class ListaPlacar extends StatefulWidget {
 
 class _MyWidgetState extends State<ListaPlacar> {
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -22,9 +29,10 @@ class _MyWidgetState extends State<ListaPlacar> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text(Provider.of<Jogo>(context, listen: false)
-          .tamanhoListaJogos()
-          .toString()),
+      title: Text("Partidas Disputadas: " +
+          Provider.of<Jogo>(context, listen: false)
+              .tamanhoListaJogos()
+              .toString()),
       actions: [
         ButtonBar(
           children: [
@@ -55,13 +63,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  //return true when click on "Yes"
                   child: const Text('Sair'),
                 ),
               ],
             ),
           ) ??
-          false; //if showDialouge had returned null, then return false
+          false;
     }
 
     return WillPopScope(
@@ -75,42 +82,54 @@ class _MyWidgetState extends State<ListaPlacar> {
                 scrollDirection: Axis.vertical,
                 padding: const EdgeInsets.all(8.0),
                 itemCount: listaJogo.length,
-                // itemCount: Provider.of<Jogo>(context).tamanhoListaJogos(),
                 itemBuilder: (context, int index) {
                   return Container(
-                    margin: const EdgeInsets.all(8.0),
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Card(
-                          elevation: 2.0,
-                          color: Theme.of(context).copyWith().backgroundColor,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Text(listaJogo[index].equipe_1.toString()),
-                                    Text(listaJogo[index]
-                                        .pontosEquipe_1
-                                        .toString()),
-                                  ],
-                                ),
+                        Expanded(
+                          child: Card(
+                            elevation: 2.0,
+                            color: Theme.of(context).copyWith().backgroundColor,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Text(listaJogo[index].equipe_2.toString()),
-                                    Text(listaJogo[index]
-                                        .pontosEquipe_2
-                                        .toString()),
-                                  ],
-                                ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_1
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_1
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_2
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_2
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ],

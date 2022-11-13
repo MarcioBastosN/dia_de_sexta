@@ -142,6 +142,8 @@ class _HomeState extends State<Home> {
           false; //if showDialouge had returned null, then return false
     }
 
+    final mediaScree = MediaQuery.of(context).size;
+
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
@@ -179,94 +181,77 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(30),
-                        bottom: Radius.circular(30),
+              // parte de baixo
+              SingleChildScrollView(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextFormCompoment(
+                        label: "Time 1",
+                        controller: _time1,
+                        inputType: TextInputType.text,
+                        perfixIcon: Icons.people,
+                        focus: _focusP1,
+                        submit: () {
+                          setState(() {
+                            _focusP2.requestFocus();
+                          });
+                        },
                       ),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TextFormCompoment(
-                          label: "Time 1",
-                          controller: _time1,
-                          inputType: TextInputType.text,
-                          perfixIcon: Icons.people,
-                          focus: _focusP1,
-                          submit: () {
-                            setState(() {
-                              _focusP2.requestFocus();
-                            });
-                          },
-                        ),
-                        TextFormCompoment(
-                          label: "Time 2",
-                          controller: _time2,
-                          inputType: TextInputType.text,
-                          perfixIcon: Icons.people,
-                          focus: _focusP2,
-                          submit: () {
-                            setState(() {
-                              _focusPontos.requestFocus();
-                            });
-                          },
-                        ),
-                        TextFormCompoment(
-                          label: "Quantos Pontos vai o Jogo?",
-                          maxLength: 2,
-                          controller: _pontos,
-                          inputType: TextInputType.phone,
-                          focus: _focusPontos,
-                        ),
-                        // Slider(
-                        //   value: _currentSliderValue,
-                        //   max: 25,
-                        //   min: 1,
-                        //   divisions: 26,
-                        //   label: _currentSliderValue.round().toString(),
-                        //   onChanged: (double value) {
-                        //     setState(() {
-                        //       _currentSliderValue = value;
-                        //     });
-                        //   },
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () => _iniciaJogo(),
-                              child: const Text(
-                                'Iniciar',
-                              ),
+                      TextFormCompoment(
+                        label: "Time 2",
+                        controller: _time2,
+                        inputType: TextInputType.text,
+                        perfixIcon: Icons.people,
+                        focus: _focusP2,
+                        submit: () {
+                          setState(() {
+                            _focusPontos.requestFocus();
+                          });
+                        },
+                      ),
+                      TextFormCompoment(
+                        label: "Quantos Pontos vai o Jogo?",
+                        maxLength: 2,
+                        controller: _pontos,
+                        inputType: TextInputType.phone,
+                        focus: _focusPontos,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () => _iniciaJogo(),
+                            child: const Text(
+                              'Iniciar',
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () => inicioRapido(),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white30,
-                                foregroundColor: Colors.amber,
-                              ),
-                              child: const Text('Jogo Rapido 10 pontos'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () => inicioRapido(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white30,
+                              foregroundColor: Colors.amber,
                             ),
+                            child: const Text('Jogo Rapido 10 pontos'),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
