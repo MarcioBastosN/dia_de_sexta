@@ -36,9 +36,44 @@ class _PlacarState extends State<Placar> {
       title: Text("${widget.title} ${jogo.fimJogo.toString()} pontos"),
       actions: [
         ButtonBar(children: [
-          IconButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
-              icon: const Icon(Icons.list))
+          PopupMenuButton(
+            color: Colors.lightBlue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              PopupMenuItem(
+                value: "Home",
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).popAndPushNamed('/');
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.home),
+                      Text("Home"),
+                    ],
+                  ),
+                ),
+              ),
+              PopupMenuItem(
+                value: "historico",
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).popAndPushNamed('lista');
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.list),
+                      Text("Historico"),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ])
       ],
     );
@@ -61,7 +96,6 @@ class _PlacarState extends State<Placar> {
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  //return true when click on "Yes"
                   child: const Text('Sair'),
                 ),
               ],

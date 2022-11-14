@@ -86,11 +86,6 @@ class _HomeState extends State<Home> {
         mensagem: "Verifique os campos.",
         listaCompomentes: [
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
             child: const Text("fechar"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -325,6 +320,21 @@ class _HomeState extends State<Home> {
                             children: const [
                               Icon(Icons.list),
                               Text("Historico"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: "Sobre",
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).popAndPushNamed('sobre');
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.info_outline),
+                              Text("Sobre"),
                             ],
                           ),
                         ),

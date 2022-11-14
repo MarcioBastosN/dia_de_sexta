@@ -162,6 +162,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                         value: "Home",
                         child: InkWell(
                           onTap: () {
+                            Navigator.of(context).pop();
                             Navigator.of(context).popAndPushNamed('/');
                           },
                           child: Row(
@@ -175,21 +176,31 @@ class _MyWidgetState extends State<ListaPlacar> {
                       Provider.of<Jogo>(context, listen: false).jogoEncerado !=
                               true
                           ? PopupMenuItem(
-                              child: IconButton(
-                                onPressed: () {
+                              child: InkWell(
+                                onTap: () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context)
                                       .popAndPushNamed('placar');
                                 },
-                                icon: const Icon(Icons.games),
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.games),
+                                    Text("Home"),
+                                  ],
+                                ),
                               ),
                             )
                           : PopupMenuItem(
-                              child: IconButton(
-                                onPressed: () {
+                              child: InkWell(
+                                onTap: () {
                                   Navigator.of(context).pop();
                                 },
-                                icon: const Icon(Icons.list),
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.list),
+                                    Text("Lista"),
+                                  ],
+                                ),
                               ),
                             ),
                     ],
