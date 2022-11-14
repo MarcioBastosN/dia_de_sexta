@@ -11,6 +11,7 @@ class Jogo with ChangeNotifier {
   int? pontosEquipe_1;
   int? pontosEquipe_2;
   int fimJogo;
+  bool jogoEncerado;
 
   Jogo({
     this.equipe_1,
@@ -18,6 +19,7 @@ class Jogo with ChangeNotifier {
     this.pontosEquipe_1,
     this.pontosEquipe_2,
     this.fimJogo = 10,
+    this.jogoEncerado = false,
   });
 
   int tamanhoListaJogos() {
@@ -33,7 +35,7 @@ class Jogo with ChangeNotifier {
     print("=========================================");
   }
 
-  criarjgo(Jogo jogo) {
+  void criarjgo(Jogo jogo) {
     equipe_1 = jogo.equipe_1;
     equipe_2 = jogo.equipe_2;
     pontosEquipe_1 = jogo.pontosEquipe_1;
@@ -42,73 +44,71 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  vaiUm() {
+  void vaiUm() {
     fimJogo++;
     notifyListeners();
   }
 
-  vaiDois() {
-    fimJogo += 2;
-    notifyListeners();
+  void imprimeJogo() {
+    print(
+        "eq_1: $equipe_1, pontos_1: $pontosEquipe_1, eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
   }
 
-  imprimeJogo() {
-    print("eq_1: $equipe_1, pontos_1: $pontosEquipe_1, " +
-        "eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
+  void desativaJogo() {
+    jogoEncerado = true;
   }
 
-  bool verificaplacar() {
+  bool verificaPlacar() {
     int valor = (fimJogo - 1);
     bool compara = false;
     if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
       compara = true;
     }
-    print("func compara: $compara");
     return compara;
   }
 
-  adicionaPontosEqp1(BuildContext context) {
+  void adicionaPontosEqp1(BuildContext context) {
     pontosEquipe_1 = pontosEquipe_1! + 1;
     if (pontosEquipe_1! <= (fimJogo - 1)) {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertdialog(context);
+      _alertFimJogo(context);
     }
-    if (verificaplacar()) {
+    if (verificaPlacar()) {
       _alertSegueJogo(context);
     }
   }
 
-  adicionaPontosEqp2(BuildContext context) {
+  void adicionaPontosEqp2(BuildContext context) {
     pontosEquipe_2 = pontosEquipe_2! + 1;
     if (pontosEquipe_2! <= (fimJogo - 1)) {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertdialog(context);
+      _alertFimJogo(context);
     }
-    if (verificaplacar()) {
+    if (verificaPlacar()) {
       _alertSegueJogo(context);
     }
   }
 
-  removePontosEquipe_1() {
+  void removePontosEquipe_1() {
     if (pontosEquipe_1! > 0) {
       pontosEquipe_1 = pontosEquipe_1! - 1;
     }
     notifyListeners();
   }
 
-  removePontosEquipe_2() {
+  void removePontosEquipe_2() {
     if (pontosEquipe_2! > 0) {
       pontosEquipe_2 = pontosEquipe_2! - 1;
     }
     notifyListeners();
   }
 
-  void _alertdialog(BuildContext context) {
-    print("finalizou a partida");
+  void _alertFimJogo(BuildContext context) {
+    // Provider.of<Jogo>(context, listen: false).desativaJogo();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -129,6 +129,7 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
+              // registra o jogo
               createJogo(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
@@ -138,8 +139,10 @@ class Jogo with ChangeNotifier {
                   pontosEquipe_2:
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  jogoEncerado: true,
                 ),
               );
+              // inicia novo jogo
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
                   equipe_1: "equipe_1",
@@ -149,7 +152,6 @@ class Jogo with ChangeNotifier {
                   fimJogo: 10,
                 ),
               );
-
               Navigator.of(context).popAndPushNamed('placar');
             },
           ),
@@ -162,7 +164,6 @@ class Jogo with ChangeNotifier {
             child: const Text("Novo Jogo"),
             onPressed: () {
               Navigator.of(context).pop();
-              print("registra ultimo jogo");
               createJogo(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
@@ -172,6 +173,7 @@ class Jogo with ChangeNotifier {
                   pontosEquipe_2:
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  jogoEncerado: true,
                 ),
               );
               Navigator.of(context).popAndPushNamed('/');
@@ -196,7 +198,8 @@ class Jogo with ChangeNotifier {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text("Vai a Um"),
+            child: Text(
+                "Vai a Dois\n (${(Provider.of<Jogo>(context, listen: false).fimJogo + 1)} pontos)"),
             onPressed: () {
               Provider.of<Jogo>(context, listen: false).vaiUm();
               Navigator.of(context).pop();
@@ -204,24 +207,12 @@ class Jogo with ChangeNotifier {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.amber,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text("Vai a Dois"),
-            onPressed: () {
-              Provider.of<Jogo>(context, listen: false).vaiDois();
-              Navigator.of(context).pop();
-            },
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("continuar"),
+            child: Text(
+                "fechar em ${Provider.of<Jogo>(context, listen: false).fimJogo}"),
             onPressed: () {
               Navigator.of(context).pop();
             },

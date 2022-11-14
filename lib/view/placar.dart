@@ -44,8 +44,6 @@ class _PlacarState extends State<Placar> {
     );
 
     final mediaScreen = MediaQuery.of(context).size;
-    // final tamanhoHeight = MediaQuery.of(context).size.height;
-    // (MediaQuery.of(context).size.height - appBar.preferredSize.height);
 
     Future<bool> showExitPopup() async {
       return await showDialog(

@@ -17,8 +17,8 @@ class ListaPlacar extends StatefulWidget {
 class _MyWidgetState extends State<ListaPlacar> {
   @override
   void initState() {
-    super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    super.initState();
   }
 
   @override
@@ -29,10 +29,8 @@ class _MyWidgetState extends State<ListaPlacar> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text("Partidas Disputadas: " +
-          Provider.of<Jogo>(context, listen: false)
-              .tamanhoListaJogos()
-              .toString()),
+      title: Text(
+          "Partidas Disputadas: ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
       actions: [
         ButtonBar(
           children: [
@@ -74,87 +72,131 @@ class _MyWidgetState extends State<ListaPlacar> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-        appBar: appBar,
-        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
-            ? ListView.builder(
-                reverse: true,
-                addRepaintBoundaries: true,
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.all(8.0),
-                itemCount: listaJogo.length,
-                itemBuilder: (context, int index) {
-                  return Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: Card(
-                            elevation: 2.0,
-                            color: Theme.of(context).copyWith().backgroundColor,
-                            child: DefaultTextStyle(
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
+        backgroundColor: Colors.cyan,
+        body: Stack(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+                  ? ListView.builder(
+                      reverse: true,
+                      addRepaintBoundaries: true,
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: listaJogo.length,
+                      itemBuilder: (context, int index) {
+                        return Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Card(
+                                  elevation: 2.0,
+                                  color: Theme.of(context)
+                                      .copyWith()
+                                      .backgroundColor,
+                                  child: DefaultTextStyle(
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        Text(listaJogo[index]
-                                            .equipe_1
-                                            .toString()),
-                                        Text(listaJogo[index]
-                                            .pontosEquipe_1
-                                            .toString()),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(listaJogo[index]
+                                                  .equipe_1
+                                                  .toString()),
+                                              Text(listaJogo[index]
+                                                  .pontosEquipe_1
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(listaJogo[index]
+                                                  .equipe_2
+                                                  .toString()),
+                                              Text(listaJogo[index]
+                                                  .pontosEquipe_2
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Text(listaJogo[index]
-                                            .equipe_2
-                                            .toString()),
-                                        Text(listaJogo[index]
-                                            .pontosEquipe_2
-                                            .toString()),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ),
+                        );
+                      })
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text("Ainda não tem jogo"),
                       ],
                     ),
-                  );
-                })
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Ainda não tem jogo"),
-                ],
-              ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => Provider.of<Jogo>(context, listen: false).createJogo(
-        //     Jogo(
-        //       equipe_1: "teste001",
-        //       equipe_2: "teste002",
-        //       pontosEquipe_1: Random().nextInt(10),
-        //       pontosEquipe_2: Random().nextInt(10),
-        //       fimJogo: 10,
-        //     ),
-        //   ),
-        //   elevation: 10.0,
-        //   child: const Icon(Icons.add),
-        // ),
+            ),
+            Positioned(
+                top: 10,
+                right: 10,
+                child: SafeArea(
+                  child: PopupMenuButton(
+                    color: Colors.cyan,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: "Home",
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).popAndPushNamed('/');
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.home),
+                              Text("Home"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Provider.of<Jogo>(context, listen: false).jogoEncerado !=
+                              true
+                          ? PopupMenuItem(
+                              child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context)
+                                      .popAndPushNamed('placar');
+                                },
+                                icon: const Icon(Icons.games),
+                              ),
+                            )
+                          : PopupMenuItem(
+                              child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                icon: const Icon(Icons.list),
+                              ),
+                            ),
+                    ],
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }

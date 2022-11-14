@@ -106,18 +106,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      actions: [
-        ButtonBar(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
-              icon: const Icon(Icons.list),
-            )
-          ],
-        )
-      ],
-    );
+    // final appBar = AppBar(
+    //   actions: [
+    //     ButtonBar(
+    //       children: [
+    //         IconButton(
+    //           onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
+    //           icon: const Icon(Icons.list),
+    //         )
+    //       ],
+    //     )
+    //   ],
+    // );
 
     Future<bool> showExitPopup() async {
       return await showDialog(
@@ -128,126 +128,204 @@ class _HomeState extends State<Home> {
               listaCompomentes: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  //return false when click on "NO"
                   child: const Text('No'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  //return true when click on "Yes"
                   child: const Text('Yes'),
                 ),
               ],
             ),
           ) ??
-          false; //if showDialouge had returned null, then return false
+          false;
     }
 
-    final mediaScree = MediaQuery.of(context).size;
+    final media = MediaQuery.of(context).size;
 
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-        appBar: appBar,
+        // appBar: appBar,
         backgroundColor: Theme.of(context).copyWith().backgroundColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(fontSize: 48),
-                        children: [
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: media.height,
+            width: media.width,
+            child: Stack(children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text.rich(
                           TextSpan(
-                              text: "Dia de ",
-                              style: TextStyle(color: Colors.blue)),
-                          TextSpan(
-                            text: 'Sexta',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(fontSize: 20),
-                        children: [
-                          TextSpan(text: "Seu placar do vôlei"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // parte de baixo
-              SingleChildScrollView(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormCompoment(
-                        label: "Time 1",
-                        controller: _time1,
-                        inputType: TextInputType.text,
-                        perfixIcon: Icons.people,
-                        focus: _focusP1,
-                        submit: () {
-                          setState(() {
-                            _focusP2.requestFocus();
-                          });
-                        },
-                      ),
-                      TextFormCompoment(
-                        label: "Time 2",
-                        controller: _time2,
-                        inputType: TextInputType.text,
-                        perfixIcon: Icons.people,
-                        focus: _focusP2,
-                        submit: () {
-                          setState(() {
-                            _focusPontos.requestFocus();
-                          });
-                        },
-                      ),
-                      TextFormCompoment(
-                        label: "Quantos Pontos vai o Jogo?",
-                        maxLength: 2,
-                        controller: _pontos,
-                        inputType: TextInputType.phone,
-                        focus: _focusPontos,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () => _iniciaJogo(),
-                            child: const Text(
-                              'Iniciar',
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
                             ),
+                            children: [
+                              TextSpan(
+                                  text: "Dia de ",
+                                  style: TextStyle(color: Colors.blue)),
+                              TextSpan(
+                                text: 'Sexta',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
                           ),
                         ),
+                        Text.rich(
+                          TextSpan(
+                            style: TextStyle(fontSize: 20),
+                            children: [
+                              TextSpan(text: "Seu placar do vôlei"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // parte de baixo
+                  SingleChildScrollView(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () => inicioRapido(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white30,
-                              foregroundColor: Colors.amber,
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormCompoment(
+                            label: "Time 1",
+                            controller: _time1,
+                            inputType: TextInputType.text,
+                            perfixIcon: Icons.people,
+                            focus: _focusP1,
+                            submit: () {
+                              setState(() {
+                                _focusP2.requestFocus();
+                              });
+                            },
+                          ),
+                          TextFormCompoment(
+                            label: "Time 2",
+                            controller: _time2,
+                            inputType: TextInputType.text,
+                            perfixIcon: Icons.people,
+                            focus: _focusP2,
+                            submit: () {
+                              setState(() {
+                                _focusPontos.requestFocus();
+                              });
+                            },
+                          ),
+                          TextFormCompoment(
+                            label: "Quantos Pontos vai o Jogo?",
+                            maxLength: 2,
+                            controller: _pontos,
+                            inputType: TextInputType.phone,
+                            focus: _focusPontos,
+                          ),
+
+                          // button iniciar
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () => _iniciaJogo(),
+                                child: const Text(
+                                  'Iniciar',
+                                ),
+                              ),
                             ),
-                            child: const Text('Jogo Rapido 10 pontos'),
+                          ),
+                          // divisor
+                          Row(
+                            children: const [
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.cyan,
+                                  thickness: 2.0,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  "OU",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  color: Colors.cyan,
+                                  thickness: 2.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // button jogo rapido
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: SizedBox(
+                              height: 50,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                    color: Colors.cyan,
+                                    width: 2,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                onPressed: () => inicioRapido(),
+                                child: const Text(
+                                  'Jogo Rapido 10 pontos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // PopupMenu
+              Positioned(
+                top: 10,
+                right: 10,
+                child: SafeArea(
+                  child: PopupMenuButton(
+                    color: Colors.cyan,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: "Lista",
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).popAndPushNamed('lista');
+                          },
+                          child: Row(
+                            children: const [
+                              Icon(Icons.list),
+                              Text("Historico"),
+                            ],
                           ),
                         ),
                       ),
@@ -255,7 +333,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-            ],
+            ]),
           ),
         ),
       ),
