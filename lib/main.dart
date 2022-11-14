@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
 import 'package:dia_de_sexta/view/listaPlacar.dart';
@@ -83,10 +84,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         routes: {
-          '/': (context) => const Home(),
-          'placar': (context) => const Placar(title: "Seu Placar vai à:"),
-          'lista': (context) => const ListaPlacar(),
-          'sobre': (context) => const Sobre(),
+          AppRoutes.home: (context) => const Home(),
+          AppRoutes.placar: (context) =>
+              const Placar(title: "Seu Placar vai à:"),
+          AppRoutes.lista: (context) => const ListaPlacar(),
+          AppRoutes.sobre: (context) => const Sobre(),
         },
       ),
     );

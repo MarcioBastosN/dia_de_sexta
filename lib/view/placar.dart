@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:dia_de_sexta/view/compoment/mostradorPlacarCompoment.dart';
@@ -47,7 +48,7 @@ class _PlacarState extends State<Placar> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).popAndPushNamed('/');
+                    Navigator.of(context).popAndPushNamed(AppRoutes.home);
                   },
                   child: Row(
                     children: const [
@@ -62,7 +63,7 @@ class _PlacarState extends State<Placar> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).popAndPushNamed('lista');
+                    Navigator.of(context).popAndPushNamed(AppRoutes.lista);
                   },
                   child: Row(
                     children: const [
@@ -90,7 +91,7 @@ class _PlacarState extends State<Placar> {
                 ElevatedButton(
                   onPressed: () => {
                     Navigator.of(context).pop(),
-                    Navigator.of(context).popAndPushNamed('/'),
+                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
                   },
                   child: const Text('Ir para o inicio'),
                 ),

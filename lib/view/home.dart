@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:dia_de_sexta/view/compoment/textFormCompoment.dart';
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
         ),
       );
 
-      Navigator.of(context).popAndPushNamed('placar');
+      Navigator.of(context).popAndPushNamed(AppRoutes.placar);
     } else {
       _alertdialog(context);
     }
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
         fimJogo: 10,
       ),
     );
-    Navigator.of(context).popAndPushNamed('placar');
+    Navigator.of(context).popAndPushNamed(AppRoutes.placar);
   }
 
   void _alertdialog(BuildContext context) {
@@ -101,19 +102,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // final appBar = AppBar(
-    //   actions: [
-    //     ButtonBar(
-    //       children: [
-    //         IconButton(
-    //           onPressed: () => Navigator.of(context).popAndPushNamed('lista'),
-    //           icon: const Icon(Icons.list),
-    //         )
-    //       ],
-    //     )
-    //   ],
-    // );
-
     Future<bool> showExitPopup() async {
       return await showDialog(
             context: context,
@@ -140,7 +128,6 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-        // appBar: appBar,
         backgroundColor: Theme.of(context).copyWith().backgroundColor,
         body: SingleChildScrollView(
           child: SizedBox(
@@ -183,6 +170,8 @@ class _HomeState extends State<Home> {
                   ),
                   // parte de baixo
                   SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.manual,
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Colors.blue,
@@ -329,7 +318,8 @@ class _HomeState extends State<Home> {
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.of(context).popAndPushNamed('sobre');
+                            Navigator.of(context)
+                                .popAndPushNamed(AppRoutes.sobre);
                           },
                           child: Row(
                             children: const [

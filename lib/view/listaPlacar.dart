@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,8 @@ class _MyWidgetState extends State<ListaPlacar> {
         ButtonBar(
           children: [
             IconButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed('/'),
+              onPressed: () =>
+                  Navigator.of(context).popAndPushNamed(AppRoutes.home),
               icon: const Icon(Icons.home),
             )
           ],
@@ -55,7 +57,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                 ElevatedButton(
                   onPressed: () => {
                     Navigator.of(context).pop(),
-                    Navigator.of(context).popAndPushNamed('/'),
+                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
                   },
                   child: const Text('Ir para o inicio'),
                 ),
@@ -163,7 +165,8 @@ class _MyWidgetState extends State<ListaPlacar> {
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).pop();
-                            Navigator.of(context).popAndPushNamed('/');
+                            Navigator.of(context)
+                                .popAndPushNamed(AppRoutes.home);
                           },
                           child: Row(
                             children: const [
@@ -180,12 +183,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context)
-                                      .popAndPushNamed('placar');
+                                      .popAndPushNamed(AppRoutes.placar);
                                 },
                                 child: Row(
                                   children: const [
                                     Icon(Icons.games),
-                                    Text("Home"),
+                                    Text("Jogo"),
                                   ],
                                 ),
                               ),
