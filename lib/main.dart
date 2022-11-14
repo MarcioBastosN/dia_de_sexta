@@ -2,6 +2,7 @@ import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
 import 'package:dia_de_sexta/view/listaPlacar.dart';
 import 'package:dia_de_sexta/view/placar.dart';
+import 'package:dia_de_sexta/view/sobre.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => const Home(),
           'placar': (context) => const Placar(title: "Seu Placar vai à:"),
           'lista': (context) => const ListaPlacar(),
+          'sobre': (context) => const Sobre(),
         },
       ),
     );
