@@ -33,15 +33,57 @@ class _MyWidgetState extends State<ListaPlacar> {
       title: Text(
           "Partidas Disputadas: ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
       actions: [
-        ButtonBar(
-          children: [
-            IconButton(
-              onPressed: () =>
-                  Navigator.of(context).popAndPushNamed(AppRoutes.home),
-              icon: const Icon(Icons.home),
-            )
+        PopupMenuButton(
+          color: Colors.lightBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              value: "Home",
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).popAndPushNamed(AppRoutes.home);
+                },
+                child: Row(
+                  children: const [
+                    Icon(Icons.home),
+                    Text("Home"),
+                  ],
+                ),
+              ),
+            ),
+            Provider.of<Jogo>(context, listen: false).jogoEncerado != true
+                ? PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.games),
+                          Text("Jogo"),
+                        ],
+                      ),
+                    ),
+                  )
+                : PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.list),
+                          Text("Lista"),
+                        ],
+                      ),
+                    ),
+                  ),
           ],
-        )
+        ),
       ],
     );
 
@@ -51,7 +93,6 @@ class _MyWidgetState extends State<ListaPlacar> {
       return await showDialog(
             context: context,
             builder: (context) => DialogComponent(
-              mensagem: "Exit app",
               titulo: "Você deseja sair ?",
               listaCompomentes: [
                 ElevatedButton(
@@ -74,144 +115,92 @@ class _MyWidgetState extends State<ListaPlacar> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
+        appBar: appBar,
         backgroundColor: Colors.cyan,
-        body: Stack(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
-                  ? ListView.builder(
-                      reverse: true,
-                      addRepaintBoundaries: true,
-                      scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: listaJogo.length,
-                      itemBuilder: (context, int index) {
-                        return Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                child: Card(
-                                  elevation: 2.0,
-                                  color: Theme.of(context)
-                                      .copyWith()
-                                      .backgroundColor,
-                                  child: DefaultTextStyle(
-                                    style: const TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+            ? ListView.builder(
+                reverse: true,
+                addRepaintBoundaries: true,
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: listaJogo.length,
+                itemBuilder: (context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Card(
+                            elevation: 2.0,
+                            color: Theme.of(context).copyWith().backgroundColor,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(listaJogo[index]
-                                                  .equipe_1
-                                                  .toString()),
-                                              Text(listaJogo[index]
-                                                  .pontosEquipe_1
-                                                  .toString()),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(listaJogo[index]
-                                                  .equipe_2
-                                                  .toString()),
-                                              Text(listaJogo[index]
-                                                  .pontosEquipe_2
-                                                  .toString()),
-                                            ],
+                                        CircleAvatar(
+                                          backgroundColor: Colors.lightBlue,
+                                          child: Text(
+                                            (index + 1).toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      })
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text("Ainda não tem jogo"),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-            ),
-            Positioned(
-                top: 10,
-                right: 10,
-                child: SafeArea(
-                  child: PopupMenuButton(
-                    color: Colors.cyan,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                        value: "Home",
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context)
-                                .popAndPushNamed(AppRoutes.home);
-                          },
-                          child: Row(
-                            children: const [
-                              Icon(Icons.home),
-                              Text("Home"),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Provider.of<Jogo>(context, listen: false).jogoEncerado !=
-                              true
-                          ? PopupMenuItem(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context)
-                                      .popAndPushNamed(AppRoutes.placar);
-                                },
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.games),
-                                    Text("Jogo"),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : PopupMenuItem(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.list),
-                                    Text("Lista"),
-                                  ],
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_1
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_1
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_2
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_2
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                    ],
-                  ),
-                ))
-          ],
-        ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                })
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Ainda não tem jogo"),
+                  CircularProgressIndicator(),
+                ],
+              ),
       ),
     );
   }

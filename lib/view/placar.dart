@@ -76,6 +76,23 @@ class _PlacarState extends State<Placar> {
                   ),
                 ),
               ),
+              PopupMenuItem(
+                value: "Encerrar partida",
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Provider.of<Jogo>(context, listen: false)
+                        .fecharPartida(context);
+                    Navigator.of(context).popAndPushNamed(AppRoutes.lista);
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(Icons.edit_note_sharp),
+                      Text("Encerrar Partida"),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ])
@@ -88,7 +105,6 @@ class _PlacarState extends State<Placar> {
       return await showDialog(
             context: context,
             builder: (context) => DialogComponent(
-              mensagem: "Exit app",
               titulo: "Você deseja sair ?",
               listaCompomentes: [
                 ElevatedButton(

@@ -17,6 +17,7 @@ class _HomeState extends State<Home> {
   final _time1 = TextEditingController();
   final _time2 = TextEditingController();
   final _pontos = TextEditingController();
+  final _pontosJogoRapido = TextEditingController();
   final _focusP1 = FocusNode();
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
@@ -66,16 +67,18 @@ class _HomeState extends State<Home> {
   }
 
   void inicioRapido() {
-    Provider.of<Jogo>(context, listen: false).criarjgo(
-      Jogo(
-        equipe_1: "equipe_1",
-        equipe_2: "equipe_2",
-        pontosEquipe_1: 0,
-        pontosEquipe_2: 0,
-        fimJogo: 10,
-      ),
-    );
-    Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+    if (int.parse(_pontosJogoRapido.text.toString()) > 0) {
+      Provider.of<Jogo>(context, listen: false).criarjgo(
+        Jogo(
+          equipe_1: "equipe_1",
+          equipe_2: "equipe_2",
+          pontosEquipe_1: 0,
+          pontosEquipe_2: 0,
+          fimJogo: int.parse(_pontosJogoRapido.text.toString()),
+        ),
+      );
+      Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+    }
   }
 
   void _alertdialog(BuildContext context) {
@@ -84,7 +87,7 @@ class _HomeState extends State<Home> {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Ops!",
-        mensagem: "Verifique os campos.",
+        mensagem: const Text("Verifique os campos."),
         listaCompomentes: [
           ElevatedButton(
             child: const Text("fechar"),
@@ -100,13 +103,42 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _consultaPontosJogo(BuildContext context) {
+    showDialog(
+      // barrierDismissible: false,
+      context: context,
+      builder: (context) => DialogComponent(
+        titulo: "Placar",
+        listaCompomentes: [
+          TextFormCompoment(
+            label: "Quantos Pontos vai o Jogo?",
+            maxLength: 2,
+            controller: _pontosJogoRapido,
+            inputType: TextInputType.phone,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                child: const Text("Iniciar"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  inicioRapido();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
       return await showDialog(
             context: context,
             builder: (context) => DialogComponent(
-              mensagem: "Exit app",
               titulo: "Você deseja sair do Dia de sexta?",
               listaCompomentes: [
                 ElevatedButton(
@@ -269,9 +301,9 @@ class _HomeState extends State<Home> {
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                 ),
-                                onPressed: () => inicioRapido(),
+                                onPressed: () => _consultaPontosJogo(context),
                                 child: const Text(
-                                  'Jogo Rapido 10 pontos',
+                                  'Jogo Rapido',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

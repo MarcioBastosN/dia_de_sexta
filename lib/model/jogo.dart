@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,22 @@ class Jogo with ChangeNotifier {
       'placar2': int.parse(jogo.pontosEquipe_2.toString()),
     });
     notifyListeners();
+  }
+
+  fecharPartida(BuildContext context) {
+    createJogo(
+      Jogo(
+        equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+        equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+        pontosEquipe_1:
+            Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+        pontosEquipe_2:
+            Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+        fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+        jogoEncerado: true,
+      ),
+    );
+    Navigator.of(context).popAndPushNamed(AppRoutes.home);
   }
 
   void criarjgo(Jogo jogo) {
@@ -145,18 +162,25 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: "jogo encerado",
+        mensagem: const Text("jogo encerado"),
         listaCompomentes: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white30,
-              foregroundColor: Colors.amber,
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(
+                color: Colors.cyan,
+                width: 4,
+              ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(18),
               ),
             ),
             child: const Text(
-              "Jogo Rapido",
+              'Jogo Rapido',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -180,10 +204,10 @@ class Jogo with ChangeNotifier {
                   equipe_2: "equipe_2",
                   pontosEquipe_1: 0,
                   pontosEquipe_2: 0,
-                  fimJogo: 10,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
-              Navigator.of(context).popAndPushNamed('placar');
+              Navigator.of(context).popAndPushNamed(AppRoutes.placar);
             },
           ),
           ElevatedButton(
@@ -192,7 +216,12 @@ class Jogo with ChangeNotifier {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text("Novo Jogo"),
+            child: const Text(
+              "Salvar e sair",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               createJogo(
@@ -207,7 +236,7 @@ class Jogo with ChangeNotifier {
                   jogoEncerado: true,
                 ),
               );
-              Navigator.of(context).popAndPushNamed('/');
+              Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),
         ],
@@ -221,7 +250,7 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Empate ultimo ponto!",
-        mensagem: "Como deseja continuar?",
+        mensagem: const Text("Como deseja continuar?"),
         listaCompomentes: [
           ElevatedButton(
             child: Text(
@@ -249,7 +278,7 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => const DialogComponent(
         titulo: "Ultimo Ponto!",
-        mensagem: "ultimo ponto para fechar o jogo",
+        mensagem: Text("Ultimo ponto para fechar o jogo"),
       ),
     );
   }
