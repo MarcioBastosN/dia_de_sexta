@@ -5,6 +5,7 @@ import 'package:dia_de_sexta/view/compoment/mostradorPlacarCompoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 class Placar extends StatefulWidget {
   const Placar({super.key, required this.title});
@@ -18,14 +19,16 @@ class Placar extends StatefulWidget {
 class _PlacarState extends State<Placar> {
   @override
   void initState() {
-    super.initState();
+    Wakelock.enable();
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
     );
+    super.initState();
   }
 
   @override
   void dispose() {
+    Wakelock.disable();
     super.dispose();
   }
 
