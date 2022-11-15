@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,20 +30,24 @@ class _SobreState extends State<Sobre> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              height: mediaScreen.height,
-              width: mediaScreen.width,
-              child: Row(
-                children: const [
-                  Expanded(
-                    child: Card(
-                      elevation: 5,
-                      child: Text("texto _1"),
-                    ),
-                  )
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  color: Theme.of(context).backgroundColor,
+                  elevation: 0,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("Desenvolvimento"),
+                      Text("Marcio Bastos"),
+                    ],
+                  ),
+                )
+              ],
             ),
+            // menu
             Positioned(
               top: 10,
               right: 10,
@@ -58,7 +63,7 @@ class _SobreState extends State<Sobre> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
-                          Navigator.of(context).popAndPushNamed('/');
+                          Navigator.of(context).popAndPushNamed(AppRoutes.home);
                         },
                         child: Row(
                           children: const [
@@ -73,7 +78,8 @@ class _SobreState extends State<Sobre> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
-                          Navigator.of(context).popAndPushNamed('lista');
+                          Navigator.of(context)
+                              .popAndPushNamed(AppRoutes.lista);
                         },
                         child: Row(
                           children: const [
