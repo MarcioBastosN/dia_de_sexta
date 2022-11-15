@@ -147,6 +147,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Text("Ainda não tem jogo"),
+                        CircularProgressIndicator(),
                       ],
                     ),
             ),

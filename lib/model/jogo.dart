@@ -1,25 +1,45 @@
+import 'dart:math';
+import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Jogo with ChangeNotifier {
-  final List<Jogo> _jogos = [];
+  List<Jogo> _jogos = [];
   List<Jogo> get listaJogos => [..._jogos];
 
+  Future<void> loadDate() async {
+    final dataList = await DbUtil.getData('placar');
+    _jogos = dataList
+        .map(
+          (item) => Jogo(
+            id: item['id'],
+            equipe_1: item['grupo_1'],
+            equipe_2: item['grupo_2'],
+            pontosEquipe_1: item['placar1'],
+            pontosEquipe_2: item['placar2'],
+          ),
+        )
+        .toList();
+    notifyListeners();
+  }
+
+  int? id;
   String? equipe_1;
   String? equipe_2;
   int? pontosEquipe_1;
   int? pontosEquipe_2;
   int fimJogo;
-  bool jogoEncerado;
+  bool? jogoEncerado;
 
   Jogo({
+    this.id,
     this.equipe_1,
     this.equipe_2,
     this.pontosEquipe_1,
     this.pontosEquipe_2,
     this.fimJogo = 10,
-    this.jogoEncerado = false,
+    this.jogoEncerado,
   });
 
   int tamanhoListaJogos() {
@@ -27,12 +47,15 @@ class Jogo with ChangeNotifier {
   }
 
   createJogo(Jogo jogo) {
-    print("imprime Jogo recebido ");
-    imprimeJogo();
     _jogos.add(jogo);
+    DbUtil.insert('placar', {
+      'id': Random().nextDouble().toInt(),
+      'grupo_1': jogo.equipe_1.toString(),
+      'grupo_2': jogo.equipe_2.toString(),
+      'placar1': int.parse(jogo.pontosEquipe_1.toString()),
+      'placar2': int.parse(jogo.pontosEquipe_2.toString()),
+    });
     notifyListeners();
-    print("Adicionou novo jogo na lista");
-    print("=========================================");
   }
 
   void criarjgo(Jogo jogo) {
@@ -58,7 +81,7 @@ class Jogo with ChangeNotifier {
     jogoEncerado = true;
   }
 
-  bool verificaPlacar() {
+  bool verificaEmpateUltimoPonto() {
     int valor = (fimJogo - 1);
     bool compara = false;
     if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
@@ -70,12 +93,16 @@ class Jogo with ChangeNotifier {
   void adicionaPontosEqp1(BuildContext context) {
     pontosEquipe_1 = pontosEquipe_1! + 1;
     if (pontosEquipe_1! <= (fimJogo - 1)) {
+      if ((pontosEquipe_1 == (fimJogo - 1)) &&
+          (verificaEmpateUltimoPonto() == false)) {
+        _alertUltimoPonto(context);
+      }
       notifyListeners();
     } else {
       notifyListeners();
       _alertFimJogo(context);
     }
-    if (verificaPlacar()) {
+    if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
     }
   }
@@ -83,12 +110,16 @@ class Jogo with ChangeNotifier {
   void adicionaPontosEqp2(BuildContext context) {
     pontosEquipe_2 = pontosEquipe_2! + 1;
     if (pontosEquipe_2! <= (fimJogo - 1)) {
+      if ((pontosEquipe_2 == (fimJogo - 1)) &&
+          (verificaEmpateUltimoPonto() == false)) {
+        _alertUltimoPonto(context);
+      }
       notifyListeners();
     } else {
       notifyListeners();
       _alertFimJogo(context);
     }
-    if (verificaPlacar()) {
+    if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
     }
   }
@@ -189,15 +220,10 @@ class Jogo with ChangeNotifier {
       barrierDismissible: true,
       context: context,
       builder: (context) => DialogComponent(
-        titulo: "Empate ultimo pomto!",
+        titulo: "Empate ultimo ponto!",
         mensagem: "Como deseja continuar?",
         listaCompomentes: [
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
             child: Text(
                 "Vai a Dois\n (${(Provider.of<Jogo>(context, listen: false).fimJogo + 1)} pontos)"),
             onPressed: () {
@@ -206,11 +232,6 @@ class Jogo with ChangeNotifier {
             },
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
             child: Text(
                 "fechar em ${Provider.of<Jogo>(context, listen: false).fimJogo}"),
             onPressed: () {
@@ -218,6 +239,17 @@ class Jogo with ChangeNotifier {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void _alertUltimoPonto(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) => const DialogComponent(
+        titulo: "Ultimo Ponto!",
+        mensagem: "ultimo ponto para fechar o jogo",
       ),
     );
   }
