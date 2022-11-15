@@ -11,6 +11,7 @@ class Jogo with ChangeNotifier {
 
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData('placar');
+    // print("DB grupo ${item['id']}")
     _jogos = dataList
         .map(
           (item) => Jogo(
@@ -50,7 +51,6 @@ class Jogo with ChangeNotifier {
   createJogo(Jogo jogo) {
     _jogos.add(jogo);
     DbUtil.insert('placar', {
-      'id': Random().nextDouble().toInt(),
       'grupo_1': jogo.equipe_1.toString(),
       'grupo_2': jogo.equipe_2.toString(),
       'placar1': int.parse(jogo.pontosEquipe_1.toString()),

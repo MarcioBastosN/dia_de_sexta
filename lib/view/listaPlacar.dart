@@ -88,6 +88,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     );
 
     final listaJogo = Provider.of<Jogo>(context).listaJogos;
+    Provider.of<Jogo>(context, listen: false).loadDate();
 
     Future<bool> showExitPopup() async {
       return await showDialog(
@@ -197,7 +198,7 @@ class _MyWidgetState extends State<ListaPlacar> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Text("Ainda não tem jogo"),
+                  Text("Inicie uma partida ...."),
                   CircularProgressIndicator(),
                 ],
               ),

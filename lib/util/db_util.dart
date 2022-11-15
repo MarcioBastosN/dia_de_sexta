@@ -8,8 +8,9 @@ class DbUtil {
       path.join(dbPath, 'AppVolei.db'),
       onCreate: (db, version) {
         return db.execute(
-            'CREATE TABLE placar (id INTEGER PRIMARY KEY, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER);');
+            'CREATE TABLE placar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER);');
       },
+      version: 1,
     );
   }
 
