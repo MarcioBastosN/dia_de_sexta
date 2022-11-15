@@ -1,134 +1,213 @@
+import 'dart:math';
+import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Jogo with ChangeNotifier {
   List<Jogo> _jogos = [];
-  get listaJogos => [..._jogos];
+  List<Jogo> get listaJogos => [..._jogos];
 
+  Future<void> loadDate() async {
+    final dataList = await DbUtil.getData('placar');
+    // print("DB grupo ${item['id']}")
+    _jogos = dataList
+        .map(
+          (item) => Jogo(
+            id: item['id'],
+            equipe_1: item['grupo_1'],
+            equipe_2: item['grupo_2'],
+            pontosEquipe_1: item['placar1'],
+            pontosEquipe_2: item['placar2'],
+          ),
+        )
+        .toList();
+    notifyListeners();
+  }
+
+  int? id;
   String? equipe_1;
   String? equipe_2;
-  late int pontosEquipe_1 = 0;
-  late int pontosEquipe_2 = 0;
-  late int fimJogo;
+  int? pontosEquipe_1;
+  int? pontosEquipe_2;
+  int fimJogo;
+  bool? jogoEncerado;
+
+  Jogo({
+    this.id,
+    this.equipe_1,
+    this.equipe_2,
+    this.pontosEquipe_1,
+    this.pontosEquipe_2,
+    this.fimJogo = 10,
+    this.jogoEncerado,
+  });
 
   int tamanhoListaJogos() {
     return _jogos.length;
   }
 
   createJogo(Jogo jogo) {
-    print("imprime Jogo recebido ${imprimeJogo()}");
     _jogos.add(jogo);
+    DbUtil.insert('placar', {
+      'grupo_1': jogo.equipe_1.toString(),
+      'grupo_2': jogo.equipe_2.toString(),
+      'placar1': int.parse(jogo.pontosEquipe_1.toString()),
+      'placar2': int.parse(jogo.pontosEquipe_2.toString()),
+    });
     notifyListeners();
-    print("Adicionou novo jogo na lista");
-    print("Imprime o jogo adicionado ${imprimeJogo()}");
-    print("=========================================");
   }
 
-  iniciaJogo(String eq1, String eq2, int pontosSet) {
-    print('Iniciou um Jogo');
-    equipe_1 = eq1;
-    equipe_2 = eq2;
-    pontosEquipe_1 = 0;
-    pontosEquipe_2 = 0;
-    fimJogo = pontosSet;
-    imprimeJogo();
-    // createJogo(jogo);
+  fecharPartida(BuildContext context) {
+    createJogo(
+      Jogo(
+        equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+        equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+        pontosEquipe_1:
+            Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+        pontosEquipe_2:
+            Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+        fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+        jogoEncerado: true,
+      ),
+    );
+    Navigator.of(context).popAndPushNamed(AppRoutes.home);
   }
 
-  vaiUm() {
+  void criarjgo(Jogo jogo) {
+    equipe_1 = jogo.equipe_1;
+    equipe_2 = jogo.equipe_2;
+    pontosEquipe_1 = jogo.pontosEquipe_1;
+    pontosEquipe_2 = jogo.pontosEquipe_2;
+    fimJogo = jogo.fimJogo;
+    notifyListeners();
+  }
+
+  void vaiUm() {
     fimJogo++;
     notifyListeners();
   }
 
-  vaiDois() {
-    fimJogo += 2;
-    notifyListeners();
+  void imprimeJogo() {
+    print(
+        "eq_1: $equipe_1, pontos_1: $pontosEquipe_1, eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
   }
 
-  imprimeJogo() {
-    print("eq_1: ${equipe_1}, pontos_1: ${pontosEquipe_1}, " +
-        "eq_2: ${equipe_2}, pontos_2: ${pontosEquipe_2},  fim: ${fimJogo}");
+  void desativaJogo() {
+    jogoEncerado = true;
   }
 
-  adicionaPontosEqp1(BuildContext context) {
-    pontosEquipe_1++;
-    if (pontosEquipe_1 <= (fimJogo - 1)) {
-      notifyListeners();
-    } else {
-      notifyListeners();
-      _alertdialog(context);
-    }
-    if (verificaplacar()) {
-      _alertSegueJogo(context);
-    }
-  }
-
-  bool verificaplacar() {
+  bool verificaEmpateUltimoPonto() {
     int valor = (fimJogo - 1);
     bool compara = false;
     if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
       compara = true;
     }
-    print("func compara: $compara");
     return compara;
   }
 
-  adicionaPontosEqp2(BuildContext context) {
-    pontosEquipe_2++;
-    if (pontosEquipe_2 <= (fimJogo - 1)) {
+  void adicionaPontosEqp1(BuildContext context) {
+    pontosEquipe_1 = pontosEquipe_1! + 1;
+    if (pontosEquipe_1! <= (fimJogo - 1)) {
+      if ((pontosEquipe_1 == (fimJogo - 1)) &&
+          (verificaEmpateUltimoPonto() == false)) {
+        _alertUltimoPonto(context);
+      }
       notifyListeners();
     } else {
       notifyListeners();
-      _alertdialog(context);
+      _alertFimJogo(context);
     }
-    if (verificaplacar()) {
+    if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
     }
   }
 
-  removePontosEquipe_1() {
-    if (pontosEquipe_1 > 0) {
-      pontosEquipe_1--;
+  void adicionaPontosEqp2(BuildContext context) {
+    pontosEquipe_2 = pontosEquipe_2! + 1;
+    if (pontosEquipe_2! <= (fimJogo - 1)) {
+      if ((pontosEquipe_2 == (fimJogo - 1)) &&
+          (verificaEmpateUltimoPonto() == false)) {
+        _alertUltimoPonto(context);
+      }
+      notifyListeners();
+    } else {
+      notifyListeners();
+      _alertFimJogo(context);
+    }
+    if (verificaEmpateUltimoPonto()) {
+      _alertSegueJogo(context);
+    }
+  }
+
+  void removePontosEquipe_1() {
+    if (pontosEquipe_1! > 0) {
+      pontosEquipe_1 = pontosEquipe_1! - 1;
     }
     notifyListeners();
   }
 
-  removePontosEquipe_2() {
-    if (pontosEquipe_2 > 0) {
-      pontosEquipe_2--;
+  void removePontosEquipe_2() {
+    if (pontosEquipe_2! > 0) {
+      pontosEquipe_2 = pontosEquipe_2! - 1;
     }
     notifyListeners();
   }
 
-  void _alertdialog(BuildContext context) {
-    print("finalizou a partida");
+  void _alertFimJogo(BuildContext context) {
+    // Provider.of<Jogo>(context, listen: false).desativaJogo();
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: "jogo encerado",
+        mensagem: const Text("jogo encerado"),
         listaCompomentes: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white30,
-              foregroundColor: Colors.amber,
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(
+                color: Colors.cyan,
+                width: 4,
+              ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(18),
               ),
             ),
             child: const Text(
-              "Jogo Rapido",
+              'Jogo Rapido',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              Provider.of<Jogo>(context, listen: false).iniciaJogo(
-                "equipe_1",
-                "equipe_2",
-                10,
+              // registra o jogo
+              createJogo(
+                Jogo(
+                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+                  pontosEquipe_1:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+                  pontosEquipe_2:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  jogoEncerado: true,
+                ),
               );
-              Navigator.of(context).popAndPushNamed('placar');
+              // inicia novo jogo
+              Provider.of<Jogo>(context, listen: false).criarjgo(
+                Jogo(
+                  equipe_1: "equipe_1",
+                  equipe_2: "equipe_2",
+                  pontosEquipe_1: 0,
+                  pontosEquipe_2: 0,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                ),
+              );
+              Navigator.of(context).popAndPushNamed(AppRoutes.placar);
             },
           ),
           ElevatedButton(
@@ -137,10 +216,27 @@ class Jogo with ChangeNotifier {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text("Novo Jogo"),
+            child: const Text(
+              "Salvar e sair",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).popAndPushNamed('/');
+              createJogo(
+                Jogo(
+                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+                  pontosEquipe_1:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+                  pontosEquipe_2:
+                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  jogoEncerado: true,
+                ),
+              );
+              Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),
         ],
@@ -153,46 +249,36 @@ class Jogo with ChangeNotifier {
       barrierDismissible: true,
       context: context,
       builder: (context) => DialogComponent(
-        titulo: "Empate ultimo pomto!",
-        mensagem: "Como deseja continuar?",
+        titulo: "Empate ultimo ponto!",
+        mensagem: const Text("Como deseja continuar?"),
         listaCompomentes: [
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("Vai a Um"),
+            child: Text(
+                "Vai a Dois\n (${(Provider.of<Jogo>(context, listen: false).fimJogo + 1)} pontos)"),
             onPressed: () {
               Provider.of<Jogo>(context, listen: false).vaiUm();
               Navigator.of(context).pop();
             },
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.amber,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("Vai a Dois"),
-            onPressed: () {
-              Provider.of<Jogo>(context, listen: false).vaiDois();
-              Navigator.of(context).pop();
-            },
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("continuar"),
+            child: Text(
+                "fechar em ${Provider.of<Jogo>(context, listen: false).fimJogo}"),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void _alertUltimoPonto(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) => const DialogComponent(
+        titulo: "Ultimo Ponto!",
+        mensagem: Text("Ultimo ponto para fechar o jogo"),
       ),
     );
   }

@@ -1,8 +1,10 @@
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
+import 'package:dia_de_sexta/view/listaPlacar.dart';
 import 'package:dia_de_sexta/view/placar.dart';
+import 'package:dia_de_sexta/view/sobre.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -49,8 +51,8 @@ class MyApp extends StatelessWidget {
         title: 'Dia de Sexta',
         theme: ThemeData(
           primaryColor: Colors.black87,
-          primarySwatch: Colors.lightBlue,
           backgroundColor: Colors.cyan,
+          primarySwatch: Colors.lightBlue,
           textTheme: const TextTheme(
             headline1: TextStyle(
               fontWeight: FontWeight.bold,
@@ -82,9 +84,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         routes: {
-          '/': (context) => const Home(),
-          'placar': (context) => const Placar(title: "Seu Placar vai à:"),
-          // 'lista': (context) => const ListaPlacar(),
+          AppRoutes.home: (context) => const Home(),
+          AppRoutes.placar: (context) =>
+              const Placar(title: "Seu Placar vai à:"),
+          AppRoutes.lista: (context) => const ListaPlacar(),
+          AppRoutes.sobre: (context) => const Sobre(),
         },
       ),
     );

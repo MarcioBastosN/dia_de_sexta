@@ -1,5 +1,11 @@
+import 'dart:ffi';
+import 'dart:math';
+
+import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ListaPlacar extends StatefulWidget {
@@ -11,69 +17,192 @@ class ListaPlacar extends StatefulWidget {
 
 class _MyWidgetState extends State<ListaPlacar> {
   @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final lista = Provider.of<Jogo>(context);
-
     final appBar = AppBar(
+      title: Text(
+          "Partidas Disputadas: ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
       actions: [
-        ButtonBar(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.of(context).popAndPushNamed('/'),
-              icon: const Icon(Icons.home),
-            )
+        PopupMenuButton(
+          color: Colors.lightBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+            PopupMenuItem(
+              value: "Home",
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).popAndPushNamed(AppRoutes.home);
+                },
+                child: Row(
+                  children: const [
+                    Icon(Icons.home),
+                    Text("Home"),
+                  ],
+                ),
+              ),
+            ),
+            Provider.of<Jogo>(context, listen: false).jogoEncerado != true
+                ? PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.games),
+                          Text("Jogo"),
+                        ],
+                      ),
+                    ),
+                  )
+                : PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.list),
+                          Text("Lista"),
+                        ],
+                      ),
+                    ),
+                  ),
           ],
-        )
+        ),
       ],
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: ListView.builder(
-          padding: const EdgeInsets.all(8.0),
-          itemCount: lista.tamanhoListaJogos(),
-          itemBuilder: (context, int index) {
-            return Container(
-              margin: const EdgeInsets.all(8.0),
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${lista.listaJogos[index].equipe_1}',
-                        style: const TextStyle(
-                          fontSize: 20,
+    final listaJogo = Provider.of<Jogo>(context).listaJogos;
+    Provider.of<Jogo>(context, listen: false).loadDate();
+
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            context: context,
+            builder: (context) => DialogComponent(
+              titulo: "Você deseja sair ?",
+              listaCompomentes: [
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.of(context).pop(),
+                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
+                  },
+                  child: const Text('Ir para o inicio'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Sair'),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        appBar: appBar,
+        backgroundColor: Colors.cyan,
+        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+            ? ListView.builder(
+                reverse: true,
+                addRepaintBoundaries: true,
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.all(8.0),
+                itemCount: listaJogo.length,
+                itemBuilder: (context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Card(
+                            elevation: 2.0,
+                            color: Theme.of(context).copyWith().backgroundColor,
+                            child: DefaultTextStyle(
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.lightBlue,
+                                          child: Text(
+                                            (index + 1).toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_1
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_1
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(listaJogo[index]
+                                            .equipe_2
+                                            .toString()),
+                                        Text(listaJogo[index]
+                                            .pontosEquipe_2
+                                            .toString()),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      Text('Pontos: ${lista.listaJogos[index].pontosEquipe_1}'),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${lista.listaJogos[index].equipe_2}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text('Pontos: ${lista.listaJogos[index].pontosEquipe_2}'),
-                    ],
-                  ),
+                      ],
+                    ),
+                  );
+                })
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Inicie uma partida ...."),
+                  CircularProgressIndicator(),
                 ],
               ),
-            );
-          }),
+      ),
     );
   }
 }

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class DialogComponent extends StatefulWidget {
   final String titulo;
-  final String mensagem;
+  final Widget? mensagem;
   final List<Widget>? listaCompomentes;
 
   const DialogComponent({
     super.key,
     required this.titulo,
-    required this.mensagem,
+    this.mensagem,
     this.listaCompomentes,
   });
 
@@ -28,7 +28,7 @@ class _MyWidgetState extends State<DialogComponent> {
         widget.titulo,
         style: const TextStyle(color: Colors.white),
       ),
-      content: Text(widget.mensagem),
+      content: widget.mensagem,
       actions: widget.listaCompomentes,
     );
   }
