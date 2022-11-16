@@ -23,6 +23,14 @@ class DbUtil {
     );
   }
 
+  static Future<void> delete(String table, int? id) async {
+    final db = await DbUtil.database();
+    await db.rawDelete(
+      "DELETE FROM $table wHERE id = ?",
+      [id],
+    );
+  }
+
   static Future<List<Map<String, dynamic>>> getData(String tabela) async {
     final db = await DbUtil.database();
     return db.query(tabela);

@@ -57,6 +57,15 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
+  removeJogo(Jogo jogo) {
+    // print("Removendo um jogo ${jogo.id}");
+    DbUtil.delete('placar', jogo.id).whenComplete(() => {
+          // print("jogo Apagado "),
+          _jogos.remove(jogo),
+          notifyListeners(),
+        });
+  }
+
   fecharPartida(BuildContext context) {
     createJogo(
       Jogo(

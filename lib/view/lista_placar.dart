@@ -116,7 +116,7 @@ class _MyWidgetState extends State<ListaPlacar> {
       child: Scaffold(
         appBar: appBar,
         backgroundColor: Colors.cyan,
-        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+        body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
                 reverse: true,
                 addRepaintBoundaries: true,
@@ -126,18 +126,21 @@ class _MyWidgetState extends State<ListaPlacar> {
                 itemBuilder: (context, int index) {
                   return Slidable(
                     key: ValueKey(listaJogo[index].id),
-                    startActionPane: const ActionPane(
-                      motion: StretchMotion(),
+                    startActionPane: ActionPane(
+                      motion: const StretchMotion(),
                       // motion: ScrollMotion(),
                       children: [
                         SlidableAction(
-                          onPressed: null,
+                          onPressed: (context) {
+                            Provider.of<Jogo>(context, listen: false)
+                                .removeJogo(listaJogo[index]);
+                          },
                           backgroundColor: Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
                           label: 'Delete',
                         ),
-                        SlidableAction(
+                        const SlidableAction(
                           onPressed: null,
                           backgroundColor: Colors.lightBlue,
                           foregroundColor: Colors.white,
