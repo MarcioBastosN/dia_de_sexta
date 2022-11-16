@@ -1,7 +1,7 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
-import 'package:dia_de_sexta/view/compoment/mostradorPlacarCompoment.dart';
+import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/mostrador_placar_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -98,8 +98,6 @@ class _PlacarState extends State<Placar> {
         ])
       ],
     );
-
-    final mediaScreen = MediaQuery.of(context).size;
 
     Future<bool> showExitPopup() async {
       return await showDialog(

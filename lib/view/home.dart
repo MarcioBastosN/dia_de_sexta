@@ -1,7 +1,7 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
-import 'package:dia_de_sexta/view/compoment/textFormCompoment.dart';
+import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +22,6 @@ class _HomeState extends State<Home> {
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
   Jogo? jogo;
-
-  double _currentSliderValue = 10;
 
   bool shouldPop = true;
 

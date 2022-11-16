@@ -1,7 +1,6 @@
-import 'dart:math';
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
-import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
+import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +10,6 @@ class Jogo with ChangeNotifier {
 
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData('placar');
-    // print("DB grupo ${item['id']}")
     _jogos = dataList
         .map(
           (item) => Jogo(

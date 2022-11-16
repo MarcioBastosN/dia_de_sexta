@@ -1,9 +1,6 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-import 'package:dia_de_sexta/view/compoment/dialogComponent.dart';
+import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
