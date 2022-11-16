@@ -1,7 +1,7 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
-import 'package:dia_de_sexta/view/listaPlacar.dart';
+import 'package:dia_de_sexta/view/lista_placar.dart';
 import 'package:dia_de_sexta/view/placar.dart';
 import 'package:dia_de_sexta/view/sobre.dart';
 import 'package:flutter/material.dart';

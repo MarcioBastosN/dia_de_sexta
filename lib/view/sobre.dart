@@ -18,13 +18,11 @@ class _SobreState extends State<Sobre> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaScreen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
@@ -37,7 +35,6 @@ class _SobreState extends State<Sobre> {
                   color: Theme.of(context).backgroundColor,
                   elevation: 0,
                   child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text("Desenvolvimento"),
