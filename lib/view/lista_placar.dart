@@ -127,7 +127,8 @@ class _MyWidgetState extends State<ListaPlacar> {
                   return Slidable(
                     key: ValueKey(listaJogo[index].id),
                     startActionPane: const ActionPane(
-                      motion: ScrollMotion(),
+                      motion: StretchMotion(),
+                      // motion: ScrollMotion(),
                       children: [
                         SlidableAction(
                           onPressed: null,
@@ -138,7 +139,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                         ),
                         SlidableAction(
                           onPressed: null,
-                          backgroundColor: Color(0xFF21B7CA),
+                          backgroundColor: Colors.lightBlue,
                           foregroundColor: Colors.white,
                           icon: Icons.share,
                           label: 'Share',
