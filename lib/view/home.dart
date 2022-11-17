@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
   final _focusP1 = FocusNode();
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
+  final _focusJogoRapido = FocusNode();
   Jogo? jogo;
 
   bool shouldPop = true;
@@ -102,6 +103,7 @@ class _HomeState extends State<Home> {
   }
 
   void _consultaPontosJogo(BuildContext context) {
+    _focusJogoRapido.requestFocus();
     showDialog(
       // barrierDismissible: false,
       context: context,
@@ -113,6 +115,7 @@ class _HomeState extends State<Home> {
             maxLength: 2,
             controller: _pontosJogoRapido,
             inputType: TextInputType.phone,
+            focus: _focusJogoRapido,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -120,6 +123,7 @@ class _HomeState extends State<Home> {
               ElevatedButton(
                 child: const Text("Iniciar"),
                 onPressed: () {
+                  _focusJogoRapido.dispose();
                   Navigator.of(context).pop();
                   inicioRapido();
                 },
