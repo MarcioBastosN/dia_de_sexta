@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ListaPlacar extends StatefulWidget {
@@ -151,70 +152,82 @@ class _MyWidgetState extends State<ListaPlacar> {
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: Card(
-                              elevation: 2.0,
-                              color:
-                                  Theme.of(context).copyWith().backgroundColor,
-                              child: DefaultTextStyle(
-                                style: const TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: Colors.lightBlue,
-                                            child: Text(
-                                              (index + 1).toString(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Card(
+                                  elevation: 2.0,
+                                  color: Theme.of(context)
+                                      .copyWith()
+                                      .backgroundColor,
+                                  child: DefaultTextStyle(
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.lightBlue,
+                                                child: Text(
+                                                  (index + 1).toString(),
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(listaJogo[index]
+                                                  .equipe_1
+                                                  .toString()),
+                                              Text(listaJogo[index]
+                                                  .pontosEquipe_1
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(listaJogo[index]
+                                                  .equipe_2
+                                                  .toString()),
+                                              Text(listaJogo[index]
+                                                  .pontosEquipe_2
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Text(listaJogo[index]
-                                              .equipe_1
-                                              .toString()),
-                                          Text(listaJogo[index]
-                                              .pontosEquipe_1
-                                              .toString()),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Text(listaJogo[index]
-                                              .equipe_2
-                                              .toString()),
-                                          Text(listaJogo[index]
-                                              .pontosEquipe_2
-                                              .toString()),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(listaJogo[index].data.toString()),
+                            ],
+                          )
                         ],
                       ),
                     ),

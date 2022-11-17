@@ -123,7 +123,6 @@ class _HomeState extends State<Home> {
               ElevatedButton(
                 child: const Text("Iniciar"),
                 onPressed: () {
-                  _focusJogoRapido.dispose();
                   Navigator.of(context).pop();
                   inicioRapido();
                 },

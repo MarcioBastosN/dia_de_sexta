@@ -4,13 +4,14 @@ import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class Jogo with ChangeNotifier {
   List<Jogo> _jogos = [];
   List<Jogo> get listaJogos => [..._jogos];
 
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData('placar');
+    final dataList = await DbUtil.getData(TabelaDB.placar);
     _jogos = dataList
         .map(
           (item) => Jogo(
@@ -19,6 +20,8 @@ class Jogo with ChangeNotifier {
             equipe_2: item['grupo_2'],
             pontosEquipe_1: item['placar1'],
             pontosEquipe_2: item['placar2'],
+            data: item['data'],
+            tempoJogo: item['tempoJogo'],
           ),
         )
         .toList();
@@ -31,6 +34,8 @@ class Jogo with ChangeNotifier {
   int? pontosEquipe_1;
   int? pontosEquipe_2;
   int fimJogo;
+  String? tempoJogo;
+  String? data;
   bool? jogoEncerado;
 
   Jogo({
@@ -41,19 +46,24 @@ class Jogo with ChangeNotifier {
     this.pontosEquipe_2,
     this.fimJogo = 10,
     this.jogoEncerado,
+    this.data,
+    this.tempoJogo,
   });
 
   int tamanhoListaJogos() {
     return _jogos.length;
   }
 
-  createJogo(Jogo jogo) {
+  registraJogoDbLista(Jogo jogo) {
     _jogos.add(jogo);
+    // print(jogo.data.toString());
     DbUtil.insert(TabelaDB.placar, {
       'grupo_1': jogo.equipe_1.toString(),
       'grupo_2': jogo.equipe_2.toString(),
       'placar1': int.parse(jogo.pontosEquipe_1.toString()),
       'placar2': int.parse(jogo.pontosEquipe_2.toString()),
+      'data': jogo.data.toString(),
+      'tempoJogo': jogo.tempoJogo.toString(),
     });
     notifyListeners();
   }
@@ -66,7 +76,7 @@ class Jogo with ChangeNotifier {
   }
 
   fecharPartida(BuildContext context) {
-    createJogo(
+    registraJogoDbLista(
       Jogo(
         equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
         equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
@@ -75,6 +85,8 @@ class Jogo with ChangeNotifier {
         pontosEquipe_2:
             Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
         fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+        data: Provider.of<Jogo>(context, listen: false).data,
+        tempoJogo: "11:37",
         jogoEncerado: true,
       ),
     );
@@ -86,6 +98,7 @@ class Jogo with ChangeNotifier {
     equipe_2 = jogo.equipe_2;
     pontosEquipe_1 = jogo.pontosEquipe_1;
     pontosEquipe_2 = jogo.pontosEquipe_2;
+    data = DateTime.now().toString();
     fimJogo = jogo.fimJogo;
     notifyListeners();
   }
@@ -191,7 +204,7 @@ class Jogo with ChangeNotifier {
             onPressed: () {
               Navigator.of(context).pop();
               // registra o jogo
-              createJogo(
+              registraJogoDbLista(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
                   equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
@@ -200,6 +213,8 @@ class Jogo with ChangeNotifier {
                   pontosEquipe_2:
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  data: DateTime.now().toString(),
+                  tempoJogo: '11:39',
                   jogoEncerado: true,
                 ),
               );
@@ -230,7 +245,7 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              createJogo(
+              registraJogoDbLista(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
                   equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
@@ -239,6 +254,8 @@ class Jogo with ChangeNotifier {
                   pontosEquipe_2:
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  data: DateTime.now().toString(),
+                  tempoJogo: '11:41',
                   jogoEncerado: true,
                 ),
               );
