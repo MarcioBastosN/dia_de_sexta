@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
@@ -8,7 +9,7 @@ class DbUtil {
       path.join(dbPath, 'AppVolei.db'),
       onCreate: (db, version) {
         return db.execute(
-            'CREATE TABLE placar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER);');
+            'CREATE TABLE ${TabelaDB.placar} (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER);');
       },
       version: 1,
     );

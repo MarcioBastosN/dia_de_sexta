@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class Jogo with ChangeNotifier {
 
   createJogo(Jogo jogo) {
     _jogos.add(jogo);
-    DbUtil.insert('placar', {
+    DbUtil.insert(TabelaDB.placar, {
       'grupo_1': jogo.equipe_1.toString(),
       'grupo_2': jogo.equipe_2.toString(),
       'placar1': int.parse(jogo.pontosEquipe_1.toString()),
@@ -58,9 +59,7 @@ class Jogo with ChangeNotifier {
   }
 
   removeJogo(Jogo jogo) {
-    // print("Removendo um jogo ${jogo.id}");
-    DbUtil.delete('placar', jogo.id).whenComplete(() => {
-          // print("jogo Apagado "),
+    DbUtil.delete(TabelaDB.placar, jogo.id).whenComplete(() => {
           _jogos.remove(jogo),
           notifyListeners(),
         });
