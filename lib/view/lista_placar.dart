@@ -4,8 +4,9 @@ import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:social_share/social_share.dart';
 
 class ListaPlacar extends StatefulWidget {
   const ListaPlacar({super.key});
@@ -136,13 +137,16 @@ class _MyWidgetState extends State<ListaPlacar> {
                             Provider.of<Jogo>(context, listen: false)
                                 .removeJogo(listaJogo[index]);
                           },
-                          backgroundColor: Color(0xFFFE4A49),
+                          backgroundColor: const Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
                           label: 'Delete',
                         ),
-                        const SlidableAction(
-                          onPressed: null,
+                        SlidableAction(
+                          onPressed: (context) {
+                            SocialShare.shareSms(
+                                "This is Social Share Sms example");
+                          },
                           backgroundColor: Colors.lightBlue,
                           foregroundColor: Colors.white,
                           icon: Icons.share,
