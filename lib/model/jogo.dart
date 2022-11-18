@@ -37,6 +37,8 @@ class Jogo with ChangeNotifier {
   String? tempoJogo;
   String? data;
   bool? jogoEncerado;
+  // auxiliares
+  DateTime? _inicioPartida;
 
   Jogo({
     this.id,
@@ -56,7 +58,12 @@ class Jogo with ChangeNotifier {
 
   registraJogoDbLista(Jogo jogo) {
     _jogos.add(jogo);
-    // print(jogo.data.toString());
+    final fimPartida = DateTime.now();
+    final DateTime test = _inicioPartida!;
+    var tempoJogo = fimPartida.difference(test);
+    jogo.tempoJogo =
+        "${tempoJogo.inMinutes.toString()}:${tempoJogo.inSeconds.toString()}";
+
     DbUtil.insert(TabelaDB.placar, {
       'grupo_1': jogo.equipe_1.toString(),
       'grupo_2': jogo.equipe_2.toString(),
@@ -86,7 +93,6 @@ class Jogo with ChangeNotifier {
             Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
         fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
         data: Provider.of<Jogo>(context, listen: false).data,
-        tempoJogo: "11:37",
         jogoEncerado: true,
       ),
     );
@@ -94,12 +100,15 @@ class Jogo with ChangeNotifier {
   }
 
   void criarjgo(Jogo jogo) {
+    final registroData = DateTime.now();
+    final dataCorrigida = DateFormat('d/M/y').format(registroData);
     equipe_1 = jogo.equipe_1;
     equipe_2 = jogo.equipe_2;
     pontosEquipe_1 = jogo.pontosEquipe_1;
     pontosEquipe_2 = jogo.pontosEquipe_2;
-    data = DateTime.now().toString();
     fimJogo = jogo.fimJogo;
+    data = dataCorrigida;
+    _inicioPartida = registroData;
     notifyListeners();
   }
 
@@ -213,8 +222,7 @@ class Jogo with ChangeNotifier {
                   pontosEquipe_2:
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-                  data: DateTime.now().toString(),
-                  tempoJogo: '11:39',
+                  data: Provider.of<Jogo>(context, listen: false).data,
                   jogoEncerado: true,
                 ),
               );
@@ -255,7 +263,6 @@ class Jogo with ChangeNotifier {
                       Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                   data: DateTime.now().toString(),
-                  tempoJogo: '11:41',
                   jogoEncerado: true,
                 ),
               );

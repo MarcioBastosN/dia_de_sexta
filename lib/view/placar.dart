@@ -119,7 +119,7 @@ class _PlacarState extends State<Placar> {
               ],
             ),
           ) ??
-          false; //if showDialouge had returned null, then return false
+          false;
     }
 
     return WillPopScope(

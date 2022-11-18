@@ -223,9 +223,11 @@ class _MyWidgetState extends State<ListaPlacar> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(listaJogo[index].data.toString()),
+                              Text("Data: ${listaJogo[index].data.toString()}"),
+                              Text(
+                                  "tempo: ${listaJogo[index].tempoJogo.toString()}"),
                             ],
                           )
                         ],

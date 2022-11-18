@@ -144,11 +144,11 @@ class _HomeState extends State<Home> {
               listaCompomentes: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('No'),
+                  child: const Text('Não'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Yes'),
+                  child: const Text('Sim'),
                 ),
               ],
             ),
