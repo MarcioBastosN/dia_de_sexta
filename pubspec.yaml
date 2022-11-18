@@ -38,6 +38,7 @@ dependencies:
   wakelock: ^0.6.2
   flutter_slidable: ^2.0.0
   intl: ^0.17.0
+  social_share: ^2.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
