@@ -56,7 +56,15 @@ class Jogo with ChangeNotifier {
     return _jogos.length;
   }
 
-  registraJogoDbLista(Jogo jogo) {
+  registraJogoDbLista(BuildContext context) {
+    Jogo jogo = Jogo(
+      equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+      equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+      pontosEquipe_1: Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
+      pontosEquipe_2: Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
+      fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+      data: Provider.of<Jogo>(context, listen: false).data,
+    );
     _jogos.add(jogo);
     final fimPartida = DateTime.now();
     final DateTime test = _inicioPartida!;
@@ -83,19 +91,7 @@ class Jogo with ChangeNotifier {
   }
 
   fecharPartida(BuildContext context) {
-    registraJogoDbLista(
-      Jogo(
-        equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
-        equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
-        pontosEquipe_1:
-            Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
-        pontosEquipe_2:
-            Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
-        fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-        data: Provider.of<Jogo>(context, listen: false).data,
-        jogoEncerado: true,
-      ),
-    );
+    registraJogoDbLista(context);
     Navigator.of(context).popAndPushNamed(AppRoutes.home);
   }
 
@@ -104,8 +100,8 @@ class Jogo with ChangeNotifier {
     final dataCorrigida = DateFormat('d/M/y').format(registroData);
     equipe_1 = jogo.equipe_1;
     equipe_2 = jogo.equipe_2;
-    pontosEquipe_1 = jogo.pontosEquipe_1;
-    pontosEquipe_2 = jogo.pontosEquipe_2;
+    pontosEquipe_1 = 0;
+    pontosEquipe_2 = 0;
     fimJogo = jogo.fimJogo;
     data = dataCorrigida;
     _inicioPartida = registroData;
@@ -184,7 +180,6 @@ class Jogo with ChangeNotifier {
   }
 
   void _alertFimJogo(BuildContext context) {
-    // Provider.of<Jogo>(context, listen: false).desativaJogo();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -213,26 +208,12 @@ class Jogo with ChangeNotifier {
             onPressed: () {
               Navigator.of(context).pop();
               // registra o jogo
-              registraJogoDbLista(
-                Jogo(
-                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
-                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
-                  pontosEquipe_1:
-                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
-                  pontosEquipe_2:
-                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
-                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-                  data: Provider.of<Jogo>(context, listen: false).data,
-                  jogoEncerado: true,
-                ),
-              );
+              registraJogoDbLista(context);
               // inicia novo jogo
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
                   equipe_1: "equipe_1",
                   equipe_2: "equipe_2",
-                  pontosEquipe_1: 0,
-                  pontosEquipe_2: 0,
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
@@ -253,19 +234,7 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              registraJogoDbLista(
-                Jogo(
-                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
-                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
-                  pontosEquipe_1:
-                      Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
-                  pontosEquipe_2:
-                      Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
-                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-                  data: DateTime.now().toString(),
-                  jogoEncerado: true,
-                ),
-              );
+              registraJogoDbLista(context);
               Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),

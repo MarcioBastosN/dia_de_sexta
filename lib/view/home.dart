@@ -53,8 +53,6 @@ class _HomeState extends State<Home> {
         Jogo(
           equipe_1: eq1,
           equipe_2: eq2,
-          pontosEquipe_1: 0,
-          pontosEquipe_2: 0,
           fimJogo: int.parse(_pontos.text.toString()),
         ),
       );
@@ -71,8 +69,6 @@ class _HomeState extends State<Home> {
         Jogo(
           equipe_1: "equipe_1",
           equipe_2: "equipe_2",
-          pontosEquipe_1: 0,
-          pontosEquipe_2: 0,
           fimJogo: int.parse(_pontosJogoRapido.text.toString()),
         ),
       );
