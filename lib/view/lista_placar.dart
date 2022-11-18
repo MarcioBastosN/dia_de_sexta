@@ -93,6 +93,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     Future<bool> showExitPopup() async {
       return await showDialog(
             context: context,
+            barrierDismissible: true,
             builder: (context) => DialogComponent(
               titulo: "Você deseja sair ?",
               listaCompomentes: [
@@ -111,6 +112,35 @@ class _MyWidgetState extends State<ListaPlacar> {
             ),
           ) ??
           false;
+    }
+
+    void _compartilhar(BuildContext context, Jogo jogo) {
+      String msn = "";
+      if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
+        msn =
+            "${jogo.equipe_1} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${jogo.equipe_2}";
+      } else {
+        "${jogo.equipe_2} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${jogo.equipe_1}";
+      }
+
+      showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) => DialogComponent(
+          titulo: "Compartilhe seu placar!",
+          mensagem: Text(msn),
+          listaCompomentes: [
+            ElevatedButton(
+              child: const Text("sms"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                //without an image
+                SocialShare.shareOptions("Hello world");
+              },
+            ),
+          ],
+        ),
+      );
     }
 
     return WillPopScope(
@@ -144,8 +174,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                         ),
                         SlidableAction(
                           onPressed: (context) {
-                            SocialShare.shareSms(
-                                "This is Social Share Sms example");
+                            _compartilhar(context, listaJogo[index]);
                           },
                           backgroundColor: Colors.lightBlue,
                           foregroundColor: Colors.white,
