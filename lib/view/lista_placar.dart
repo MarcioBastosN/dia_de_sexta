@@ -34,26 +34,29 @@ class _MyWidgetState extends State<ListaPlacar> {
           "Partidas Disputadas: ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
       actions: [
         PopupMenuButton(
-          color: Colors.lightBlue,
+          color: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            PopupMenuItem(
-              value: "Home",
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                },
-                child: Row(
-                  children: const [
-                    Icon(Icons.home),
-                    Text("Home"),
-                  ],
-                ),
-              ),
-            ),
+            // PopupMenuItem(
+            //   value: "Home",
+            //   child: InkWell(
+            //     onTap: () {
+            //       Navigator.of(context).pop();
+            //       Navigator.of(context).popAndPushNamed(AppRoutes.home);
+            //     },
+            //     child: Row(
+            //       children: const [
+            //         Icon(
+            //           Icons.home,
+            //           color: Colors.black,
+            //         ),
+            //         Text("Home"),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Provider.of<Jogo>(context, listen: false).jogoEncerado != true
                 ? PopupMenuItem(
                     child: InkWell(
@@ -63,7 +66,10 @@ class _MyWidgetState extends State<ListaPlacar> {
                       },
                       child: Row(
                         children: const [
-                          Icon(Icons.games),
+                          Icon(
+                            Icons.games,
+                            color: Colors.black,
+                          ),
                           Text("Jogo"),
                         ],
                       ),
@@ -131,11 +137,11 @@ class _MyWidgetState extends State<ListaPlacar> {
           mensagem: Text(msn),
           listaCompomentes: [
             ElevatedButton(
-              child: const Text("sms"),
+              child: const Text("Compartilhar"),
               onPressed: () {
                 Navigator.of(context).pop();
                 //without an image
-                SocialShare.shareOptions("Hello world");
+                SocialShare.shareOptions(msn);
               },
             ),
           ],

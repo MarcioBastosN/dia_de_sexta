@@ -55,27 +55,33 @@ class _PlacarState extends State<Placar> {
                   },
                   child: Row(
                     children: const [
-                      Icon(Icons.home),
+                      Icon(
+                        Icons.home,
+                        color: Colors.black,
+                      ),
                       Text("Home"),
                     ],
                   ),
                 ),
               ),
-              PopupMenuItem(
-                value: "historico",
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).popAndPushNamed(AppRoutes.lista);
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.list),
-                      Text("Historico"),
-                    ],
-                  ),
-                ),
-              ),
+              // PopupMenuItem(
+              //   value: "historico",
+              //   child: InkWell(
+              //     onTap: () {
+              //       Navigator.of(context).pop();
+              //       Navigator.of(context).popAndPushNamed(AppRoutes.lista);
+              //     },
+              //     child: Row(
+              //       children: const [
+              //         Icon(
+              //           Icons.list,
+              //           color: Colors.black,
+              //         ),
+              //         Text("Historico"),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               PopupMenuItem(
                 value: "Encerrar partida",
                 child: InkWell(
@@ -83,11 +89,14 @@ class _PlacarState extends State<Placar> {
                     Navigator.of(context).pop();
                     Provider.of<Jogo>(context, listen: false)
                         .fecharPartida(context);
-                    Navigator.of(context).popAndPushNamed(AppRoutes.lista);
+                    Navigator.of(context).popAndPushNamed(AppRoutes.home);
                   },
                   child: Row(
                     children: const [
-                      Icon(Icons.edit_note_sharp),
+                      Icon(
+                        Icons.edit_note_sharp,
+                        color: Colors.black,
+                      ),
                       Text("Encerrar Partida"),
                     ],
                   ),
