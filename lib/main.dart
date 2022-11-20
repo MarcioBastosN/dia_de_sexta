@@ -1,10 +1,11 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/home.dart';
 import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
-import 'package:dia_de_sexta/view/lista_placar.dart';
-import 'package:dia_de_sexta/view/placar.dart';
-import 'package:dia_de_sexta/view/sobre.dart';
+import 'package:dia_de_sexta/view/view_lista_placar.dart';
+import 'package:dia_de_sexta/view/view_placar.dart';
+import 'package:dia_de_sexta/view/view_sobre.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => Jogo(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Jogador(),
         ),
       ],
       child: MaterialApp(

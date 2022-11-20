@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/view/home.dart';
-import 'package:dia_de_sexta/view/lista_placar.dart';
+import 'package:dia_de_sexta/view/view_jogadores.dart';
+import 'package:dia_de_sexta/view/view_lista_placar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: const [
           Home(),
           ListaPlacar(),
+          ListaJogadores(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -42,12 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
-            // activeIcon:
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: "Historico",
-            // activeIcon:
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.playlist_add_check_circle_outlined),
+            label: "Jogadores",
           ),
         ],
       ),
