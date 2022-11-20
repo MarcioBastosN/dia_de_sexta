@@ -31,14 +31,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^3.0.1
+  # fonts externas
+  google_fonts: ^3.0.1 
+  # 
   provider: ^6.0.4
+  # banco de dados
   sqflite: ^2.2.0+3
+  # resolve diretorios
   path: ^1.8.2
+  # mantem a tela ativa
   wakelock: ^0.6.2
+  # acoes slider
   flutter_slidable: ^2.0.0
+  # 
   intl: ^0.17.0
+  # compatilhar em aplicativos
   social_share: ^2.2.1
+  # capture screen
+  screenshot: ^1.2.3
+  # save image
+  image_gallery_saver: ^1.7.1
+  permission_handler: ^10.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
