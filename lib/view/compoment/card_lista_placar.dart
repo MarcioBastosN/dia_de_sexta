@@ -49,17 +49,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.lightBlue,
-                                child: Text(
-                                  widget.indexCard,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            children: [Text("Jogo\n ${widget.indexCard}")],
                           ),
                         ),
                         Padding(

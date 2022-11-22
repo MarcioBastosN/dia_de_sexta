@@ -59,7 +59,7 @@ class Jogo with ChangeNotifier {
   String retonaTempo(String valor) {
     String tempo = valor;
     if (double.parse(valor) > 60) {
-      tempo = (double.parse(valor) / 60).toString();
+      tempo = (int.parse(valor) / 60).toStringAsPrecision(2);
     }
     return tempo;
   }
@@ -68,12 +68,11 @@ class Jogo with ChangeNotifier {
     double tempo = 0.0;
     if (_jogos.length > 0) {
       for (var item in _jogos) {
-        // print("tempo: ${item.tempoJogo!.replaceAll(RegExp(r':'), '.')}");
-        tempo += double.parse(item.tempoJogo!.replaceAll(RegExp(r':'), '.'));
+        tempo += int.parse(item.tempoJogo!.toString());
       }
     }
     if (tempo > 60) {
-      tempo = tempo / 60;
+      tempo = (tempo / 60);
     }
     return tempo;
   }

@@ -35,6 +35,7 @@ dependencies:
   google_fonts: ^3.0.1 
   # provider
   provider: ^6.0.4
+  path_provider: ^2.0.11
   # banco de dados
   sqflite: ^2.2.0+3
   # resolve diretorios

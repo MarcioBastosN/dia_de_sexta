@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
@@ -5,6 +7,7 @@ import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
@@ -40,7 +43,7 @@ class _MyWidgetState extends State<ListaPlacar> {
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
           Text(
-              "Tempo: ${Provider.of<Jogo>(context, listen: true).tempoJogado()}"),
+              "Tempo: ${Provider.of<Jogo>(context, listen: true).tempoJogado().toStringAsPrecision(2)}"),
         ],
       ),
       actions: [
@@ -100,34 +103,128 @@ class _MyWidgetState extends State<ListaPlacar> {
     }
 
     void _compartilhar(BuildContext context, Jogo jogo) {
-      // aqui gera a imagem a ser compatilhada;
-
       String msn = "";
+      File imagemPublicar;
+      String? origemImagem;
       if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
         msn =
             "${jogo.equipe_1} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${jogo.equipe_2}";
       } else {
-        "${jogo.equipe_2} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${jogo.equipe_1}";
+        msn =
+            "${jogo.equipe_2} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${jogo.equipe_1}";
       }
-
-      showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (context) => DialogComponent(
-          titulo: "Compartilhe seu placar!",
-          mensagem: Text(msn),
-          listaCompomentes: [
-            ElevatedButton(
-              child: const Text("Compartilhar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                //without an image
-                SocialShare.shareOptions(msn);
-              },
-            ),
-          ],
-        ),
-      );
+      // aqui gera a imagem a ser compatilhada;
+      screenshotController
+          .captureFromWidget(
+              InheritedTheme.captureAll(
+                context,
+                Material(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      side: const BorderSide(
+                        color: Colors.cyan,
+                        width: 2,
+                      )),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.cyan,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    height: 200,
+                    child: Column(
+                      children: [
+                        const Text.rich(
+                          TextSpan(
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: "Dia de ",
+                                  style: TextStyle(color: Colors.blue)),
+                              TextSpan(
+                                text: 'Sexta',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Text.rich(
+                          TextSpan(
+                            style: TextStyle(fontSize: 16),
+                            children: [
+                              TextSpan(text: "Seu placar do vôlei"),
+                            ],
+                          ),
+                        ),
+                        CardListaPlacar(
+                          indexCard: jogo.id.toString(),
+                          equipe1: jogo.equipe_1.toString(),
+                          equipe2: jogo.equipe_2.toString(),
+                          pontosEq1: jogo.pontosEquipe_1.toString(),
+                          pontosEq2: jogo.pontosEquipe_2.toString(),
+                          data: jogo.data.toString(),
+                          tempo: Provider.of<Jogo>(context, listen: false)
+                              .retonaTempo(jogo.tempoJogo.toString()),
+                        ),
+                        Text(msn),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              delay: const Duration(microseconds: 300))
+          .then((capturedImage) async {
+        // final directory = (await getApplicationDocumentsDirectory()).path;
+        if (capturedImage != null) {
+          final directory = await getApplicationDocumentsDirectory();
+          final imagePath = await File('${directory.path}/image.png').create();
+          await imagePath.writeAsBytes(capturedImage);
+          setState(() {
+            // caminho da imagem para o compartilhamento do plugin socialShare
+            origemImagem = imagePath.path;
+          });
+        }
+        setState(() {
+          // arquivo a sex exibido na mensagem
+          _imageFile = capturedImage;
+        });
+      }).whenComplete(() => {
+                showDialog(
+                  barrierDismissible: true,
+                  context: context,
+                  builder: (context) => DialogComponent(
+                    titulo: "Compartilhe seu placar!",
+                    mensagem: Container(
+                      height: 150,
+                      child: Column(
+                        children: [
+                          Center(
+                              child: _imageFile != null
+                                  ? Image.memory(_imageFile!)
+                                  : Container(
+                                      child: const Text(
+                                          "Ops!, iamgem ainda nao foi carregada"),
+                                    )),
+                        ],
+                      ),
+                    ),
+                    listaCompomentes: [
+                      ElevatedButton(
+                        child: const Text("Compartilhar"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          SocialShare.shareOptions(
+                            msn,
+                            imagePath: origemImagem!,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              });
     }
 
     return WillPopScope(
@@ -176,7 +273,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                       pontosEq1: listaJogo[index].pontosEquipe_1.toString(),
                       pontosEq2: listaJogo[index].pontosEquipe_2.toString(),
                       data: listaJogo[index].data.toString(),
-                      tempo: Provider.of<Jogo>(context)
+                      tempo: Provider.of<Jogo>(context, listen: false)
                           .retonaTempo(listaJogo[index].tempoJogo.toString()),
                     ),
                   );
