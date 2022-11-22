@@ -1,9 +1,11 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-import 'package:dia_de_sexta/view/home.dart';
-import 'package:dia_de_sexta/view/lista_placar.dart';
-import 'package:dia_de_sexta/view/placar.dart';
-import 'package:dia_de_sexta/view/sobre.dart';
+// import 'package:dia_de_sexta/view/home.dart';
+import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
+import 'package:dia_de_sexta/view/view_lista_placar.dart';
+import 'package:dia_de_sexta/view/view_placar.dart';
+import 'package:dia_de_sexta/view/view_sobre.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +47,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Jogo(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => Jogador(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,7 +57,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.black87,
           backgroundColor: Colors.cyan,
-          primarySwatch: Colors.lightBlue,
+          primarySwatch: Colors.blue,
           textTheme: const TextTheme(
             headline1: TextStyle(
               fontWeight: FontWeight.bold,
@@ -84,7 +89,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         routes: {
-          AppRoutes.home: (context) => const Home(),
+          // AppRoutes.home: (context) => const Home(),
+          AppRoutes.home: (context) => const HomeScreen(),
           AppRoutes.placar: (context) =>
               const Placar(title: "Seu Placar vai à:"),
           AppRoutes.lista: (context) => const ListaPlacar(),

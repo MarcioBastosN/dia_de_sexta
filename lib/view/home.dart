@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
   final _focusP1 = FocusNode();
   final _focusP2 = FocusNode();
   final _focusPontos = FocusNode();
+  final _focusJogoRapido = FocusNode();
   Jogo? jogo;
 
   bool shouldPop = true;
@@ -52,8 +53,6 @@ class _HomeState extends State<Home> {
         Jogo(
           equipe_1: eq1,
           equipe_2: eq2,
-          pontosEquipe_1: 0,
-          pontosEquipe_2: 0,
           fimJogo: int.parse(_pontos.text.toString()),
         ),
       );
@@ -70,8 +69,6 @@ class _HomeState extends State<Home> {
         Jogo(
           equipe_1: "equipe_1",
           equipe_2: "equipe_2",
-          pontosEquipe_1: 0,
-          pontosEquipe_2: 0,
           fimJogo: int.parse(_pontosJogoRapido.text.toString()),
         ),
       );
@@ -102,6 +99,7 @@ class _HomeState extends State<Home> {
   }
 
   void _consultaPontosJogo(BuildContext context) {
+    _focusJogoRapido.requestFocus();
     showDialog(
       // barrierDismissible: false,
       context: context,
@@ -113,6 +111,7 @@ class _HomeState extends State<Home> {
             maxLength: 2,
             controller: _pontosJogoRapido,
             inputType: TextInputType.phone,
+            focus: _focusJogoRapido,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -141,11 +140,11 @@ class _HomeState extends State<Home> {
               listaCompomentes: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('No'),
+                  child: const Text('Não'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Yes'),
+                  child: const Text('Sim'),
                 ),
               ],
             ),
@@ -157,205 +156,154 @@ class _HomeState extends State<Home> {
 
     return WillPopScope(
       onWillPop: showExitPopup,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).copyWith().backgroundColor,
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: media.height,
-            width: media.width,
-            child: Stack(children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text.rich(
-                          TextSpan(
-                            style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            children: [
-                              TextSpan(
-                                  text: "Dia de ",
-                                  style: TextStyle(color: Colors.blue)),
-                              TextSpan(
-                                text: 'Sexta',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
+      child: SizedBox(
+        height: media.height,
+        width: media.width,
+        child: Stack(children: [
+          Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text.rich(
-                          TextSpan(
-                            style: TextStyle(fontSize: 20),
-                            children: [
-                              TextSpan(text: "Seu placar do vôlei"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // parte de baixo
-                  SingleChildScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.manual,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(30),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 28),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          TextFormCompoment(
-                            label: "Time 1",
-                            controller: _time1,
-                            inputType: TextInputType.text,
-                            perfixIcon: Icons.people,
-                            focus: _focusP1,
-                            submit: () {
-                              setState(() {
-                                _focusP2.requestFocus();
-                              });
-                            },
-                          ),
-                          TextFormCompoment(
-                            label: "Time 2",
-                            controller: _time2,
-                            inputType: TextInputType.text,
-                            perfixIcon: Icons.people,
-                            focus: _focusP2,
-                            submit: () {
-                              setState(() {
-                                _focusPontos.requestFocus();
-                              });
-                            },
-                          ),
-                          TextFormCompoment(
-                            label: "Quantos Pontos vai o Jogo?",
-                            maxLength: 2,
-                            controller: _pontos,
-                            inputType: TextInputType.phone,
-                            focus: _focusPontos,
-                          ),
-
-                          // button iniciar
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () => _iniciaJogo(),
-                                child: const Text(
-                                  'Iniciar',
-                                ),
-                              ),
-                            ),
-                          ),
-                          // divisor
-                          Row(
-                            children: const [
-                              Expanded(
-                                child: Divider(
-                                  color: Colors.cyan,
-                                  thickness: 2.0,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Text(
-                                  "OU",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  color: Colors.cyan,
-                                  thickness: 2.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // button jogo rapido
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: SizedBox(
-                              height: 50,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: const BorderSide(
-                                    color: Colors.cyan,
-                                    width: 2,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                                onPressed: () => _consultaPontosJogo(context),
-                                child: const Text(
-                                  'Jogo Rapido',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          TextSpan(
+                              text: "Dia de ",
+                              style: TextStyle(color: Colors.blue)),
+                          TextSpan(
+                            text: 'Sexta',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // PopupMenu
-              Positioned(
-                top: 10,
-                right: 10,
-                child: SafeArea(
-                  child: PopupMenuButton(
-                    color: Colors.cyan,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(fontSize: 20),
+                        children: [
+                          TextSpan(text: "Seu placar do vôlei"),
+                        ],
+                      ),
                     ),
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                        value: "Lista",
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).popAndPushNamed('lista');
-                          },
-                          child: Row(
-                            children: const [
-                              Icon(Icons.list),
-                              Text("Historico"),
-                            ],
+                  ],
+                ),
+              ),
+              // parte de baixo
+              SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.manual,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextFormCompoment(
+                        label: "Time 1",
+                        controller: _time1,
+                        inputType: TextInputType.text,
+                        perfixIcon: Icons.people,
+                        focus: _focusP1,
+                        submit: () {
+                          setState(() {
+                            _focusP2.requestFocus();
+                          });
+                        },
+                      ),
+                      TextFormCompoment(
+                        label: "Time 2",
+                        controller: _time2,
+                        inputType: TextInputType.text,
+                        perfixIcon: Icons.people,
+                        focus: _focusP2,
+                        submit: () {
+                          setState(() {
+                            _focusPontos.requestFocus();
+                          });
+                        },
+                      ),
+                      TextFormCompoment(
+                        label: "Quantos Pontos vai o Jogo?",
+                        maxLength: 2,
+                        controller: _pontos,
+                        inputType: TextInputType.phone,
+                        focus: _focusPontos,
+                      ),
+
+                      // button iniciar
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () => _iniciaJogo(),
+                            child: const Text(
+                              'Iniciar',
+                            ),
                           ),
                         ),
                       ),
-                      PopupMenuItem(
-                        value: "Sobre",
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context)
-                                .popAndPushNamed(AppRoutes.sobre);
-                          },
-                          child: Row(
-                            children: const [
-                              Icon(Icons.info_outline),
-                              Text("Sobre"),
-                            ],
+                      // divisor
+                      Row(
+                        children: const [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.cyan,
+                              thickness: 2.0,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "OU",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.cyan,
+                              thickness: 2.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // button jogo rapido
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: SizedBox(
+                          height: 50,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                color: Colors.cyan,
+                                width: 2,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            ),
+                            onPressed: () => _consultaPontosJogo(context),
+                            child: const Text(
+                              'Jogo Rapido',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -363,9 +311,39 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-            ]),
+            ],
           ),
-        ),
+          // PopupMenu
+          Positioned(
+            top: 10,
+            right: 10,
+            child: SafeArea(
+              child: PopupMenuButton(
+                color: Colors.cyan,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    value: "Sobre",
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.sobre);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.info_outline),
+                          Text("Sobre"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

@@ -35,12 +35,24 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
         cursorColor: Colors.white,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          prefixIcon:
-              widget.perfixIcon != null ? Icon(widget.perfixIcon) : null,
-          isDense: true,
-          border: const OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.cyan,
+              width: 2,
+            ),
             borderRadius: BorderRadius.all(Radius.circular(18)),
           ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(18)),
+          ),
+          prefixIcon: widget.perfixIcon != null
+              ? Icon(
+                  widget.perfixIcon,
+                  color: Colors.white60,
+                )
+              : null,
+          isDense: true,
           label: Text(widget.label),
           labelStyle: const TextStyle(
             color: Colors.white60,
