@@ -205,7 +205,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                                   ? Image.memory(_imageFile!)
                                   : Container(
                                       child: const Text(
-                                          "Ops!, iamgem ainda nao foi carregada"),
+                                          "Ops!, a imagem ainda não foi carregada"),
                                     )),
                         ],
                       ),
