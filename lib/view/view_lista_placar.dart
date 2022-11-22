@@ -43,7 +43,7 @@ class _MyWidgetState extends State<ListaPlacar> {
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
           Text(
-              "Tempo: ${Provider.of<Jogo>(context, listen: true).tempoJogado().toStringAsPrecision(2)}"),
+              "Tempo: ${Provider.of<Jogo>(context, listen: false).tempoJogado()}"),
         ],
       ),
       actions: [
