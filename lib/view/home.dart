@@ -324,21 +324,6 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(18),
                 ),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  // PopupMenuItem(
-                  //   value: "Lista",
-                  //   child: InkWell(
-                  //     onTap: () {
-                  //       Navigator.of(context).pop();
-                  //       Navigator.of(context).popAndPushNamed('lista');
-                  //     },
-                  //     child: Row(
-                  //       children: const [
-                  //         Icon(Icons.list),
-                  //         Text("Historico"),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   PopupMenuItem(
                     value: "Sobre",
                     child: InkWell(

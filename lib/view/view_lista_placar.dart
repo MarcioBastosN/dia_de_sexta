@@ -39,7 +39,8 @@ class _MyWidgetState extends State<ListaPlacar> {
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-          const Text("Tempo: 0"),
+          Text(
+              "Tempo: ${Provider.of<Jogo>(context, listen: true).tempoJogado()}"),
         ],
       ),
       actions: [
@@ -175,7 +176,8 @@ class _MyWidgetState extends State<ListaPlacar> {
                       pontosEq1: listaJogo[index].pontosEquipe_1.toString(),
                       pontosEq2: listaJogo[index].pontosEquipe_2.toString(),
                       data: listaJogo[index].data.toString(),
-                      tempo: listaJogo[index].tempoJogo.toString(),
+                      tempo: Provider.of<Jogo>(context)
+                          .retonaTempo(listaJogo[index].tempoJogo.toString()),
                     ),
                   );
                 })

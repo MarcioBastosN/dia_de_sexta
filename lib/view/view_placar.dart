@@ -64,24 +64,6 @@ class _PlacarState extends State<Placar> {
                   ),
                 ),
               ),
-              // PopupMenuItem(
-              //   value: "historico",
-              //   child: InkWell(
-              //     onTap: () {
-              //       Navigator.of(context).pop();
-              //       Navigator.of(context).popAndPushNamed(AppRoutes.lista);
-              //     },
-              //     child: Row(
-              //       children: const [
-              //         Icon(
-              //           Icons.list,
-              //           color: Colors.black,
-              //         ),
-              //         Text("Historico"),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               PopupMenuItem(
                 value: "Encerrar partida",
                 child: InkWell(

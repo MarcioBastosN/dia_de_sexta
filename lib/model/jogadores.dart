@@ -41,10 +41,7 @@ class Jogador with ChangeNotifier {
   }
 
 // adiciona jogador na lista e no banco
-  adicionarjogador() {
-    Jogador jogador = Jogador(
-      nome: 'teste',
-    );
+  adicionarJogador(Jogador jogador) {
     _Jogadores.add(jogador);
     DbUtil.insert(TabelaDB.jogadores, {
       'nome': jogador.nome.toString(),

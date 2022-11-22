@@ -46,12 +46,13 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.all(Radius.circular(18)),
           ),
-          prefixIcon:
-              widget.perfixIcon != null ? Icon(widget.perfixIcon) : null,
+          prefixIcon: widget.perfixIcon != null
+              ? Icon(
+                  widget.perfixIcon,
+                  color: Colors.white60,
+                )
+              : null,
           isDense: true,
-          // border: const OutlineInputBorder(
-          //   borderRadius: BorderRadius.all(Radius.circular(18)),
-          // ),
           label: Text(widget.label),
           labelStyle: const TextStyle(
             color: Colors.white60,

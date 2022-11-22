@@ -56,6 +56,28 @@ class Jogo with ChangeNotifier {
     return _jogos.length;
   }
 
+  String retonaTempo(String valor) {
+    String tempo = valor;
+    if (double.parse(valor) > 60) {
+      tempo = (double.parse(valor) / 60).toString();
+    }
+    return tempo;
+  }
+
+  double tempoJogado() {
+    double tempo = 0.0;
+    if (_jogos.length > 0) {
+      for (var item in _jogos) {
+        // print("tempo: ${item.tempoJogo!.replaceAll(RegExp(r':'), '.')}");
+        tempo += double.parse(item.tempoJogo!.replaceAll(RegExp(r':'), '.'));
+      }
+    }
+    if (tempo > 60) {
+      tempo = tempo / 60;
+    }
+    return tempo;
+  }
+
   registraJogoDbLista(BuildContext context) {
     Jogo jogo = Jogo(
       equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
@@ -69,8 +91,8 @@ class Jogo with ChangeNotifier {
     final fimPartida = DateTime.now();
     final DateTime test = _inicioPartida!;
     var tempoJogo = fimPartida.difference(test);
-    jogo.tempoJogo =
-        "${tempoJogo.inMinutes.toString()}:${tempoJogo.inSeconds.toString()}";
+    // ${tempoJogo.inMinutes.toString()}:
+    jogo.tempoJogo = tempoJogo.inSeconds.toString();
 
     DbUtil.insert(TabelaDB.placar, {
       'grupo_1': jogo.equipe_1.toString(),
@@ -111,11 +133,6 @@ class Jogo with ChangeNotifier {
   void vaiUm() {
     fimJogo++;
     notifyListeners();
-  }
-
-  void imprimeJogo() {
-    print(
-        "eq_1: $equipe_1, pontos_1: $pontosEquipe_1, eq_2: $equipe_2, pontos_2: $pontosEquipe_2,  fim: $fimJogo");
   }
 
   void desativaJogo() {
