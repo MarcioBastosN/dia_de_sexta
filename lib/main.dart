@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/asset/custon/my_theme.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 // import 'package:dia_de_sexta/view/home.dart';
@@ -54,40 +55,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
-        theme: ThemeData(
-          primaryColor: Colors.black87,
-          backgroundColor: Colors.cyan,
-          primarySwatch: Colors.blue,
-          textTheme: const TextTheme(
-            headline1: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            headline4: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-            ),
-          ),
-          sliderTheme: const SliderThemeData(
-            thumbColor: Colors.lightBlue,
-            valueIndicatorColor: Colors.lightBlue,
-            inactiveTrackColor: Colors.amber,
-            inactiveTickMarkColor: Colors.white,
-            valueIndicatorTextStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.lightBlue,
-              foregroundColor: Colors.white,
-              textStyle: const TextStyle(fontSize: 18),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
-            ),
-          ),
-        ),
+        theme: MyTheme().tema,
         routes: {
           // AppRoutes.home: (context) => const Home(),
           AppRoutes.home: (context) => const HomeScreen(),
