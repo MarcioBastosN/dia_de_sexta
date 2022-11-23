@@ -77,12 +77,33 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("Data: ${widget.data}"),
-              Text("tempo: ${widget.tempo}"),
-            ],
+          DefaultTextStyle(
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_month_outlined,
+                      color: Colors.white,
+                    ),
+                    Text(widget.data),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.timer,
+                      color: Colors.white,
+                    ),
+                    Text(widget.tempo),
+                  ],
+                ),
+              ],
+            ),
           )
         ],
       ),
