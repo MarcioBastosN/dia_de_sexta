@@ -9,13 +9,22 @@ class TabelasDB {
 }
 
 class DbUtil {
+  static Future<void> criarTabelasBanco(sql.Database db, int version) async {
+    List<String> queryes = [
+      TabelasDB.tb_placar,
+      TabelasDB.tb_jogadores,
+    ];
+
+    for (String query in queryes) {
+      await db.execute(query);
+    }
+  }
+
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
-    return sql.openDatabase(
+    return await sql.openDatabase(
       path.join(dbPath, 'AppVolei.db'),
-      onCreate: (db, version) {
-        return db.execute('${TabelasDB.tb_placar}, ${TabelasDB.tb_jogadores}');
-      },
+      onCreate: (db, version) => criarTabelasBanco(db, version),
       version: 2,
     );
   }
