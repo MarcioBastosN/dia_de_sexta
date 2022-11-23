@@ -23,9 +23,7 @@ class _MyWidgetState extends State<PlacarComponent> {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
-    final appbar = AppBar();
     return SizedBox(
-      height: media.height - appbar.preferredSize.height,
       width: media.width * .5,
       child: Container(
         color: Theme.of(context).copyWith().primaryColor,
