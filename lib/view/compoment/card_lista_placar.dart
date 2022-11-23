@@ -86,10 +86,8 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
               children: [
                 Row(
                   children: [
-                    const Icon(
-                      Icons.calendar_month_outlined,
-                      color: Colors.white,
-                    ),
+                    const Icon(Icons.calendar_month_outlined,
+                        color: Colors.white),
                     Text(widget.data),
                   ],
                 ),

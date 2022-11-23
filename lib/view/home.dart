@@ -258,25 +258,17 @@ class _HomeState extends State<Home> {
                       Row(
                         children: const [
                           Expanded(
-                            child: Divider(
-                              color: Colors.cyan,
-                              thickness: 2.0,
-                            ),
+                            child: Divider(),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
                               "OU",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                           Expanded(
-                            child: Divider(
-                              color: Colors.cyan,
-                              thickness: 2.0,
-                            ),
+                            child: Divider(),
                           ),
                         ],
                       ),
@@ -286,15 +278,6 @@ class _HomeState extends State<Home> {
                         child: SizedBox(
                           height: 50,
                           child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: Colors.cyan,
-                                width: 2,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                            ),
                             onPressed: () => _consultaPontosJogo(context),
                             child: const Text(
                               'Jogo Rapido',
@@ -320,9 +303,6 @@ class _HomeState extends State<Home> {
             child: SafeArea(
               child: PopupMenuButton(
                 color: Colors.cyan,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Sobre",

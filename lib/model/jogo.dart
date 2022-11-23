@@ -204,15 +204,6 @@ class Jogo with ChangeNotifier {
         mensagem: const Text("jogo encerado"),
         listaCompomentes: [
           OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(
-                color: Colors.cyan,
-                width: 4,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-            ),
             child: const Text(
               'Jogo Rapido',
               style: TextStyle(

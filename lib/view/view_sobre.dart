@@ -24,7 +24,6 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -51,9 +50,6 @@ class _SobreState extends State<Sobre> {
               child: SafeArea(
                 child: PopupMenuButton(
                   color: Colors.cyan,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                     PopupMenuItem(
                       value: "Home",
@@ -66,22 +62,6 @@ class _SobreState extends State<Sobre> {
                           children: const [
                             Icon(Icons.home),
                             Text("Home"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: "Lista",
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context)
-                              .popAndPushNamed(AppRoutes.lista);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.list),
-                            Text("Historico"),
                           ],
                         ),
                       ),

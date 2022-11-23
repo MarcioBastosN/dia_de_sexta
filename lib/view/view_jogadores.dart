@@ -96,7 +96,6 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     return WillPopScope(
       onWillPop: showExitPopup,
       child: Scaffold(
-        backgroundColor: Colors.cyan,
         body: SafeArea(
           child: Provider.of<Jogador>(context, listen: false)
                       .tamanhoListaJogadores() ==

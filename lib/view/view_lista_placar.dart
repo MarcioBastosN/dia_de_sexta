@@ -42,16 +42,17 @@ class _MyWidgetState extends State<ListaPlacar> {
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-          Text(
-              "Tempo: ${Provider.of<Jogo>(context, listen: false).tempoJogado()}"),
+          Row(
+            children: [
+              const Icon(Icons.timer, color: Colors.white),
+              Text(Provider.of<Jogo>(context, listen: false).tempoJogado()),
+            ],
+          ),
         ],
       ),
       actions: [
         PopupMenuButton(
           color: Colors.blue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[
             PopupMenuItem(
               child: InkWell(
@@ -61,10 +62,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                 },
                 child: Row(
                   children: const [
-                    Icon(
-                      Icons.games,
-                      color: Colors.black,
-                    ),
+                    Icon(Icons.games, color: Colors.black),
                     Text("Jogo"),
                   ],
                 ),
@@ -120,11 +118,9 @@ class _MyWidgetState extends State<ListaPlacar> {
                 context,
                 Material(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      side: const BorderSide(
-                        color: Colors.cyan,
-                        width: 2,
-                      )),
+                    borderRadius: BorderRadius.circular(18),
+                    side: const BorderSide(color: Colors.cyan, width: 2),
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.cyan,
@@ -136,9 +132,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                         const Text.rich(
                           TextSpan(
                             style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                fontSize: 28, fontWeight: FontWeight.bold),
                             children: [
                               TextSpan(
                                   text: "Dia de ",
@@ -231,7 +225,6 @@ class _MyWidgetState extends State<ListaPlacar> {
       onWillPop: showExitPopup,
       child: Scaffold(
         appBar: appBar,
-        backgroundColor: Colors.cyan,
         body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
                 reverse: true,
@@ -253,16 +246,16 @@ class _MyWidgetState extends State<ListaPlacar> {
                           backgroundColor: const Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
-                          label: 'Delete',
+                          label: 'Apagar',
                         ),
                         SlidableAction(
                           onPressed: (context) {
                             _compartilhar(context, listaJogo[index]);
                           },
-                          backgroundColor: Colors.lightBlue,
+                          backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
                           icon: Icons.share,
-                          label: 'Share',
+                          label: 'Compartilhar',
                         ),
                       ],
                     ),

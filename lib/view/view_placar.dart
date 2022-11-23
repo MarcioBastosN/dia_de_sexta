@@ -42,9 +42,6 @@ class _PlacarState extends State<Placar> {
         ButtonBar(children: [
           PopupMenuButton(
             color: Colors.lightBlue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
               PopupMenuItem(
                 value: "Home",
