@@ -66,7 +66,7 @@ class Jogo with ChangeNotifier {
 
   tempoJogado() {
     double tempo = 0.0;
-    if (_jogos.length > 0) {
+    if (_jogos.isNotEmpty) {
       for (var item in _jogos) {
         tempo += double.parse(item.tempoJogo!.toString());
       }
@@ -90,7 +90,6 @@ class Jogo with ChangeNotifier {
     final fimPartida = DateTime.now();
     final DateTime test = _inicioPartida!;
     var tempoJogo = fimPartida.difference(test);
-    // ${tempoJogo.inMinutes.toString()}:
     jogo.tempoJogo = tempoJogo.inSeconds.toString();
 
     DbUtil.insert(TabelaDB.placar, {

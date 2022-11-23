@@ -100,9 +100,8 @@ class _MyWidgetState extends State<ListaPlacar> {
           false;
     }
 
-    void _compartilhar(BuildContext context, Jogo jogo) {
+    void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
-      File imagemPublicar;
       String? origemImagem;
       if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
         msn =
@@ -171,36 +170,32 @@ class _MyWidgetState extends State<ListaPlacar> {
               delay: const Duration(microseconds: 300))
           .then((capturedImage) async {
         // final directory = (await getApplicationDocumentsDirectory()).path;
-        if (capturedImage != null) {
+        if (capturedImage.isNotEmpty) {
           final directory = await getApplicationDocumentsDirectory();
           final imagePath = await File('${directory.path}/image.png').create();
           await imagePath.writeAsBytes(capturedImage);
           setState(() {
             // caminho da imagem para o compartilhamento do plugin socialShare
             origemImagem = imagePath.path;
+            // arquivo a sex exibido na mensagem
+            _imageFile = capturedImage;
           });
         }
-        setState(() {
-          // arquivo a sex exibido na mensagem
-          _imageFile = capturedImage;
-        });
       }).whenComplete(() => {
                 showDialog(
                   barrierDismissible: true,
                   context: context,
                   builder: (context) => DialogComponent(
                     titulo: "Compartilhe seu placar!",
-                    mensagem: Container(
+                    mensagem: SizedBox(
                       height: 150,
                       child: Column(
                         children: [
                           Center(
                               child: _imageFile != null
                                   ? Image.memory(_imageFile!)
-                                  : Container(
-                                      child: const Text(
-                                          "Ops!, a imagem ainda não foi carregada"),
-                                    )),
+                                  : const Text(
+                                      "Ops!, a imagem ainda não foi carregada")),
                         ],
                       ),
                     ),
@@ -250,7 +245,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                         ),
                         SlidableAction(
                           onPressed: (context) {
-                            _compartilhar(context, listaJogo[index]);
+                            compartilhar(context, listaJogo[index]);
                           },
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
