@@ -288,6 +288,7 @@ class _HomeState extends State<Home> {
                     value: "Sobre",
                     child: InkWell(
                       onTap: () {
+                        Navigator.of(context).pop();
                         Navigator.of(context).pushNamed(AppRoutes.sobre);
                       },
                       child: Row(

@@ -78,30 +78,6 @@ class _MyWidgetState extends State<ListaPlacar> {
     final listaJogo = Provider.of<Jogo>(context).listaJogos;
     Provider.of<Jogo>(context, listen: false).loadDate();
 
-    Future<bool> showExitPopup() async {
-      return await showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) => DialogComponent(
-              titulo: "Você deseja sair ?",
-              listaCompomentes: [
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.of(context).pop(),
-                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
-                  },
-                  child: const Text('Ir para o inicio'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Sair'),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    }
-
     void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
       String? origemImagem;

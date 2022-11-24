@@ -33,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
             pageController.jumpToPage(index);
           });
         },
-        // showSelectedLabels: true,
-        // showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
