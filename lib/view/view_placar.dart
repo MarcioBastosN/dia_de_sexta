@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
+import 'compoment/alert_exit.dart';
+
 class Placar extends StatefulWidget {
   const Placar({super.key, required this.title});
 
@@ -87,31 +89,8 @@ class _PlacarState extends State<Placar> {
       ],
     );
 
-    Future<bool> showExitPopup() async {
-      return await showDialog(
-            context: context,
-            builder: (context) => DialogComponent(
-              titulo: "Você deseja sair ?",
-              listaCompomentes: [
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.of(context).pop(),
-                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
-                  },
-                  child: const Text('Ir para o inicio'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Sair'),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    }
-
     return WillPopScope(
-      onWillPop: showExitPopup,
+      onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
         body: Row(

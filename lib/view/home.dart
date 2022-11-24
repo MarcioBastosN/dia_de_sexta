@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/view/compoment/alert_exit.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:flutter/material.dart';
@@ -132,30 +133,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool> showExitPopup() async {
-      return await showDialog(
-            context: context,
-            builder: (context) => DialogComponent(
-              titulo: "Você deseja sair do Dia de sexta?",
-              listaCompomentes: [
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Não'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Sim'),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    }
-
     final media = MediaQuery.of(context).size;
 
     return WillPopScope(
-      onWillPop: showExitPopup,
+      onWillPop: () => AlertExit().showExitPopup(context),
       child: SizedBox(
         height: media.height,
         width: media.width,
@@ -201,9 +182,8 @@ class _HomeState extends State<Home> {
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.blue,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(30)),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 28),
                   child: Column(
@@ -308,8 +288,7 @@ class _HomeState extends State<Home> {
                     value: "Sobre",
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).popAndPushNamed(AppRoutes.sobre);
+                        Navigator.of(context).pushNamed(AppRoutes.sobre);
                       },
                       child: Row(
                         children: const [

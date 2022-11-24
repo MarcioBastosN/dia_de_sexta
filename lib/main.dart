@@ -2,7 +2,6 @@ import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/asset/custon/my_theme.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-// import 'package:dia_de_sexta/view/home.dart';
 import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
 import 'package:dia_de_sexta/view/view_lista_placar.dart';
 import 'package:dia_de_sexta/view/view_placar.dart';
@@ -57,7 +56,6 @@ class MyApp extends StatelessWidget {
         title: 'Dia de Sexta',
         theme: MyTheme().tema,
         routes: {
-          // AppRoutes.home: (context) => const Home(),
           AppRoutes.home: (context) => const HomeScreen(),
           AppRoutes.placar: (context) =>
               const Placar(title: "Seu Placar vai à:"),

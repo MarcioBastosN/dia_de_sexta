@@ -5,6 +5,8 @@ import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'compoment/alert_exit.dart';
+
 class ListaJogadores extends StatefulWidget {
   const ListaJogadores({super.key});
 
@@ -14,34 +16,12 @@ class ListaJogadores extends StatefulWidget {
 
 class _ListaJogadoresState extends State<ListaJogadores> {
   final _nomeJogador = TextEditingController();
-
-  Future<bool> showExitPopup() async {
-    return await showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (context) => DialogComponent(
-            titulo: "Você deseja sair ?",
-            listaCompomentes: [
-              ElevatedButton(
-                onPressed: () => {
-                  Navigator.of(context).pop(),
-                  Navigator.of(context).popAndPushNamed(AppRoutes.home),
-                },
-                child: const Text('Ir para o inicio'),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Sair'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
+  final focusJogador = FocusNode();
 
   @override
   void dispose() {
     _nomeJogador.dispose();
+    focusJogador.dispose();
     super.dispose();
   }
 
@@ -56,6 +36,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     final listaJogadores = Provider.of<Jogador>(context).listaJogadores;
 
     addJogadorLista(BuildContext context) {
+      focusJogador.requestFocus();
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
@@ -63,6 +44,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
           listaCompomentes: [
             TextFormCompoment(
               controller: _nomeJogador,
+              focus: focusJogador,
               label: "Nome",
               inputType: TextInputType.text,
             ),
@@ -81,6 +63,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                           nome: player,
                         ));
                         _nomeJogador.value = const TextEditingValue(text: "");
+                        focusJogador.unfocus();
                       }
                       Navigator.of(context).pop();
                     },
@@ -94,7 +77,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     }
 
     return WillPopScope(
-      onWillPop: showExitPopup,
+      onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         body: SafeArea(
           child: Provider.of<Jogador>(context, listen: false)

@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
 
+import 'compoment/alert_exit.dart';
+
 class ListaPlacar extends StatefulWidget {
   const ListaPlacar({super.key});
 
@@ -217,7 +219,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     }
 
     return WillPopScope(
-      onWillPop: showExitPopup,
+      onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
         body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
