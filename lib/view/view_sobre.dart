@@ -25,53 +25,62 @@ class _SobreState extends State<Sobre> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  color: Theme.of(context).backgroundColor,
-                  elevation: 0,
-                  child: Column(
+        child: Stack(children: [
+          Center(
+            child: DefaultTextStyle(
+              style: const TextStyle(fontSize: 22),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Desenvolvimento"),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text("Desenvolvimento"),
+                      Icon(Icons.person, color: Colors.white),
                       Text("Marcio Bastos"),
                     ],
                   ),
-                )
-              ],
-            ),
-            // menu
-            Positioned(
-              top: 10,
-              right: 10,
-              child: SafeArea(
-                child: PopupMenuButton(
-                  color: Colors.cyan,
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    PopupMenuItem(
-                      value: "Home",
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.home),
-                            Text("Home"),
-                          ],
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.phone_android,
+                        color: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
+                      Text("(93) 9 9175-3545"),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: SafeArea(
+              child: PopupMenuButton(
+                color: Colors.cyan,
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    value: "Home",
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.home);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.home),
+                          Text("Home"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

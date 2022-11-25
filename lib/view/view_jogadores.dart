@@ -59,11 +59,15 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       final player = _nomeJogador.text.toString().trim();
                       if (player.isNotEmpty) {
                         Provider.of<Jogador>(context, listen: false)
-                            .adicionarJogador(Jogador(
-                          nome: player,
-                        ));
+                            .adicionarJogador(
+                              Jogador(
+                                nome: player,
+                              ),
+                            )
+                            .whenComplete(() =>
+                                Provider.of<Jogador>(context, listen: false)
+                                    .loadDate());
                         _nomeJogador.value = const TextEditingValue(text: "");
-                        focusJogador.unfocus();
                       }
                       Navigator.of(context).pop();
                     },
@@ -143,8 +147,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   ),
                   itemCount: listaJogadores.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.red,
+                    return Card(
+                      color: listaJogadores[index].id != null
+                          ? Colors.green
+                          : Colors.red,
                       child: DefaultTextStyle(
                         style: const TextStyle(
                           color: Colors.white,
@@ -154,7 +160,11 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(listaJogadores[index].nome.toString()),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child:
+                                  Text(listaJogadores[index].nome.toString()),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -197,54 +207,3 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     );
   }
 }
-
-
-/*
-ListView.builder(
-                  itemCount: listaJogadores.length,
-                  itemBuilder: ((context, int index) {
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 8,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                listaJogadores[index].id.toString(),
-                              ),
-                              Text(
-                                listaJogadores[index].nome.toString(),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  updateJogadorLista(
-                                      context, listaJogadores[index]);
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4),
-                                  child: Icon(Icons.edit),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Provider.of<Jogador>(context, listen: false)
-                                      .removeJogador(listaJogadores[index]);
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4),
-                                  child: Icon(Icons.delete),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-*/

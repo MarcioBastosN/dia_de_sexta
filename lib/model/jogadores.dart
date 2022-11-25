@@ -49,9 +49,9 @@ class Jogador with ChangeNotifier {
   }
 
 // adiciona jogador na lista e no banco
-  adicionarJogador(Jogador jogador) {
+  Future<void> adicionarJogador(Jogador jogador) async {
     jogadores.add(jogador);
-    DbUtil.insert(TabelaDB.jogadores, {
+    await DbUtil.insert(TabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
     });
     notifyListeners();

@@ -58,20 +58,20 @@ class Jogo with ChangeNotifier {
 
   String retonaTempo(String valor) {
     String tempo = valor;
-    if (double.parse(valor) >= 60) {
+    if (int.parse(valor) > 60) {
       tempo = (int.parse(valor) / 60).toStringAsPrecision(3);
     }
     return tempo;
   }
 
   tempoJogado() {
-    double tempo = 0.0;
+    double tempo = 0;
     if (_jogos.isNotEmpty) {
       for (var item in _jogos) {
-        tempo += double.parse(item.tempoJogo!.toString());
+        tempo += int.parse(item.tempoJogo!.toString());
       }
     }
-    if (tempo >= 60) {
+    if (tempo > 60) {
       tempo = (tempo / 60);
     }
     return tempo.toStringAsPrecision(3);
