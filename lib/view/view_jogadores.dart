@@ -94,7 +94,39 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               : ListView.builder(
                   itemCount: listaJogadores.length,
                   itemBuilder: ((context, int index) {
-                    return Text(listaJogadores[index].nome.toString());
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 8,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                listaJogadores[index].nome.toString(),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Icon(Icons.edit),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Icon(Icons.delete),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   }),
                 ),
         ),
