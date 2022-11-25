@@ -48,4 +48,11 @@ class Jogador with ChangeNotifier {
     });
     notifyListeners();
   }
+
+  editarJogador(Jogador jogador) {
+    DbUtil.update(TabelaDB.jogadores, jogador.id!, {
+      'nome': jogador.nome,
+    });
+    notifyListeners();
+  }
 }

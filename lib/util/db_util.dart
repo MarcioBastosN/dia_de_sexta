@@ -50,4 +50,10 @@ class DbUtil {
     final db = await DbUtil.database();
     return db.query(tabela);
   }
+
+  static Future<void> update(
+      String table, int chave, Map<String, dynamic> data) async {
+    final db = await DbUtil.database();
+    await db.update(table, data, where: 'id = ?', whereArgs: [chave]);
+  }
 }

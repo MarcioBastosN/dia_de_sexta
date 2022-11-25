@@ -200,11 +200,11 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: const Text("jogo encerado"),
+        mensagem: const Text("reiniciar mantem as equipes"),
         listaCompomentes: [
           OutlinedButton(
             child: const Text(
-              'Jogo Rapido',
+              'Reiniciar',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -218,8 +218,12 @@ class Jogo with ChangeNotifier {
               // inicia novo jogo
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
-                  equipe_1: "equipe_1",
-                  equipe_2: "equipe_2",
+                  equipe_1:
+                      Provider.of<Jogo>(context, listen: false).equipe_1 ??
+                          "equipe_1",
+                  equipe_2:
+                      Provider.of<Jogo>(context, listen: false).equipe_2 ??
+                          "equipe_2",
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
