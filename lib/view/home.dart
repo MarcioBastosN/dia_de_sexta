@@ -1,7 +1,9 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/alert_exit.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/entrada_jogo_simples.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    Provider.of<Jogador>(context, listen: false).loadDate();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
@@ -136,7 +139,9 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // entrada de dados jogo simples
-                      const EntradaJogoSimples(),
+                      Provider.of<Jogador>(context).tamanhoListaJogadores() < 2
+                          ? const EntradaJogoSimples()
+                          : const EntradaListajogadores(),
                       // divisor
                       Row(
                         children: const [

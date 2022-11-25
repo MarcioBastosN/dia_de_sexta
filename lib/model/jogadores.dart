@@ -32,6 +32,14 @@ class Jogador with ChangeNotifier {
     return jogadores.length;
   }
 
+  List<String> getNomejogadores() {
+    List<String> nomes = [];
+    for (var jogador in jogadores) {
+      nomes.add(jogador.nome.toString());
+    }
+    return nomes;
+  }
+
 // remove jogador do banco e da lista
   removeJogador(Jogador jogador) {
     DbUtil.delete(TabelaDB.jogadores, jogador.id).whenComplete(() => {

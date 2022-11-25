@@ -1,4 +1,3 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
@@ -80,7 +79,6 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 // update jogador
     updateJogadorLista(BuildContext context, Jogador jogador) {
       focusJogador.requestFocus();
-      print("jogador: ${jogador.id}");
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
