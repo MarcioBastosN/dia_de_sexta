@@ -135,27 +135,28 @@ class _PlacarState extends State<Placar> {
                     ],
                   ),
             // troca lado
-            Center(
-              child: Positioned(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () => trocaLado(),
-                      icon: const Icon(
-                        Icons.compare_arrows_rounded,
-                        color: Colors.white,
-                        size: 48,
-                      ),
+            Positioned(
+              left: MediaQuery.of(context).size.width * .45,
+              top: (MediaQuery.of(context).size.height * .45) -
+                  appBar.preferredSize.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () => trocaLado(),
+                    icon: const Icon(
+                      Icons.compare_arrows_rounded,
+                      color: Colors.white,
+                      size: 48,
                     ),
-                    const Text(
-                      "Trocar",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                  ),
+                  const Text(
+                    "Trocar",
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
