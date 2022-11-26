@@ -1,6 +1,5 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/mostrador_placar_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +18,8 @@ class Placar extends StatefulWidget {
 }
 
 class _PlacarState extends State<Placar> {
+  bool trocaLadoJogo = false;
+
   @override
   void initState() {
     Wakelock.enable();
@@ -37,6 +38,12 @@ class _PlacarState extends State<Placar> {
   @override
   Widget build(BuildContext context) {
     Jogo jogo = Provider.of<Jogo>(context);
+
+    void trocaLado() {
+      setState(() {
+        trocaLadoJogo = !trocaLadoJogo;
+      });
+    }
 
     final appBar = AppBar(
       title: Text("${widget.title} ${jogo.fimJogo.toString()} pontos"),
@@ -70,7 +77,6 @@ class _PlacarState extends State<Placar> {
                     Navigator.of(context).pop();
                     Provider.of<Jogo>(context, listen: false)
                         .fecharPartida(context);
-                    Navigator.of(context).popAndPushNamed(AppRoutes.home);
                   },
                   child: Row(
                     children: const [
@@ -93,19 +99,64 @@ class _PlacarState extends State<Placar> {
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
-        body: Row(
-          children: <Widget>[
-            PlacarComponent(
-              titulo: jogo.equipe_1.toString(),
-              placar: jogo.pontosEquipe_1.toString(),
-              adciona: () => jogo.adicionaPontosEqp1(context),
-              decrementa: () => jogo.removePontosEquipe_1(),
-            ),
-            PlacarComponent(
-              titulo: jogo.equipe_2.toString(),
-              placar: jogo.pontosEquipe_2.toString(),
-              adciona: () => jogo.adicionaPontosEqp2(context),
-              decrementa: () => jogo.removePontosEquipe_2(),
+        body: Stack(
+          children: [
+            trocaLadoJogo == true
+                ? Row(
+                    children: <Widget>[
+                      PlacarComponent(
+                        titulo: jogo.equipe_1.toString(),
+                        placar: jogo.pontosEquipe_1.toString(),
+                        adciona: () => jogo.adicionaPontosEqp1(context),
+                        decrementa: () => jogo.removePontosEquipe_1(),
+                      ),
+                      PlacarComponent(
+                        titulo: jogo.equipe_2.toString(),
+                        placar: jogo.pontosEquipe_2.toString(),
+                        adciona: () => jogo.adicionaPontosEqp2(context),
+                        decrementa: () => jogo.removePontosEquipe_2(),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: <Widget>[
+                      PlacarComponent(
+                        titulo: jogo.equipe_2.toString(),
+                        placar: jogo.pontosEquipe_2.toString(),
+                        adciona: () => jogo.adicionaPontosEqp2(context),
+                        decrementa: () => jogo.removePontosEquipe_2(),
+                      ),
+                      PlacarComponent(
+                        titulo: jogo.equipe_1.toString(),
+                        placar: jogo.pontosEquipe_1.toString(),
+                        adciona: () => jogo.adicionaPontosEqp1(context),
+                        decrementa: () => jogo.removePontosEquipe_1(),
+                      ),
+                    ],
+                  ),
+            // troca lado
+            Center(
+              child: Positioned(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () => trocaLado(),
+                      icon: const Icon(
+                        Icons.compare_arrows_rounded,
+                        color: Colors.white,
+                        size: 48,
+                      ),
+                    ),
+                    const Text(
+                      "Trocar",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

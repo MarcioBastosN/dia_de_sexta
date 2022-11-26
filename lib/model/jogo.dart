@@ -227,7 +227,7 @@ class Jogo with ChangeNotifier {
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
-              Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+              notifyListeners();
             },
           ),
           ElevatedButton(
