@@ -48,9 +48,9 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
         Padding(
           padding: const EdgeInsets.only(bottom: 10, top: 10),
           child: DropdownSearch<String>(
-            popupProps: const PopupProps.menu(
+            popupProps: PopupProps.menu(
               showSelectedItems: true,
-              // disabledItemFn: (String s) => s.startsWith('I'),
+              disabledItemFn: (String s) => s.startsWith(time_2.toString()),
             ),
             items: jogadores,
             dropdownDecoratorProps: const DropDownDecoratorProps(
@@ -82,9 +82,9 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           ),
         ),
         DropdownSearch<String>(
-          popupProps: const PopupProps.menu(
+          popupProps: PopupProps.menu(
             showSelectedItems: true,
-            // disabledItemFn: (String s) => s.startsWith('I'),
+            disabledItemFn: (String s) => s.startsWith(time_1.toString()),
           ),
           items: jogadores,
           dropdownDecoratorProps: const DropDownDecoratorProps(
