@@ -137,8 +137,6 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   ],
                 ))
               : GridView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
@@ -161,36 +159,33 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(top: 4),
                               child:
                                   Text(listaJogadores[index].nome.toString()),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    updateJogadorLista(
-                                        context, listaJogadores[index]);
-                                  },
-                                  child: const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4),
-                                    child: Icon(Icons.edit),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 6),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      updateJogadorLista(
+                                          context, listaJogadores[index]);
+                                    },
+                                    child: const Icon(Icons.edit),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Provider.of<Jogador>(context, listen: false)
-                                        .removeJogador(listaJogadores[index]);
-                                  },
-                                  child: const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 4),
-                                    child: Icon(Icons.delete),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Provider.of<Jogador>(context,
+                                              listen: false)
+                                          .removeJogador(listaJogadores[index]);
+                                    },
+                                    child: const Icon(Icons.delete),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             )
                           ],
                         ),
