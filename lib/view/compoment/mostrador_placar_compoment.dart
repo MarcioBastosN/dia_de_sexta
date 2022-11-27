@@ -1,18 +1,22 @@
+import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class PlacarComponent extends StatefulWidget {
   final String titulo;
   final String placar;
-  final void Function() adciona;
-  final void Function() decrementa;
+  // final void Function() adciona;
+  // final void Function() decrementa;
+  final String addPontosEquipe;
+  final String decrementaPontosEquipe;
 
   const PlacarComponent({
     super.key,
     required this.titulo,
     required this.placar,
-    required this.adciona,
-    required this.decrementa,
+    required this.addPontosEquipe,
+    required this.decrementaPontosEquipe,
   });
 
   @override
@@ -20,8 +24,39 @@ class PlacarComponent extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<PlacarComponent> {
+  bool animatedButton = false;
   @override
   Widget build(BuildContext context) {
+    Jogo jogo = Provider.of<Jogo>(context, listen: false);
+
+    Future<void> animatedButtonIncrement(BuildContext context) async {
+      if (widget.addPontosEquipe.toString() == "Equipe_1") {
+        jogo.adicionaPontosEqp1(context);
+      } else {
+        jogo.adicionaPontosEqp2(context);
+      }
+
+      setState(() => animatedButton = !animatedButton);
+      // print("anima: $animatedButton");
+      await Future.delayed(const Duration(milliseconds: 1500));
+      setState(() => animatedButton = !animatedButton);
+      // print("anima: $animatedButton");
+    }
+
+    Future<void> animatedButtonDecrement(BuildContext context) async {
+      if (widget.decrementaPontosEquipe.toString() == "Equipe_1") {
+        jogo.removePontosEquipe_1();
+      } else {
+        jogo.removePontosEquipe_2();
+      }
+
+      setState(() => animatedButton = !animatedButton);
+      // print("anima: $animatedButton");
+      await Future.delayed(const Duration(milliseconds: 1500));
+      setState(() => animatedButton = !animatedButton);
+      // print("anima: $animatedButton");
+    }
+
     final media = MediaQuery.of(context).size;
     return SizedBox(
       width: media.width * .5,
@@ -41,19 +76,28 @@ class _MyWidgetState extends State<PlacarComponent> {
             ),
             // botoes
             SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: widget.adciona,
-                    child: const Icon(Icons.add),
-                  ),
-                  ElevatedButton(
-                    onPressed: widget.decrementa,
-                    child: const Icon(Icons.remove),
-                  ),
-                ],
-              ),
+              child: animatedButton == false
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => animatedButtonIncrement(context),
+                          // onPressed: widget.adciona,
+                          child: const Icon(Icons.add),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => animatedButtonDecrement(context),
+                          // onPressed: widget.decrementa,
+                          child: const Icon(Icons.remove),
+                        ),
+                      ],
+                    )
+                  : const Center(
+                      child: Text(
+                        "Placar alterado",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
             ),
           ],
         ),
