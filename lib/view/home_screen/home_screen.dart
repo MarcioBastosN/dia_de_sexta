@@ -30,7 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           setState(() {
             currentindex = index;
-            pageController.jumpToPage(index);
+            pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
+            // pageController.jumpToPage(index);
           });
         },
         type: BottomNavigationBarType.fixed,
