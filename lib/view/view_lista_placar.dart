@@ -53,25 +53,27 @@ class _MyWidgetState extends State<ListaPlacar> {
         ],
       ),
       actions: [
-        PopupMenuButton(
-          color: Colors.blue,
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            PopupMenuItem(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).popAndPushNamed(AppRoutes.placar);
-                },
-                child: Row(
-                  children: const [
-                    Icon(Icons.games, color: Colors.black),
-                    Text("Jogo"),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        Provider.of<Jogo>(context, listen: false).equipe_1 != null
+            ? PopupMenuButton(
+                color: Colors.blue,
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.games, color: Colors.black),
+                          Text("Jogo"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Row(),
       ],
     );
 

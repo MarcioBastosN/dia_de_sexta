@@ -40,10 +40,46 @@ class _PlacarState extends State<Placar> {
     Jogo jogo = Provider.of<Jogo>(context);
 
     void trocaLado() {
-      setState(() {
-        trocaLadoJogo = !trocaLadoJogo;
-      });
+      setState(() => trocaLadoJogo = !trocaLadoJogo);
     }
+
+    final menuItem_1 = PopupMenuItem(
+      value: "Home",
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).popAndPushNamed(AppRoutes.home);
+        },
+        child: Row(
+          children: const [
+            Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            Text("Home"),
+          ],
+        ),
+      ),
+    );
+
+    final MenuItem_2 = PopupMenuItem(
+      value: "Encerrar partida",
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+          Provider.of<Jogo>(context, listen: false).fecharPartida(context);
+        },
+        child: Row(
+          children: const [
+            Icon(
+              Icons.edit_note_sharp,
+              color: Colors.black,
+            ),
+            Text("Encerrar Partida"),
+          ],
+        ),
+      ),
+    );
 
     final appBar = AppBar(
       title: Text("${widget.title} ${jogo.fimJogo.toString()} pontos"),
@@ -51,45 +87,10 @@ class _PlacarState extends State<Placar> {
         ButtonBar(children: [
           PopupMenuButton(
             color: Colors.lightBlue,
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-              PopupMenuItem(
-                value: "Home",
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.home,
-                        color: Colors.black,
-                      ),
-                      Text("Home"),
-                    ],
-                  ),
-                ),
-              ),
-              PopupMenuItem(
-                value: "Encerrar partida",
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Provider.of<Jogo>(context, listen: false)
-                        .fecharPartida(context);
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.edit_note_sharp,
-                        color: Colors.black,
-                      ),
-                      Text("Encerrar Partida"),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            itemBuilder: (BuildContext context) =>
+                Provider.of<Jogo>(context, listen: false).equipe_1 != null
+                    ? <PopupMenuEntry>[menuItem_1, MenuItem_2]
+                    : <PopupMenuEntry>[menuItem_1],
           ),
         ])
       ],
