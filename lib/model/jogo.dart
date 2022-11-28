@@ -58,15 +58,15 @@ class Jogo with ChangeNotifier {
 
   String retonaTempo(String valor) {
     String tempo = valor;
-    if (double.parse(valor) > 60) {
-      tempo = (int.parse(valor) / 60).toStringAsPrecision(2);
+    if (int.parse(valor) > 60) {
+      tempo = (int.parse(valor) / 60).toStringAsPrecision(3);
     }
     return tempo;
   }
 
-  double tempoJogado() {
-    double tempo = 0.0;
-    if (_jogos.length > 0) {
+  tempoJogado() {
+    double tempo = 0;
+    if (_jogos.isNotEmpty) {
       for (var item in _jogos) {
         tempo += int.parse(item.tempoJogo!.toString());
       }
@@ -74,7 +74,7 @@ class Jogo with ChangeNotifier {
     if (tempo > 60) {
       tempo = (tempo / 60);
     }
-    return tempo;
+    return tempo.toStringAsPrecision(3);
   }
 
   registraJogoDbLista(BuildContext context) {
@@ -90,7 +90,6 @@ class Jogo with ChangeNotifier {
     final fimPartida = DateTime.now();
     final DateTime test = _inicioPartida!;
     var tempoJogo = fimPartida.difference(test);
-    // ${tempoJogo.inMinutes.toString()}:
     jogo.tempoJogo = tempoJogo.inSeconds.toString();
 
     DbUtil.insert(TabelaDB.placar, {
@@ -201,20 +200,11 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: const Text("jogo encerado"),
+        mensagem: const Text("reiniciar mantem as equipes"),
         listaCompomentes: [
           OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(
-                color: Colors.cyan,
-                width: 4,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-            ),
             child: const Text(
-              'Jogo Rapido',
+              'Reiniciar',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -228,12 +218,16 @@ class Jogo with ChangeNotifier {
               // inicia novo jogo
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
-                  equipe_1: "equipe_1",
-                  equipe_2: "equipe_2",
+                  equipe_1:
+                      Provider.of<Jogo>(context, listen: false).equipe_1 ??
+                          "equipe_1",
+                  equipe_2:
+                      Provider.of<Jogo>(context, listen: false).equipe_2 ??
+                          "equipe_2",
                   fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
                 ),
               );
-              Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+              notifyListeners();
             },
           ),
           ElevatedButton(

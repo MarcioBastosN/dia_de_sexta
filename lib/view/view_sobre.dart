@@ -24,74 +24,63 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  color: Theme.of(context).backgroundColor,
-                  elevation: 0,
-                  child: Column(
+        child: Stack(children: [
+          Center(
+            child: DefaultTextStyle(
+              style: const TextStyle(fontSize: 22),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Desenvolvimento"),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text("Desenvolvimento"),
+                      Icon(Icons.person, color: Colors.white),
                       Text("Marcio Bastos"),
                     ],
                   ),
-                )
-              ],
-            ),
-            // menu
-            Positioned(
-              top: 10,
-              right: 10,
-              child: SafeArea(
-                child: PopupMenuButton(
-                  color: Colors.cyan,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.phone_android,
+                        color: Colors.white,
+                      ),
+                      Text("(93) 9 9175-3545"),
+                    ],
                   ),
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    PopupMenuItem(
-                      value: "Home",
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.home),
-                            Text("Home"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: "Lista",
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context)
-                              .popAndPushNamed(AppRoutes.lista);
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.list),
-                            Text("Historico"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: SafeArea(
+              child: PopupMenuButton(
+                color: Colors.cyan,
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    value: "Home",
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.home);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.home),
+                          Text("Home"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

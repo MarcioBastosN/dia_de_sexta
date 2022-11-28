@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -11,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
+
+import 'compoment/alert_exit.dart';
 
 class ListaPlacar extends StatefulWidget {
   const ListaPlacar({super.key});
@@ -42,69 +45,44 @@ class _MyWidgetState extends State<ListaPlacar> {
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-          Text(
-              "Tempo: ${Provider.of<Jogo>(context, listen: true).tempoJogado().toStringAsPrecision(2)}"),
+          Row(
+            children: [
+              const Icon(Icons.timer, color: Colors.white),
+              Text(Provider.of<Jogo>(context, listen: false).tempoJogado()),
+            ],
+          ),
         ],
       ),
       actions: [
-        PopupMenuButton(
-          color: Colors.blue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-            PopupMenuItem(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).popAndPushNamed(AppRoutes.placar);
-                },
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.games,
-                      color: Colors.black,
+        Provider.of<Jogo>(context, listen: false).equipe_1 != null
+            ? PopupMenuButton(
+                color: Colors.blue,
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.games, color: Colors.black),
+                          Text("Jogo"),
+                        ],
+                      ),
                     ),
-                    Text("Jogo"),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                  ),
+                ],
+              )
+            : Row(),
       ],
     );
 
     final listaJogo = Provider.of<Jogo>(context).listaJogos;
     Provider.of<Jogo>(context, listen: false).loadDate();
 
-    Future<bool> showExitPopup() async {
-      return await showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) => DialogComponent(
-              titulo: "Você deseja sair ?",
-              listaCompomentes: [
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.of(context).pop(),
-                    Navigator.of(context).popAndPushNamed(AppRoutes.home),
-                  },
-                  child: const Text('Ir para o inicio'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Sair'),
-                ),
-              ],
-            ),
-          ) ??
-          false;
-    }
-
-    void _compartilhar(BuildContext context, Jogo jogo) {
+    void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
-      File imagemPublicar;
       String? origemImagem;
       if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
         msn =
@@ -120,44 +98,19 @@ class _MyWidgetState extends State<ListaPlacar> {
                 context,
                 Material(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      side: const BorderSide(
-                        color: Colors.cyan,
-                        width: 2,
-                      )),
+                    borderRadius: BorderRadius.circular(18),
+                    side: const BorderSide(color: Colors.cyan, width: 2),
+                  ),
                   child: Container(
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: Colors.cyan,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    height: 200,
+                    height: 250,
                     child: Column(
                       children: [
-                        const Text.rich(
-                          TextSpan(
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            children: [
-                              TextSpan(
-                                  text: "Dia de ",
-                                  style: TextStyle(color: Colors.blue)),
-                              TextSpan(
-                                text: 'Sexta',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Text.rich(
-                          TextSpan(
-                            style: TextStyle(fontSize: 16),
-                            children: [
-                              TextSpan(text: "Seu placar do vôlei"),
-                            ],
-                          ),
-                        ),
+                        const TituloHome(),
                         CardListaPlacar(
                           indexCard: jogo.id.toString(),
                           equipe1: jogo.equipe_1.toString(),
@@ -177,19 +130,17 @@ class _MyWidgetState extends State<ListaPlacar> {
               delay: const Duration(microseconds: 300))
           .then((capturedImage) async {
         // final directory = (await getApplicationDocumentsDirectory()).path;
-        if (capturedImage != null) {
+        if (capturedImage.isNotEmpty) {
           final directory = await getApplicationDocumentsDirectory();
           final imagePath = await File('${directory.path}/image.png').create();
           await imagePath.writeAsBytes(capturedImage);
           setState(() {
             // caminho da imagem para o compartilhamento do plugin socialShare
             origemImagem = imagePath.path;
+            // arquivo a sex exibido na mensagem
+            _imageFile = capturedImage;
           });
         }
-        setState(() {
-          // arquivo a sex exibido na mensagem
-          _imageFile = capturedImage;
-        });
       }).whenComplete(() => {
                 showDialog(
                   barrierDismissible: true,
@@ -197,18 +148,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                   builder: (context) => DialogComponent(
                     titulo: "Compartilhe seu placar!",
                     mensagem: Container(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Center(
-                              child: _imageFile != null
-                                  ? Image.memory(_imageFile!)
-                                  : Container(
-                                      child: const Text(
-                                          "Ops!, a imagem ainda não foi carregada"),
-                                    )),
-                        ],
-                      ),
+                      height: 160,
+                      child: Center(
+                          child: _imageFile != null
+                              ? Image.memory(_imageFile!)
+                              : const Text(
+                                  "Ops!, a imagem ainda não foi carregada")),
                     ),
                     listaCompomentes: [
                       ElevatedButton(
@@ -228,10 +173,9 @@ class _MyWidgetState extends State<ListaPlacar> {
     }
 
     return WillPopScope(
-      onWillPop: showExitPopup,
+      onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
-        backgroundColor: Colors.cyan,
         body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
                 reverse: true,
@@ -253,16 +197,16 @@ class _MyWidgetState extends State<ListaPlacar> {
                           backgroundColor: const Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
-                          label: 'Delete',
+                          label: 'Apagar',
                         ),
                         SlidableAction(
                           onPressed: (context) {
-                            _compartilhar(context, listaJogo[index]);
+                            compartilhar(context, listaJogo[index]);
                           },
-                          backgroundColor: Colors.lightBlue,
+                          backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
                           icon: Icons.share,
-                          label: 'Share',
+                          label: 'Compartilhar',
                         ),
                       ],
                     ),

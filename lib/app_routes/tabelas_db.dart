@@ -1,4 +1,6 @@
 class TabelaDB {
-  static const placar = "tb_placar";
-  static const jogadores = "tb_jogadores";
+  static const placar = "tbPlacar";
+  static const jogadores = "tbJogadores";
+  static const time = "tbTime";
+  static const grupos = "tbGrupoJogadores";
 }

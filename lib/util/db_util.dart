@@ -2,20 +2,34 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
 class TabelasDB {
-  static const String tb_placar =
-      "CREATE TABLE tb_placar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
-  static const String tb_jogadores =
-      "CREATE TABLE tb_jogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+  static const String tbPlacar =
+      "CREATE TABLE tbPlacar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
+  static const String tbJogadores =
+      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, possuiTime INTEGER);";
+  static const String tbTime =
+      "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+  static const String tbGrupos =
+      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
 }
 
 class DbUtil {
+  static Future<void> criarTabelasBanco(sql.Database db, int version) async {
+    List<String> queryes = [
+      TabelasDB.tbPlacar,
+      TabelasDB.tbJogadores,
+      TabelasDB.tbTime,
+    ];
+
+    for (String query in queryes) {
+      await db.execute(query);
+    }
+  }
+
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();
-    return sql.openDatabase(
+    return await sql.openDatabase(
       path.join(dbPath, 'AppVolei.db'),
-      onCreate: (db, version) {
-        return db.execute('${TabelasDB.tb_placar}, ${TabelasDB.tb_jogadores}');
-      },
+      onCreate: (db, version) => criarTabelasBanco(db, version),
       version: 2,
     );
   }
@@ -40,5 +54,11 @@ class DbUtil {
   static Future<List<Map<String, dynamic>>> getData(String tabela) async {
     final db = await DbUtil.database();
     return db.query(tabela);
+  }
+
+  static Future<void> update(
+      String table, int chave, Map<String, dynamic> data) async {
+    final db = await DbUtil.database();
+    await db.update(table, data, where: 'id = ?', whereArgs: [chave]);
   }
 }
