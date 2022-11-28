@@ -36,11 +36,11 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 
 // adicona jogador
     addJogadorLista(BuildContext context) {
-      focusJogador.requestFocus();
+      setState(() => focusJogador.requestFocus());
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
-          titulo: 'Registar jogador',
+          titulo: 'Registrar jogador',
           listaCompomentes: [
             TextFormCompoment(
               controller: _nomeJogador,
@@ -82,7 +82,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 
 // update jogador
     updateJogadorLista(BuildContext context, Jogador jogador) {
-      focusJogador.requestFocus();
+      setState(() {
+        focusJogador.requestFocus();
+        _nomeJogador.text = jogador.nome.toString();
+      });
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
