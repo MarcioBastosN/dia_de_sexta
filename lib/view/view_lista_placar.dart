@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -101,36 +102,15 @@ class _MyWidgetState extends State<ListaPlacar> {
                     side: const BorderSide(color: Colors.cyan, width: 2),
                   ),
                   child: Container(
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: Colors.cyan,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    height: 200,
+                    height: 250,
                     child: Column(
                       children: [
-                        const Text.rich(
-                          TextSpan(
-                            style: TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                  text: "Dia de ",
-                                  style: TextStyle(color: Colors.blue)),
-                              TextSpan(
-                                text: 'Sexta',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Text.rich(
-                          TextSpan(
-                            style: TextStyle(fontSize: 16),
-                            children: [
-                              TextSpan(text: "Seu placar do vôlei"),
-                            ],
-                          ),
-                        ),
+                        const TituloHome(),
                         CardListaPlacar(
                           indexCard: jogo.id.toString(),
                           equipe1: jogo.equipe_1.toString(),
@@ -167,17 +147,13 @@ class _MyWidgetState extends State<ListaPlacar> {
                   context: context,
                   builder: (context) => DialogComponent(
                     titulo: "Compartilhe seu placar!",
-                    mensagem: SizedBox(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Center(
-                              child: _imageFile != null
-                                  ? Image.memory(_imageFile!)
-                                  : const Text(
-                                      "Ops!, a imagem ainda não foi carregada")),
-                        ],
-                      ),
+                    mensagem: Container(
+                      height: 160,
+                      child: Center(
+                          child: _imageFile != null
+                              ? Image.memory(_imageFile!)
+                              : const Text(
+                                  "Ops!, a imagem ainda não foi carregada")),
                     ),
                     listaCompomentes: [
                       ElevatedButton(

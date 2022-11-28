@@ -6,6 +6,7 @@ import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/entrada_jogo_simples.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -92,37 +93,8 @@ class _HomeState extends State<Home> {
         child: Stack(children: [
           Column(
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        children: [
-                          TextSpan(
-                              text: "Dia de ",
-                              style: TextStyle(color: Colors.blue)),
-                          TextSpan(
-                            text: 'Sexta',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(fontSize: 20),
-                        children: [
-                          TextSpan(text: "Seu placar do vôlei"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              const Expanded(
+                child: TituloHome(),
               ),
               // parte de baixo
               SingleChildScrollView(

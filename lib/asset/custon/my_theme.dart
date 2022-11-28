@@ -14,16 +14,10 @@ class MyTheme {
           fontSize: 30,
           color: Colors.white,
         ),
+        bodyText2: TextStyle(
+          color: Colors.white,
+        ),
       ),
-      // sliderTheme: const SliderThemeData(
-      //   thumbColor: Colors.lightBlue,
-      //   valueIndicatorColor: Colors.lightBlue,
-      //   inactiveTrackColor: Colors.amber,
-      //   inactiveTickMarkColor: Colors.white,
-      //   valueIndicatorTextStyle: TextStyle(
-      //     color: Colors.white,
-      //   ),
-      // ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.lightBlue,
@@ -56,3 +50,13 @@ class MyTheme {
         ),
       ));
 }
+
+      // sliderTheme: const SliderThemeData(
+      //   thumbColor: Colors.lightBlue,
+      //   valueIndicatorColor: Colors.lightBlue,
+      //   inactiveTrackColor: Colors.amber,
+      //   inactiveTickMarkColor: Colors.white,
+      //   valueIndicatorTextStyle: TextStyle(
+      //     color: Colors.white,
+      //   ),
+      // ),
