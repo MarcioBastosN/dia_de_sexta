@@ -5,7 +5,11 @@ class TabelasDB {
   static const String tbPlacar =
       "CREATE TABLE tbPlacar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
   static const String tbJogadores =
-      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, possuiTime INTEGER);";
+  static const String tbTime =
+      "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+  static const String tbGrupos =
+      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
 }
 
 class DbUtil {
@@ -13,6 +17,7 @@ class DbUtil {
     List<String> queryes = [
       TabelasDB.tbPlacar,
       TabelasDB.tbJogadores,
+      TabelasDB.tbTime,
     ];
 
     for (String query in queryes) {

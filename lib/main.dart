@@ -2,6 +2,7 @@ import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/asset/custon/my_theme.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
 import 'package:dia_de_sexta/view/splash_screen.dart';
 import 'package:dia_de_sexta/view/view_lista_placar.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => Jogador(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Time(),
         ),
       ],
       child: MaterialApp(

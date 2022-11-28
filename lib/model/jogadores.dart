@@ -8,10 +8,14 @@ class Jogador with ChangeNotifier {
 
   int? id;
   String? nome;
+  // equilave ao booleano que nao possui representaçao no sqflite
+  // assume valor de 0 || 1
+  int? possuiTime;
 
   Jogador({
     this.id,
     this.nome,
+    this.possuiTime,
   });
 
 // retorna dados do banco;
@@ -22,6 +26,7 @@ class Jogador with ChangeNotifier {
           (item) => Jogador(
             id: item['id'],
             nome: item['nome'],
+            possuiTime: item['possuiTime'],
           ),
         )
         .toList();
@@ -53,6 +58,7 @@ class Jogador with ChangeNotifier {
     jogadores.add(jogador);
     await DbUtil.insert(TabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
+      'possuiTime': 0,
     });
     notifyListeners();
   }
