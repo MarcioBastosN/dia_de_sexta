@@ -37,4 +37,8 @@ class Time with ChangeNotifier {
     });
     notifyListeners();
   }
+
+  int tamanhoListaTimes() {
+    return times.length;
+  }
 }

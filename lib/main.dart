@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/asset/custon/my_theme.dart';
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => Time(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Grupo(),
         ),
       ],
       child: MaterialApp(
