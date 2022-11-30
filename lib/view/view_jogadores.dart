@@ -158,7 +158,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ],
           ),
         ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        // floatingActionButtonLocation:
+        //     FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: SpeedDial(
           icon: Icons.menu,
           overlayColor: Colors.blue.withAlpha(100),

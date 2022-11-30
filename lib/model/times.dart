@@ -41,4 +41,19 @@ class Time with ChangeNotifier {
   int tamanhoListaTimes() {
     return times.length;
   }
+
+  List<String> getNomeTimes() {
+    List<String> nomes = [];
+    for (var time in times) {
+      nomes.add(time.nome.toString());
+    }
+    return nomes;
+  }
+
+  Future<void> editarNomeTime(Time time) async {
+    await DbUtil.update(TabelaDB.time, time.id!, {
+      'nome': time.nome,
+    });
+    notifyListeners();
+  }
 }
