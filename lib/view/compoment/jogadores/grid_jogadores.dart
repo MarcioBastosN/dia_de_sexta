@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
 import '../dialog_component.dart';
@@ -65,6 +68,14 @@ class _GridJogadoresState extends State<GridJogadores> {
       );
     }
 
+    bool verificaIndex(int index) {
+      if (index % 3 < 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -74,44 +85,54 @@ class _GridJogadoresState extends State<GridJogadores> {
       ),
       itemCount: listaJogadores.length,
       itemBuilder: (context, index) {
-        return Card(
-          color: listaJogadores[index].id != null ? Colors.green : Colors.red,
-          child: DefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Text(listaJogadores[index].nome.toString()),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          updateJogadorLista(context, listaJogadores[index]);
-                        },
-                        child: const Icon(Icons.edit),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Provider.of<Jogador>(context, listen: false)
-                              .removeJogador(listaJogadores[index]);
-                        },
-                        child: const Icon(Icons.delete),
-                      ),
-                    ],
+        return Scaffold(
+          body: Card(
+            color: listaJogadores[index].id != null ? Colors.blue : Colors.red,
+            child: DefaultTextStyle(
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              child: Container(
+                height: 50,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(listaJogadores[index].nome.toString()),
                   ),
-                )
-              ],
+                ),
+              ),
             ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: SpeedDial(
+            icon: Icons.menu,
+            mini: true,
+            overlayColor: Colors.blue.withAlpha(100),
+            backgroundColor: Colors.cyan,
+            direction: SpeedDialDirection.down,
+            switchLabelPosition: verificaIndex(index),
+            children: [
+              SpeedDialChild(
+                labelStyle: const TextStyle(color: Colors.black),
+                label: "Editar",
+                child: const Icon(Icons.edit),
+                onTap: () {
+                  updateJogadorLista(context, listaJogadores[index]);
+                },
+              ),
+              SpeedDialChild(
+                labelStyle: const TextStyle(color: Colors.black),
+                label: "Apagar",
+                child: const Icon(Icons.delete),
+                onTap: () {
+                  Provider.of<Jogador>(context, listen: false)
+                      .removeJogador(listaJogadores[index]);
+                },
+              ),
+            ],
           ),
         );
       },

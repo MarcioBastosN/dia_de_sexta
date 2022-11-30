@@ -56,4 +56,12 @@ class Time with ChangeNotifier {
     });
     notifyListeners();
   }
+
+  // remove jogador do banco e da lista
+  removeTime(Time time) {
+    DbUtil.delete(TabelaDB.time, time.id).whenComplete(() => {
+          times.remove(time),
+          notifyListeners(),
+        });
+  }
 }

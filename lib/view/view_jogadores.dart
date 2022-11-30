@@ -138,23 +138,35 @@ class _ListaJogadoresState extends State<ListaJogadores> {
           child: Column(
             children: [
               Expanded(
-                child: Provider.of<Jogador>(context, listen: false)
-                            .tamanhoListaJogadores() ==
-                        0
+                child:
+                    Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("Adicione Jogadores"),
+                                Text(
+                                    "Necessario 2 ou mais jodadores para formar times!"),
+                                Center(child: CircularProgressIndicator()),
+                              ],
+                            ),
+                          )
+                        : const GridJogadores(),
+              ),
+              Expanded(
+                child: Provider.of<Time>(context).tamanhoListaTimes() == 0
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Text("Adicione Jogadores"),
-                            Text(
-                                "Necessario 2 ou mais jodadores para formar times!"),
+                            Text("Adicione Times"),
+                            Text("Crie 2 ou mais times pra usalos no inicio!"),
                             Center(child: CircularProgressIndicator()),
                           ],
                         ),
                       )
-                    : const GridJogadores(),
+                    : const GridTimes(),
               ),
-              const Expanded(child: GridTimes()),
             ],
           ),
         ),
