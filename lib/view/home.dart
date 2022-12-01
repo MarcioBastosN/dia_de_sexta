@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Provider.of<Jogador>(context, listen: false).loadDate();
+    Provider.of<Time>(context, listen: false).loadDate();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
