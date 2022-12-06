@@ -61,7 +61,7 @@ class Time with ChangeNotifier {
   removeTime(Time time) {
     DbUtil.delete(TabelaDB.time, time.id).whenComplete(() => {
           times.remove(time),
-          notifyListeners(),
         });
+    notifyListeners();
   }
 }

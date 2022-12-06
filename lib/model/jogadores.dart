@@ -63,8 +63,8 @@ class Jogador with ChangeNotifier {
   removeJogador(Jogador jogador) {
     DbUtil.delete(TabelaDB.jogadores, jogador.id).whenComplete(() => {
           jogadores.remove(jogador),
-          notifyListeners(),
         });
+    notifyListeners();
   }
 
 // adiciona jogador na lista e no banco
