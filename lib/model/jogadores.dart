@@ -45,6 +45,20 @@ class Jogador with ChangeNotifier {
     return nomes;
   }
 
+  List<String> getNomejogadoresDisponiveis() {
+    List<String> nomes = [];
+    for (var jogador in jogadores) {
+      if (jogador.possuiTime != 1) {
+        nomes.add(jogador.nome.toString());
+      }
+    }
+    return nomes;
+  }
+
+  int getIdjogador(String nome) {
+    return 0;
+  }
+
 // remove jogador do banco e da lista
   removeJogador(Jogador jogador) {
     DbUtil.delete(TabelaDB.jogadores, jogador.id).whenComplete(() => {
@@ -66,7 +80,26 @@ class Jogador with ChangeNotifier {
   editarJogador(Jogador jogador) {
     DbUtil.update(TabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
+      "possuiTime": jogador.possuiTime,
     });
     notifyListeners();
+  }
+
+  int? retornaIdJogador(String nome) {
+    for (var jogador in jogadores) {
+      if (jogador.nome! == nome) {
+        return jogador.id!;
+      }
+    }
+  }
+
+  String retornaNomejogador(int id) {
+    String nome = "";
+    for (var jogador in jogadores) {
+      if (jogador.id == id) {
+        nome = jogador.nome!;
+      }
+    }
+    return nome;
   }
 }

@@ -1,4 +1,7 @@
+import 'package:dia_de_sexta/model/grupo.dart';
+import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +19,12 @@ class GridTimes extends StatefulWidget {
 class _GridTimesState extends State<GridTimes> {
   final nomeTime = TextEditingController();
   final focusTime = FocusNode();
+
+  @override
+  void initState() {
+    Provider.of<Grupo>(context, listen: false).loadDate();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +81,69 @@ class _GridTimesState extends State<GridTimes> {
 
 // adiciona um jogador ao time
 // deve retornar apenas a lista de jogadores disponiveis
+    selecionaJogador(BuildContext context, int idTime) {
+      int? jogadorId;
+      String? nomeJogador;
+      showDialog(
+        context: context,
+        builder: (context) => DialogComponent(
+          titulo: "Selecione um Jogador",
+          listaCompomentes: [
+            DropdownSearch<String>(
+              items: Provider.of<Jogador>(context, listen: false)
+                  .getNomejogadoresDisponiveis(),
+              dropdownDecoratorProps: const DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+                  labelText: "Jogador",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.cyan,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                  ),
+                  labelStyle: TextStyle(
+                    color: Colors.white60,
+                  ),
+                ),
+              ),
+              onChanged: (String? value) {
+                // atribui o valor selecionado
+                setState(() {
+                  nomeJogador = value!;
+                  jogadorId = Provider.of<Jogador>(context, listen: false)
+                      .retornaIdJogador(value);
+                });
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // altera o status do jogador
+                Provider.of<Jogador>(context, listen: false).editarJogador(
+                  Jogador(
+                    id: jogadorId,
+                    nome: nomeJogador,
+                    possuiTime: 1,
+                  ),
+                );
+                Provider.of<Jogador>(context, listen: false).loadDate();
+                // salva o registro do time
+                Provider.of<Grupo>(context, listen: false).adicionarGrupo(Grupo(
+                  idJogador: jogadorId,
+                  idTime: idTime,
+                ));
+                Navigator.of(context).pop();
+              },
+              child: const Text("Salvar"),
+            ),
+          ],
+        ),
+      );
+    }
 
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -82,6 +154,9 @@ class _GridTimesState extends State<GridTimes> {
       ),
       itemCount: listaTimes.length,
       itemBuilder: (context, index) {
+        // carrega a lista de jogadores de um grupo
+        final List<Grupo> grupo = Provider.of<Grupo>(context, listen: false)
+            .jogadoresTimes(listaTimes[index].id!);
         return Scaffold(
           body: Card(
             color: Colors.blue,
@@ -92,11 +167,7 @@ class _GridTimesState extends State<GridTimes> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    right: 16.0,
-                    top: 8,
-                    bottom: 8,
-                    left: 8,
-                  ),
+                      right: 16.0, top: 8, bottom: 8, left: 8),
                   child: Row(
                     children: [
                       Text(
@@ -111,16 +182,29 @@ class _GridTimesState extends State<GridTimes> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: Provider.of<Grupo>(context, listen: false)
+                        .qtdjogadoresTime(listaTimes[index].id!),
                     itemBuilder: (context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 16, bottom: 8),
-                        child: Text(
-                          index.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
+                        child: Row(
+                          children: [
+                            Text("${grupo[index].idJogador!}"),
+                            Text(
+                              Provider.of<Jogador>(context, listen: false)
+                                  .retornaNomejogador(grupo[index].idJogador!),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                //
+                              },
+                              icon: const Icon(Icons.delete),
+                            )
+                          ],
                         ),
                       );
                     },
@@ -143,18 +227,23 @@ class _GridTimesState extends State<GridTimes> {
                 onTap: () => editaNomeTime(context, listaTimes[index]),
               ),
               SpeedDialChild(
+                visible: Provider.of<Jogador>(context)
+                        .getNomejogadoresDisponiveis()
+                        .isEmpty
+                    ? false
+                    : true,
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Novo Jogador",
                 child: const Icon(Icons.person_add),
-                onTap: () {
-                  // adicionar funcao
-                },
+                onTap: () => selecionaJogador(context, listaTimes[index].id!),
               ),
               SpeedDialChild(
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Apagar",
                 child: const Icon(Icons.delete),
                 onTap: () => {
+                  // liberar os jogadores
+                  // apagar todos os registros de jogadores
                   Provider.of<Time>(context, listen: false)
                       .removeTime(listaTimes[index])
                 },

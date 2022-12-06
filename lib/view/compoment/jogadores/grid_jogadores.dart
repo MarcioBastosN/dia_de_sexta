@@ -81,25 +81,36 @@ class _GridJogadoresState extends State<GridJogadores> {
         crossAxisCount: 3,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 5 / 3,
+        childAspectRatio: 4 / 3,
       ),
       itemCount: listaJogadores.length,
       itemBuilder: (context, index) {
         return Scaffold(
           body: Card(
-            color: listaJogadores[index].id != null ? Colors.blue : Colors.red,
+            color: listaJogadores[index].id != null
+                ? listaJogadores[index].possuiTime == 1
+                    ? Colors.blueGrey
+                    : Colors.blue
+                : Colors.red,
             child: DefaultTextStyle(
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
               child: Container(
-                height: 50,
+                height: 70,
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(listaJogadores[index].nome.toString()),
+                    child: Column(
+                      children: [
+                        Text(listaJogadores[index].nome.toString()),
+                        Text(listaJogadores[index].possuiTime == 1
+                            ? "Indisponivel"
+                            : "Disponivel"),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
@@ -196,6 +197,21 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.gamepad),
               onTap: () => addTimeLista(context),
+            ),
+            // apagar registros grupos
+            SpeedDialChild(
+              visible: Provider.of<Jogador>(context, listen: false)
+                          .tamanhoListaJogadores() >=
+                      2
+                  ? true
+                  : false,
+              backgroundColor: Colors.red,
+              labelBackgroundColor: Colors.red,
+              label: "Zerar times",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.refresh),
+              onTap: () => Provider.of<Grupo>(context, listen: false)
+                  .zerarTimes(context),
             ),
           ],
         ),

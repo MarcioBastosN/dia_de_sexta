@@ -9,7 +9,7 @@ class TabelasDB {
   static const String tbTime =
       "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
   static const String tbGrupos =
-      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
+      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador TEXT);";
 }
 
 class DbUtil {
@@ -18,6 +18,7 @@ class DbUtil {
       TabelasDB.tbPlacar,
       TabelasDB.tbJogadores,
       TabelasDB.tbTime,
+      TabelasDB.tbGrupos,
     ];
 
     for (String query in queryes) {
@@ -57,8 +58,8 @@ class DbUtil {
   }
 
   static Future<void> update(
-      String table, int chave, Map<String, dynamic> data) async {
+      String tabela, int chave, Map<String, dynamic> data) async {
     final db = await DbUtil.database();
-    await db.update(table, data, where: 'id = ?', whereArgs: [chave]);
+    await db.update(tabela, data, where: 'id = ?', whereArgs: [chave]);
   }
 }
