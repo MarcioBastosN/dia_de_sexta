@@ -1,6 +1,7 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/alert_exit.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/entrada_jogo_list_jogadores.dart';
@@ -27,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Provider.of<Jogador>(context, listen: false).loadDate();
+    Provider.of<Time>(context, listen: false).loadDate();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
@@ -111,7 +112,7 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // entrada de dados jogo simples
-                      Provider.of<Jogador>(context).tamanhoListaJogadores() < 2
+                      Provider.of<Time>(context).tamanhoListaTimes() < 2
                           ? const EntradaJogoSimples()
                           : const EntradaListajogadores(),
                       // divisor

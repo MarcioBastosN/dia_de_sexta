@@ -13,19 +13,26 @@ class TituloHome extends StatelessWidget {
             style: TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.bold,
+              color: Colors.blue,
             ),
             children: [
-              TextSpan(text: "Dia de ", style: TextStyle(color: Colors.blue)),
+              TextSpan(
+                text: "Dia de ",
+                // style: TextStyle(color: Colors.blue),
+              ),
               TextSpan(
                 text: 'Sexta',
-                style: TextStyle(color: Colors.white),
+                // style: TextStyle(color: Colors.white),
               ),
             ],
           ),
         ),
         Text.rich(
           TextSpan(
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(
+              fontSize: 20,
+              // color: Colors.blue,
+            ),
             children: [
               TextSpan(text: "Seu placar do vôlei"),
             ],

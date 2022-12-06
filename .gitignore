@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/.vs/
 
 # Symbolication related
 app.*.symbols
@@ -42,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.vs/slnx.sqlite
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/dia_de_sexta/FileContentIndex/read.lock
+.vs/dia_de_sexta/v17/.suo
+.vs/dia_de_sexta/v17/.wsuo

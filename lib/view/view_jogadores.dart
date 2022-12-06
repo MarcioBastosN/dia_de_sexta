@@ -1,7 +1,11 @@
 import 'package:dia_de_sexta/model/jogadores.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
 import 'compoment/alert_exit.dart';
@@ -17,6 +21,9 @@ class _ListaJogadoresState extends State<ListaJogadores> {
   final _nomeJogador = TextEditingController();
   final focusJogador = FocusNode();
 
+  final _nomeTime = TextEditingController();
+  final focusTime = FocusNode();
+
   @override
   void dispose() {
     _nomeJogador.dispose();
@@ -27,13 +34,12 @@ class _ListaJogadoresState extends State<ListaJogadores> {
   @override
   void initState() {
     Provider.of<Jogador>(context, listen: false).loadDate();
+    Provider.of<Time>(context, listen: false).loadDate();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final listaJogadores = Provider.of<Jogador>(context).listaJogadores;
-
 // adicona jogador
     addJogadorLista(BuildContext context) {
       setState(() => focusJogador.requestFocus());
@@ -80,21 +86,17 @@ class _ListaJogadoresState extends State<ListaJogadores> {
       );
     }
 
-// update jogador
-    updateJogadorLista(BuildContext context, Jogador jogador) {
-      setState(() {
-        focusJogador.requestFocus();
-        _nomeJogador.text = jogador.nome.toString();
-      });
+    addTimeLista(BuildContext context) {
+      setState(() => focusTime.requestFocus());
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
-          titulo: 'Atualizar jogador',
+          titulo: 'Registrar time',
           listaCompomentes: [
             TextFormCompoment(
-              controller: _nomeJogador,
-              focus: focusJogador,
-              label: "Nome",
+              controller: _nomeTime,
+              focus: focusTime,
+              label: "Nome do time",
               inputType: TextInputType.text,
             ),
             Padding(
@@ -105,13 +107,18 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   ElevatedButton(
                     child: const Text("salvar"),
                     onPressed: () {
-                      final player = _nomeJogador.text.toString().trim();
-                      if (player.isNotEmpty) {
-                        jogador.nome = player;
-                        Provider.of<Jogador>(context, listen: false)
-                            .editarJogador(jogador);
-                        _nomeJogador.value = const TextEditingValue(text: "");
-                        focusJogador.unfocus();
+                      final time = _nomeTime.text.toString().trim();
+                      if (time.isNotEmpty) {
+                        Provider.of<Time>(context, listen: false)
+                            .adicionarTime(
+                              Time(
+                                nome: time,
+                              ),
+                            )
+                            .whenComplete(() =>
+                                Provider.of<Time>(context, listen: false)
+                                    .loadDate());
+                        _nomeTime.value = const TextEditingValue(text: "");
                       }
                       Navigator.of(context).pop();
                     },
@@ -128,78 +135,69 @@ class _ListaJogadoresState extends State<ListaJogadores> {
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         body: SafeArea(
-          child: Provider.of<Jogador>(context, listen: false)
-                      .tamanhoListaJogadores() ==
-                  0
-              ? Center(
-                  child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("Adicione Jogadores"),
-                    CircularProgressIndicator(),
-                  ],
-                ))
-              : GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 5 / 3,
-                  ),
-                  itemCount: listaJogadores.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: listaJogadores[index].id != null
-                          ? Colors.green
-                          : Colors.red,
-                      child: DefaultTextStyle(
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child:
-                                  Text(listaJogadores[index].nome.toString()),
+          child: Column(
+            children: [
+              Expanded(
+                child:
+                    Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("Adicione Jogadores"),
+                                Text(
+                                    "Necessario 2 ou mais jodadores para formar times!"),
+                                Center(child: CircularProgressIndicator()),
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      updateJogadorLista(
-                                          context, listaJogadores[index]);
-                                    },
-                                    child: const Icon(Icons.edit),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Provider.of<Jogador>(context,
-                                              listen: false)
-                                          .removeJogador(listaJogadores[index]);
-                                    },
-                                    child: const Icon(Icons.delete),
-                                  ),
-                                ],
-                              ),
-                            )
+                          )
+                        : const GridJogadores(),
+              ),
+              Expanded(
+                child: Provider.of<Time>(context).tamanhoListaTimes() == 0
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text("Adicione Times"),
+                            Text("Crie 2 ou mais times pra usalos no inicio!"),
+                            Center(child: CircularProgressIndicator()),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      )
+                    : const GridTimes(),
+              ),
+            ],
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => addJogadorLista(context),
-          child: const Icon(Icons.add),
+        // floatingActionButtonLocation:
+        //     FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButton: SpeedDial(
+          icon: Icons.menu,
+          overlayColor: Colors.blue.withAlpha(100),
+          children: [
+            SpeedDialChild(
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Jogador",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.person_add),
+              onTap: () => addJogadorLista(context),
+            ),
+            SpeedDialChild(
+              visible: Provider.of<Jogador>(context, listen: false)
+                          .tamanhoListaJogadores() >=
+                      2
+                  ? true
+                  : false,
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Time",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.gamepad),
+              onTap: () => addTimeLista(context),
+            ),
+          ],
         ),
       ),
     );

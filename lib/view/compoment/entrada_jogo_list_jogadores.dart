@@ -1,4 +1,4 @@
-import 'package:dia_de_sexta/model/jogadores.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +39,8 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Jogador>(context, listen: false).loadDate();
-    final jogadores = Provider.of<Jogador>(context).getNomejogadores();
+    Provider.of<Time>(context, listen: false).loadDate();
+    final jogadores = Provider.of<Time>(context).getNomeTimes();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -78,7 +78,6 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
                 time_1 = value;
               });
             },
-            // selectedItem: jogadores[0],
           ),
         ),
         DropdownSearch<String>(
