@@ -69,11 +69,10 @@ class Jogador with ChangeNotifier {
 
 // adiciona jogador na lista e no banco
   Future<void> adicionarJogador(Jogador jogador) async {
-    jogadores.add(jogador);
     await DbUtil.insert(TabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
       'possuiTime': 0,
-    });
+    }).whenComplete(() => jogadores.add(jogador));
     notifyListeners();
   }
 
@@ -85,7 +84,7 @@ class Jogador with ChangeNotifier {
     notifyListeners();
   }
 
-  int? retornaIdJogador(String nome) {
+  retornaIdJogador(String nome) {
     for (var jogador in jogadores) {
       if (jogador.nome! == nome) {
         return jogador.id!;

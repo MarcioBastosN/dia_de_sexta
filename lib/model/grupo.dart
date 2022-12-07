@@ -75,8 +75,7 @@ class Grupo with ChangeNotifier {
               .retornaNomejogador(grupo.idJogador!),
           possuiTime: 0,
         ));
-        grupos.remove(grupo);
-      });
+      }).whenComplete(() => grupos.remove(grupo));
     }
     //recarrega lista times
     Provider.of<Time>(context, listen: false).loadDate();
