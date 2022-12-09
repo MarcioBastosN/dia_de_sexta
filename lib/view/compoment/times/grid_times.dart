@@ -155,7 +155,7 @@ class _GridTimesState extends State<GridTimes> {
       itemCount: listaTimes.length,
       itemBuilder: (context, index) {
         // carrega a lista de jogadores de um grupo
-        final List<Grupo> grupo = Provider.of<Grupo>(context, listen: false)
+        List<Grupo> grupo = Provider.of<Grupo>(context, listen: false)
             .jogadoresTimes(listaTimes[index].id!);
         return Scaffold(
           body: Card(
