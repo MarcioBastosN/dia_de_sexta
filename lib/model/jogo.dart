@@ -65,6 +65,7 @@ class Jogo with ChangeNotifier {
   }
 
   tempoJogado() {
+    // guardar os minutos
     double tempo = 0;
     if (_jogos.isNotEmpty) {
       for (var item in _jogos) {
