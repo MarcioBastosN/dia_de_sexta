@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -98,7 +96,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
-              child: Container(
+              child: SizedBox(
                 height: 70,
                 child: Center(
                   child: Padding(

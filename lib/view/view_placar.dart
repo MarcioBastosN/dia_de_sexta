@@ -62,7 +62,7 @@ class _PlacarState extends State<Placar> {
       ),
     );
 
-    final MenuItem_2 = PopupMenuItem(
+    final menuItem_2 = PopupMenuItem(
       value: "Encerrar partida",
       child: InkWell(
         onTap: () {
@@ -89,7 +89,7 @@ class _PlacarState extends State<Placar> {
             color: Colors.lightBlue,
             itemBuilder: (BuildContext context) =>
                 Provider.of<Jogo>(context, listen: false).equipe_1 != null
-                    ? <PopupMenuEntry>[menuItem_1, MenuItem_2]
+                    ? <PopupMenuEntry>[menuItem_1, menuItem_2]
                     : <PopupMenuEntry>[menuItem_1],
           ),
         ])

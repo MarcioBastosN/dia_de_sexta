@@ -147,7 +147,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                   context: context,
                   builder: (context) => DialogComponent(
                     titulo: "Compartilhe seu placar!",
-                    mensagem: Container(
+                    mensagem: SizedBox(
                       height: 160,
                       child: Center(
                           child: _imageFile != null

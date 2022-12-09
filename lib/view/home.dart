@@ -1,5 +1,4 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/alert_exit.dart';
