@@ -1,6 +1,7 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
+import 'package:dia_de_sexta/view/compoment/times/lista_jogadores_time.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -122,7 +123,7 @@ class _GridTimesState extends State<GridTimes> {
             ),
             ElevatedButton(
               onPressed: () {
-                // altera o status do jogador
+                // altera o status do jogador - jogador reservado por um time
                 Provider.of<Jogador>(context, listen: false).editarJogador(
                   Jogador(
                     id: jogadorId,
@@ -130,10 +131,11 @@ class _GridTimesState extends State<GridTimes> {
                     possuiTime: 1,
                   ),
                 );
+                // recarrega lista de jogadores
                 Provider.of<Jogador>(context, listen: false).loadDate();
                 // salva o registro do time
                 Provider.of<Grupo>(context, listen: false).adicionarGrupo(Grupo(
-                  idJogador: jogadorId,
+                  idJogador: nomeJogador,
                   idTime: idTime,
                 ));
                 Navigator.of(context).pop();
@@ -181,34 +183,7 @@ class _GridTimesState extends State<GridTimes> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: Provider.of<Grupo>(context, listen: false)
-                        .qtdjogadoresTime(listaTimes[index].id!),
-                    itemBuilder: (context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 8),
-                        child: Row(
-                          children: [
-                            Text("${grupo[index].idJogador!}"),
-                            Text(
-                              Provider.of<Jogador>(context, listen: false)
-                                  .retornaNomejogador(grupo[index].idJogador!),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                //
-                              },
-                              icon: const Icon(Icons.delete),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                  child: ListajogadoresTime(grupo: grupo[index]),
                 ),
               ],
             ),
@@ -243,6 +218,7 @@ class _GridTimesState extends State<GridTimes> {
                 child: const Icon(Icons.delete),
                 onTap: () => {
                   // liberar os jogadores
+                  // Provider.of<Jogador>(context, listen: false).liberarjogadores(),
                   // apagar todos os registros de jogadores
                   Provider.of<Time>(context, listen: false)
                       .removeTime(listaTimes[index])

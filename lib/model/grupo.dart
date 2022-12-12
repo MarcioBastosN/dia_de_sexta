@@ -11,7 +11,7 @@ class Grupo with ChangeNotifier {
   List<Grupo> get listaGrupos => [...grupos];
 
   int? id;
-  int? idJogador;
+  String? idJogador;
   int? idTime;
 
   Grupo({
@@ -67,18 +67,11 @@ class Grupo with ChangeNotifier {
 
   zerarTimes(BuildContext context) {
     for (var grupo in grupos) {
-      DbUtil.delete(TabelasDB.tbGrupos, grupo.id).whenComplete(() {
-        // libera o jogador
-        Provider.of<Jogador>(context, listen: false).editarJogador(Jogador(
-          id: grupo.idJogador,
-          nome: Provider.of<Jogador>(context, listen: false)
-              .retornaNomejogador(grupo.idJogador!),
-          possuiTime: 0,
-        ));
-      }).whenComplete(() => grupos.remove(grupo));
+      DbUtil.delete(TabelasDB.tbGrupos, grupo.id)
+          .whenComplete(() => grupos.remove(grupo));
     }
+    Provider.of<Jogador>(context, listen: false).liberarjogadores();
     //recarrega lista times
     Provider.of<Time>(context, listen: false).loadDate();
-    notifyListeners();
   }
 }

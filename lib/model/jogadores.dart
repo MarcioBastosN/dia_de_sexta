@@ -101,4 +101,12 @@ class Jogador with ChangeNotifier {
     }
     return nome;
   }
+
+  Future<void> liberarjogadores() async {
+    for (var jogador in jogadores) {
+      DbUtil.update(TabelasDB.tbJogadores, jogador.id!, {
+        'possuiTime': 0,
+      }).whenComplete(() => notifyListeners());
+    }
+  }
 }

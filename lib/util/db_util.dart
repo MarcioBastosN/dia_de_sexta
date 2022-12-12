@@ -5,7 +5,7 @@ class TabelasDB {
   static const String tbPlacar =
       "CREATE TABLE tbPlacar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
   static const String tbJogadores =
-      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, possuiTime INTEGER);";
+      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE, possuiTime INTEGER);";
   static const String tbTime =
       "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
   static const String tbGrupos =
