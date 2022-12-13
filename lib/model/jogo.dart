@@ -79,36 +79,22 @@ class Jogo with ChangeNotifier {
   }
 
   registraJogoDbLista(BuildContext context) {
-    Jogo jogo = Jogo(
-      equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
-      equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
-      pontosEquipe_1: Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
-      pontosEquipe_2: Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
-      fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-      data: Provider.of<Jogo>(context, listen: false).data,
-    );
-    _jogos.add(jogo);
     final fimPartida = DateTime.now();
     final DateTime test = _inicioPartida!;
     var tempoJogo = fimPartida.difference(test);
-    jogo.tempoJogo = tempoJogo.inSeconds.toString();
 
     DbUtil.insert(TabelaDB.placar, {
-      'grupo_1': jogo.equipe_1.toString(),
-      'grupo_2': jogo.equipe_2.toString(),
-      'placar1': int.parse(jogo.pontosEquipe_1.toString()),
-      'placar2': int.parse(jogo.pontosEquipe_2.toString()),
-      'data': jogo.data.toString(),
-      'tempoJogo': jogo.tempoJogo.toString(),
-    });
-    notifyListeners();
+      'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
+      'grupo_2': Provider.of<Jogo>(context, listen: false).equipe_2!,
+      'placar1': Provider.of<Jogo>(context, listen: false).pontosEquipe_1!,
+      'placar2': Provider.of<Jogo>(context, listen: false).pontosEquipe_2!,
+      'data': Provider.of<Jogo>(context, listen: false).data!,
+      'tempoJogo': tempoJogo.inSeconds.toString(),
+    }).whenComplete(() => loadDate());
   }
 
   removeJogo(Jogo jogo) {
-    DbUtil.delete(TabelaDB.placar, jogo.id).whenComplete(() => {
-          _jogos.remove(jogo),
-          notifyListeners(),
-        });
+    DbUtil.delete(TabelaDB.placar, jogo.id).whenComplete(() => {loadDate()});
   }
 
   fecharPartida(BuildContext context) {

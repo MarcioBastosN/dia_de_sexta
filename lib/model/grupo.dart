@@ -11,7 +11,7 @@ class Grupo with ChangeNotifier {
   List<Grupo> get listaGrupos => [...grupos];
 
   int? id;
-  String? idJogador;
+  int? idJogador;
   int? idTime;
 
   Grupo({
@@ -37,14 +37,13 @@ class Grupo with ChangeNotifier {
 
 // adiciona grupo
   Future<void> adicionarGrupo(Grupo grupo) async {
-    grupos.add(grupo);
     await DbUtil.insert(TabelaDB.grupos, {
       'idJogador': grupo.idJogador!,
       'idTime': grupo.idTime!,
-    });
-    notifyListeners();
+    }).whenComplete(() => loadDate());
   }
 
+// retorna os jogadores de um grupo
   jogadoresTimes(int idTime) {
     List<Grupo> time = [];
     for (var grupo in grupos) {
@@ -55,6 +54,7 @@ class Grupo with ChangeNotifier {
     return time;
   }
 
+// retorna a quantidade de jogdores de um grupo
   int qtdjogadoresTime(int idTime) {
     int time = 0;
     for (var grupo in grupos) {
@@ -68,7 +68,7 @@ class Grupo with ChangeNotifier {
   zerarTimes(BuildContext context) {
     for (var grupo in grupos) {
       DbUtil.delete(TabelasDB.tbGrupos, grupo.id)
-          .whenComplete(() => grupos.remove(grupo));
+          .whenComplete(() => loadDate());
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
     //recarrega lista times

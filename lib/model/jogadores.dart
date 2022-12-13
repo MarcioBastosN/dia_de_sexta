@@ -33,18 +33,12 @@ class Jogador with ChangeNotifier {
     notifyListeners();
   }
 
+// retorna a quantidade de jogadores na lista
   int tamanhoListaJogadores() {
     return jogadores.length;
   }
 
-  List<String> getNomejogadores() {
-    List<String> nomes = [];
-    for (var jogador in jogadores) {
-      nomes.add(jogador.nome.toString());
-    }
-    return nomes;
-  }
-
+// retorna o nome dos jogadores disponiveis
   List<String> getNomejogadoresDisponiveis() {
     List<String> nomes = [];
     for (var jogador in jogadores) {
@@ -55,16 +49,10 @@ class Jogador with ChangeNotifier {
     return nomes;
   }
 
-  int getIdjogador(String nome) {
-    return 0;
-  }
-
 // remove jogador do banco e da lista
   removeJogador(Jogador jogador) {
-    DbUtil.delete(TabelaDB.jogadores, jogador.id).whenComplete(() => {
-          jogadores.remove(jogador),
-        });
-    notifyListeners();
+    DbUtil.delete(TabelaDB.jogadores, jogador.id)
+        .whenComplete(() => {loadDate()});
   }
 
 // adiciona jogador na lista e no banco
@@ -72,10 +60,10 @@ class Jogador with ChangeNotifier {
     await DbUtil.insert(TabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
       'possuiTime': 0,
-    }).whenComplete(() => jogadores.add(jogador));
-    notifyListeners();
+    }).whenComplete(() => loadDate());
   }
 
+// edita um jogador
   editarJogador(Jogador jogador) {
     DbUtil.update(TabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
@@ -84,6 +72,7 @@ class Jogador with ChangeNotifier {
     notifyListeners();
   }
 
+// retorna o id do jogador
   retornaIdJogador(String nome) {
     for (var jogador in jogadores) {
       if (jogador.nome! == nome) {
@@ -92,6 +81,7 @@ class Jogador with ChangeNotifier {
     }
   }
 
+// retorna o nome do jogador
   String retornaNomejogador(int id) {
     String nome = "";
     for (var jogador in jogadores) {
@@ -102,11 +92,12 @@ class Jogador with ChangeNotifier {
     return nome;
   }
 
+// libera todos os jogadores q possuem time
   Future<void> liberarjogadores() async {
     for (var jogador in jogadores) {
       DbUtil.update(TabelasDB.tbJogadores, jogador.id!, {
         'possuiTime': 0,
-      }).whenComplete(() => notifyListeners());
+      }).whenComplete(() => loadDate());
     }
   }
 }

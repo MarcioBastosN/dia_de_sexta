@@ -31,11 +31,9 @@ class Time with ChangeNotifier {
 
   // adiciona Time na lista e no banco
   Future<void> adicionarTime(Time time) async {
-    times.add(time);
     await DbUtil.insert(TabelaDB.time, {
       'nome': time.nome.toString(),
-    });
-    notifyListeners();
+    }).whenComplete(() => loadDate());
   }
 
   int tamanhoListaTimes() {
@@ -53,15 +51,11 @@ class Time with ChangeNotifier {
   Future<void> editarNomeTime(Time time) async {
     await DbUtil.update(TabelaDB.time, time.id!, {
       'nome': time.nome,
-    });
-    notifyListeners();
+    }).whenComplete(() => loadDate());
   }
 
-  // remove jogador do banco e da lista
+  // remove um time
   removeTime(Time time) {
-    DbUtil.delete(TabelaDB.time, time.id).whenComplete(() => {
-          times.remove(time),
-        });
-    notifyListeners();
+    DbUtil.delete(TabelaDB.time, time.id).whenComplete(() => {loadDate()});
   }
 }
