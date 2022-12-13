@@ -66,14 +66,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       final player = _nomeJogador.text.toString().trim();
                       if (player.isNotEmpty) {
                         Provider.of<Jogador>(context, listen: false)
-                            .adicionarJogador(
-                              Jogador(
-                                nome: player,
-                              ),
-                            )
-                            .whenComplete(() =>
-                                Provider.of<Jogador>(context, listen: false)
-                                    .loadDate());
+                            .adicionarJogador(Jogador(nome: player));
                         _nomeJogador.value = const TextEditingValue(text: "");
                       }
                       Navigator.of(context).pop();
@@ -111,11 +104,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       final time = _nomeTime.text.toString().trim();
                       if (time.isNotEmpty) {
                         Provider.of<Time>(context, listen: false)
-                            .adicionarTime(
-                              Time(
-                                nome: time,
-                              ),
-                            )
+                            .adicionarTime(Time(nome: time))
                             .whenComplete(() =>
                                 Provider.of<Time>(context, listen: false)
                                     .loadDate());
