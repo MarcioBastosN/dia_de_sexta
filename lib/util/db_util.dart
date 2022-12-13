@@ -9,7 +9,7 @@ class TabelasDB {
   static const String tbTime =
       "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
   static const String tbGrupos =
-      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador TEXT);";
+      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
 }
 
 class DbUtil {
