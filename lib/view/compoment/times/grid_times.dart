@@ -1,7 +1,6 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/times/lista_jogadores_time.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../dialog_component.dart';
 import '../text_form_compoment.dart';
+import 'lista_jogadores_time.dart';
 
 class GridTimes extends StatefulWidget {
   const GridTimes({super.key});
@@ -59,15 +59,7 @@ class _GridTimesState extends State<GridTimes> {
                       final player = nomeTime.text.toString().trim();
                       if (player.isNotEmpty) {
                         Provider.of<Time>(context, listen: false)
-                            .editarNomeTime(
-                              Time(
-                                id: time.id!,
-                                nome: player,
-                              ),
-                            )
-                            .whenComplete(() =>
-                                Provider.of<Time>(context, listen: false)
-                                    .loadDate());
+                            .editarNomeTime(Time(id: time.id!, nome: player));
                       }
                       Navigator.of(context).pop();
                     },
@@ -134,10 +126,13 @@ class _GridTimesState extends State<GridTimes> {
                 // recarrega lista de jogadores
                 Provider.of<Jogador>(context, listen: false).loadDate();
                 // salva o registro do time
-                Provider.of<Grupo>(context, listen: false).adicionarGrupo(Grupo(
-                  idJogador: nomeJogador,
-                  idTime: idTime,
-                ));
+
+                // CORRIGIR id jodafor INTEGER
+                // Provider.of<Grupo>(context, listen: false).adicionarGrupo(Grupo(
+                //   idJogador: nomeJogador,
+                //   idTime: idTime,
+                // ));
+
                 Navigator.of(context).pop();
               },
               child: const Text("Salvar"),
@@ -156,9 +151,6 @@ class _GridTimesState extends State<GridTimes> {
       ),
       itemCount: listaTimes.length,
       itemBuilder: (context, index) {
-        // carrega a lista de jogadores de um grupo
-        List<Grupo> grupo = Provider.of<Grupo>(context, listen: false)
-            .jogadoresTimes(listaTimes[index].id!);
         return Scaffold(
           body: Card(
             color: Colors.blue,
@@ -183,7 +175,7 @@ class _GridTimesState extends State<GridTimes> {
                   ),
                 ),
                 Expanded(
-                  child: ListajogadoresTime(grupo: grupo[index]),
+                  child: ListajogadoresTime(timeId: listaTimes[index].id!),
                 ),
               ],
             ),
