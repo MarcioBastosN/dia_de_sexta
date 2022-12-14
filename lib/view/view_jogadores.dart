@@ -1,9 +1,7 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
