@@ -19,16 +19,8 @@ class ListaJogadores extends StatefulWidget {
 }
 
 class _ListaJogadoresState extends State<ListaJogadores> {
-  final _nomeJogador = TextEditingController();
-  final focusJogador = FocusNode();
-
-  final _nomeTime = TextEditingController();
-  final focusTime = FocusNode();
-
   @override
   void dispose() {
-    _nomeJogador.dispose();
-    focusJogador.dispose();
     super.dispose();
   }
 
@@ -41,86 +33,6 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 
   @override
   Widget build(BuildContext context) {
-// adicona jogador
-    addJogadorLista(BuildContext context) {
-      setState(() => focusJogador.requestFocus());
-      showDialog(
-        context: context,
-        builder: (context) => DialogComponent(
-          titulo: 'Registrar jogador',
-          listaCompomentes: [
-            TextFormCompoment(
-              controller: _nomeJogador,
-              focus: focusJogador,
-              label: "Nome",
-              inputType: TextInputType.text,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    child: const Text("salvar"),
-                    onPressed: () {
-                      final player = _nomeJogador.text.toString().trim();
-                      if (player.isNotEmpty) {
-                        Provider.of<Jogador>(context, listen: false)
-                            .adicionarJogador(Jogador(nome: player));
-                        _nomeJogador.value = const TextEditingValue(text: "");
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    addTimeLista(BuildContext context) {
-      setState(() => focusTime.requestFocus());
-      showDialog(
-        context: context,
-        builder: (context) => DialogComponent(
-          titulo: 'Registrar time',
-          listaCompomentes: [
-            TextFormCompoment(
-              controller: _nomeTime,
-              focus: focusTime,
-              label: "Nome do time",
-              inputType: TextInputType.text,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    child: const Text("salvar"),
-                    onPressed: () {
-                      final time = _nomeTime.text.toString().trim();
-                      if (time.isNotEmpty) {
-                        Provider.of<Time>(context, listen: false)
-                            .adicionarTime(Time(nome: time))
-                            .whenComplete(() =>
-                                Provider.of<Time>(context, listen: false)
-                                    .loadDate());
-                        _nomeTime.value = const TextEditingValue(text: "");
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
@@ -172,7 +84,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Jogador",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.person_add),
-              onTap: () => addJogadorLista(context),
+              onTap: () => Provider.of<Jogador>(context, listen: false)
+                  .addJogadorLista(context),
             ),
             SpeedDialChild(
               visible: Provider.of<Jogador>(context, listen: false)
@@ -185,7 +98,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Time",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.gamepad),
-              onTap: () => addTimeLista(context),
+              onTap: () => Provider.of<Time>(context, listen: false)
+                  .addTimeLista(context),
             ),
             // apagar registros grupos
             SpeedDialChild(
