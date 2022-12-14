@@ -44,28 +44,20 @@ class Jogador with ChangeNotifier {
   }
 
 // retorna o nome dos jogadores disponiveis
-  List<String> getNomejogadoresDisponiveis() {
-    List<String> nomes = [];
+  List<Jogador> getListaJogadoresDisponiveis() {
+    List<Jogador> listaJogadores = [];
     for (var jogador in jogadores) {
       if (jogador.possuiTime != 1) {
-        nomes.add(jogador.nome.toString());
+        listaJogadores.add(jogador);
       }
     }
-    return nomes;
+    return listaJogadores;
   }
 
 // remove jogador do banco e da lista
   removeJogador(Jogador jogador) {
     DbUtil.delete(TabelaDB.jogadores, jogador.id)
         .whenComplete(() => {loadDate()});
-  }
-
-// adiciona jogador na lista e no banco
-  Future<void> adicionarJogador(Jogador jogador) async {
-    await DbUtil.insert(TabelaDB.jogadores, {
-      'nome': jogador.nome.toString(),
-      'possuiTime': 0,
-    }).whenComplete(() => loadDate());
   }
 
 // edita um jogador
@@ -97,7 +89,15 @@ class Jogador with ChangeNotifier {
     return nome;
   }
 
-// libera todos os jogadores q possuem time
+// adiciona jogador na lista e no banco
+  Future<void> adicionarJogador(Jogador jogador) async {
+    await DbUtil.insert(TabelaDB.jogadores, {
+      'nome': jogador.nome.toString(),
+      'possuiTime': 0,
+    }).whenComplete(() => loadDate());
+  }
+
+// libera todos os jogadores de todos os times
   Future<void> liberarjogadores() async {
     for (var jogador in jogadores) {
       DbUtil.update(TabelasDB.tbJogadores, jogador.id!, {
