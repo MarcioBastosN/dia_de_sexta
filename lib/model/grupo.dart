@@ -45,10 +45,10 @@ class Grupo with ChangeNotifier {
 
 // retorna os jogadores de um grupo
   jogadoresTimes(int idTime) {
-    List<Grupo> time = [];
+    List<Jogador> time = [];
     for (var grupo in grupos) {
       if (grupo.idTime == idTime) {
-        time.add(grupo);
+        //time.add(grupo);
       }
     }
     return time;
