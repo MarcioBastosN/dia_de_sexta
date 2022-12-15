@@ -1,4 +1,5 @@
 // import 'package:dia_de_sexta/model/grupo.dart';
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,18 +16,17 @@ class ListajogadoresTime extends StatefulWidget {
 class _ListajogadoresTimeState extends State<ListajogadoresTime> {
   @override
   Widget build(BuildContext context) {
-    List<Jogador> jogadores =
-        Provider.of<Jogador>(context, listen: false).listaJogadores;
+    List<Jogador> jogadores = Provider.of<Grupo>(context, listen: false)
+        .jogadoresTimes(widget.timeId, context);
     return ListView.builder(
-      itemCount: widget.timeId,
+      itemCount: jogadores.length,
       itemBuilder: (context, int index) {
         return Padding(
           padding: const EdgeInsets.only(left: 16, bottom: 8),
           child: Row(
             children: [
-              // Text(widget.grupo.idJogador!.toString()),
               Text(
-                index.toString(),
+                jogadores[index].nome!,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
@@ -34,7 +34,9 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
               ),
               IconButton(
                 onPressed: () {
-                  //
+                  //remove do grupo e libera o jogador
+                  Provider.of<Jogador>(context, listen: false)
+                      .liberaJogadorId(jogadores[index].id!, context);
                 },
                 icon: const Icon(Icons.delete),
               )

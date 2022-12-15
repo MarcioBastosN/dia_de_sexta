@@ -73,13 +73,25 @@ class Grupo with ChangeNotifier {
     return time;
   }
 
+  Future<void> removeGrupo(int? idGrupo) async {
+    await DbUtil.delete(NomeTabelaDB.grupos, idGrupo!)
+        .whenComplete(() => loadDate());
+  }
+
   zerarTimes(BuildContext context) {
     for (var grupo in grupos) {
-      DbUtil.delete(NomeTabelaDB.grupos, grupo.id!)
-          .whenComplete(() => loadDate());
+      removeGrupo(grupo.id!);
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
     //recarrega lista times
     Provider.of<Time>(context, listen: false).loadDate();
+  }
+
+  removeRegistroJogadorId(int idJogador) {
+    for (var grupo in grupos) {
+      if (grupo.idJogador == idJogador) {
+        removeGrupo(grupo.id!);
+      }
+    }
   }
 }

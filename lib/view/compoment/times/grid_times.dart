@@ -1,7 +1,6 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +27,8 @@ class _GridTimesState extends State<GridTimes> {
     final listaTimes = Provider.of<Time>(context).listaTimes;
 
 // Selecionar Jogadores para um time
-    selecionarJogadoresTime(BuildContext context, int idTime) {
-      var idJogadorTemp;
+    selecionarJogadoresTime(BuildContext context, int idTimeSelecionado) {
+      int? idJogadorTemp;
       Provider.of<Time>(context, listen: false)
           .carregaJogadoresDisponiveis(context);
       showDialog(
@@ -50,10 +49,16 @@ class _GridTimesState extends State<GridTimes> {
               onPressed: () {
                 Navigator.of(context).pop();
                 // altera o status do jogador - jogador reservado por um time
-                print("object selcionado $idJogadorTemp");
-                // recarrega lista de jogadores
-
-                // salva o registro do time
+                Provider.of<Jogador>(context, listen: false)
+                    .jogadorPossuiTime(idJogadorTemp!)
+                    .whenComplete(() {
+                  // registra jogador e time ao grupo
+                  Provider.of<Grupo>(context, listen: false)
+                      .adicionarGrupo(Grupo(
+                    idJogador: idJogadorTemp,
+                    idTime: idTimeSelecionado,
+                  ));
+                });
               },
               child: const Text("Salvar"),
             ),

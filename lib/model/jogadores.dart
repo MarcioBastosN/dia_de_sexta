@@ -1,8 +1,10 @@
 import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Jogador with ChangeNotifier {
   List<Jogador> jogadores = [];
@@ -111,6 +113,19 @@ class Jogador with ChangeNotifier {
       }).whenComplete(() => loadDate());
     }
   }
+
+  // remove o jogador do grupo e habilita ele para possuir um novo time
+  liberaJogadorId(int idjogador, BuildContext context) {
+    // buasca o id do grupo onde o jogador esta para removelo
+    Provider.of<Grupo>(context, listen: false)
+        .removeRegistroJogadorId(idjogador);
+    // habilita o jogador
+    DbUtil.update(NomeTabelaDB.jogadores, idjogador, {
+      'possuiTime': 0,
+    }).whenComplete(() => loadDate());
+  }
+
+  liberaJogadoresGrupo() {}
 
 // chamada para o Dialog, registar um jogador
   addJogadorLista(BuildContext context) {
