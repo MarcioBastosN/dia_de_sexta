@@ -28,7 +28,7 @@ class Time with ChangeNotifier {
 
   // retorna dados do banco;
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData(TabelaDB.time);
+    final dataList = await DbUtil.getData(NomeTabelaDB.time);
     times = dataList
         .map(
           (item) => Time(
@@ -42,7 +42,7 @@ class Time with ChangeNotifier {
 
   // adiciona Time na lista e no banco
   Future<void> adicionarTime(Time time) async {
-    await DbUtil.insert(TabelaDB.time, {
+    await DbUtil.insert(NomeTabelaDB.time, {
       'nome': time.nome.toString(),
     }).whenComplete(() => loadDate());
   }
@@ -63,7 +63,7 @@ class Time with ChangeNotifier {
 
 // Editar nome do time
   Future<void> editarNomeTime(Time time) async {
-    await DbUtil.update(TabelaDB.time, time.id!, {
+    await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'nome': time.nome,
     }).whenComplete(() => loadDate());
   }
@@ -71,13 +71,13 @@ class Time with ChangeNotifier {
   // remove um time e seus participantes
   removeTime(Time time, BuildContext context) {
     // remover registro dos jogadores do grupo; tbGrupos
-    DbUtil.delete(TabelaDB.time, time.id).whenComplete(() => {loadDate()});
+    DbUtil.delete(NomeTabelaDB.time, time.id).whenComplete(() => {loadDate()});
     // busca todos os id de grupos que possuem o time removido;
     List<Grupo> jogadoresTime =
         Provider.of<Grupo>(context, listen: false).listaGrupos;
     for (var jogador in jogadoresTime) {
       if (jogador.idTime! == time.id) {
-        DbUtil.update(TabelasDB.tbJogadores, jogador.idJogador!, {
+        DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
           "possuiTime": 0,
         });
       }

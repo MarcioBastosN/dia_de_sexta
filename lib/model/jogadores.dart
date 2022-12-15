@@ -25,7 +25,7 @@ class Jogador with ChangeNotifier {
 
 // retorna dados do banco;
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData(TabelaDB.jogadores);
+    final dataList = await DbUtil.getData(NomeTabelaDB.jogadores);
     jogadores = dataList
         .map(
           (item) => Jogador(
@@ -56,17 +56,23 @@ class Jogador with ChangeNotifier {
 
 // remove jogador do banco e da lista
   removeJogador(Jogador jogador) {
-    DbUtil.delete(TabelaDB.jogadores, jogador.id)
+    DbUtil.delete(NomeTabelaDB.jogadores, jogador.id)
         .whenComplete(() => {loadDate()});
   }
 
 // edita um jogador
   editarJogador(Jogador jogador) {
-    DbUtil.update(TabelaDB.jogadores, jogador.id!, {
+    DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
       "possuiTime": jogador.possuiTime,
-    });
-    notifyListeners();
+    }).whenComplete(() => loadDate());
+  }
+
+// informa jogador esta em um time
+  Future<void> jogadorPossuiTime(int id) async {
+    await DbUtil.update(NomeTabelaDB.jogadores, id, {
+      "possuiTime": 1,
+    }).whenComplete(() => loadDate());
   }
 
 // retorna o id do jogador
@@ -91,7 +97,7 @@ class Jogador with ChangeNotifier {
 
 // adiciona jogador na lista e no banco
   Future<void> adicionarJogador(Jogador jogador) async {
-    await DbUtil.insert(TabelaDB.jogadores, {
+    await DbUtil.insert(NomeTabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
       'possuiTime': 0,
     }).whenComplete(() => loadDate());
@@ -100,7 +106,7 @@ class Jogador with ChangeNotifier {
 // libera todos os jogadores de todos os times
   Future<void> liberarjogadores() async {
     for (var jogador in jogadores) {
-      DbUtil.update(TabelasDB.tbJogadores, jogador.id!, {
+      DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
         'possuiTime': 0,
       }).whenComplete(() => loadDate());
     }

@@ -11,7 +11,7 @@ class Jogo with ChangeNotifier {
   List<Jogo> get listaJogos => [..._jogos];
 
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData(TabelaDB.placar);
+    final dataList = await DbUtil.getData(NomeTabelaDB.placar);
     _jogos = dataList
         .map(
           (item) => Jogo(
@@ -83,7 +83,7 @@ class Jogo with ChangeNotifier {
     final DateTime test = _inicioPartida!;
     var tempoJogo = fimPartida.difference(test);
 
-    DbUtil.insert(TabelaDB.placar, {
+    DbUtil.insert(NomeTabelaDB.placar, {
       'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
       'grupo_2': Provider.of<Jogo>(context, listen: false).equipe_2!,
       'placar1': Provider.of<Jogo>(context, listen: false).pontosEquipe_1!,
@@ -94,7 +94,8 @@ class Jogo with ChangeNotifier {
   }
 
   removeJogo(Jogo jogo) {
-    DbUtil.delete(TabelaDB.placar, jogo.id).whenComplete(() => {loadDate()});
+    DbUtil.delete(NomeTabelaDB.placar, jogo.id)
+        .whenComplete(() => {loadDate()});
   }
 
   fecharPartida(BuildContext context) {

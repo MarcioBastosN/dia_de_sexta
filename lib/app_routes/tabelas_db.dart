@@ -1,4 +1,4 @@
-class TabelaDB {
+class NomeTabelaDB {
   static const placar = "tbPlacar";
   static const jogadores = "tbJogadores";
   static const time = "tbTime";

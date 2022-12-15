@@ -22,7 +22,7 @@ class Grupo with ChangeNotifier {
 
   // retorna dados do banco;
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData(TabelaDB.grupos);
+    final dataList = await DbUtil.getData(NomeTabelaDB.grupos);
     grupos = dataList
         .map(
           (item) => Grupo(
@@ -37,18 +37,26 @@ class Grupo with ChangeNotifier {
 
 // adiciona grupo
   Future<void> adicionarGrupo(Grupo grupo) async {
-    await DbUtil.insert(TabelaDB.grupos, {
+    await DbUtil.insert(NomeTabelaDB.grupos, {
       'idJogador': grupo.idJogador!,
       'idTime': grupo.idTime!,
     }).whenComplete(() => loadDate());
   }
 
 // retorna os jogadores de um grupo
-  jogadoresTimes(int idTime) {
+  jogadoresTimes(int idTime, BuildContext context) {
     List<Jogador> time = [];
+    List<Jogador> jogadores =
+        Provider.of<Jogador>(context, listen: false).listaJogadores;
     for (var grupo in grupos) {
       if (grupo.idTime == idTime) {
-        //time.add(grupo);
+        // percorre a lista de jogadores para buscar o id do jogador
+        for (var jogador in jogadores) {
+          if (jogador.id == grupo.idJogador) {
+            // adiciona o jogador a lista
+            time.add(jogador);
+          }
+        }
       }
     }
     return time;
@@ -67,7 +75,7 @@ class Grupo with ChangeNotifier {
 
   zerarTimes(BuildContext context) {
     for (var grupo in grupos) {
-      DbUtil.delete(TabelasDB.tbGrupos, grupo.id)
+      DbUtil.delete(NomeTabelaDB.grupos, grupo.id!)
           .whenComplete(() => loadDate());
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
