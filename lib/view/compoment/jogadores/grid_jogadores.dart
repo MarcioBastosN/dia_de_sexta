@@ -136,9 +136,12 @@ class _GridJogadoresState extends State<GridJogadores> {
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Apagar",
                 child: const Icon(Icons.delete),
+                visible: listaJogadores[index].possuiTime != 1 ? true : false,
                 onTap: () {
-                  Provider.of<Jogador>(context, listen: false)
-                      .removeJogador(listaJogadores[index]);
+                  if (listaJogadores[index].possuiTime != 1) {
+                    Provider.of<Jogador>(context, listen: false)
+                        .removeJogador(listaJogadores[index]);
+                  }
                 },
               ),
             ],
