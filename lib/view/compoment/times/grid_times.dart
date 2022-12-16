@@ -34,9 +34,27 @@ class _GridTimesState extends State<GridTimes> {
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
-          titulo: "Selecione um Jogador",
+          titulo: "Selecione",
           listaCompomentes: [
             DropdownButtonFormField(
+              decoration: const InputDecoration(
+                isDense: true,
+                labelText: "jogador(es)",
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.cyan,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                ),
+                labelStyle: TextStyle(
+                  color: Colors.white60,
+                ),
+              ),
               items: Provider.of<Time>(context, listen: false)
                   .listaJogadoresDisponiveis,
               onChanged: (value) => {
