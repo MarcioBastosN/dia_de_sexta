@@ -144,6 +144,19 @@ class _GridJogadoresState extends State<GridJogadores> {
                   }
                 },
               ),
+              SpeedDialChild(
+                labelStyle: const TextStyle(color: Colors.black),
+                label: "liberar",
+                child: const Icon(Icons.refresh),
+                visible: listaJogadores[index].possuiTime == 1 ? true : false,
+                onTap: () {
+                  // libera o jogador e remove do grupo
+                  if (listaJogadores[index].possuiTime == 1) {
+                    Provider.of<Jogador>(context, listen: false)
+                        .liberaJogadorId(listaJogadores[index].id!, context);
+                  }
+                },
+              ),
             ],
           ),
         );

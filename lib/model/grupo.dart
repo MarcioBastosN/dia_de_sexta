@@ -87,6 +87,7 @@ class Grupo with ChangeNotifier {
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
+// remove um jogador do grupo de acordo com seu id
   removeRegistroJogadorId(int idJogador) {
     for (var grupo in grupos) {
       if (grupo.idJogador == idJogador) {
