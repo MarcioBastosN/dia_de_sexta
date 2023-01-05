@@ -57,9 +57,9 @@ class Jogador with ChangeNotifier {
   }
 
 // remove jogador do banco e da lista
-  removeJogador(Jogador jogador) {
-    DbUtil.delete(NomeTabelaDB.jogadores, jogador.id)
-        .whenComplete(() => {loadDate()});
+  Future<void> removeJogador(Jogador jogador) async {
+    await DbUtil.delete(NomeTabelaDB.jogadores, jogador.id!)
+        .whenComplete(() => loadDate());
   }
 
 // edita um jogador

@@ -74,93 +74,96 @@ class _GridJogadoresState extends State<GridJogadores> {
       }
     }
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 4 / 3,
-      ),
-      itemCount: listaJogadores.length,
-      itemBuilder: (context, index) {
-        return Scaffold(
-          body: Card(
-            color: listaJogadores[index].id != null
-                ? listaJogadores[index].possuiTime == 1
-                    ? Colors.blueGrey
-                    : Colors.blue
-                : Colors.red,
-            child: DefaultTextStyle(
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              child: SizedBox(
-                height: 70,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      children: [
-                        Text(listaJogadores[index].nome.toString()),
-                        Text(listaJogadores[index].possuiTime == 1
-                            ? "Indisponivel"
-                            : "Disponivel"),
-                      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 4 / 3,
+        ),
+        itemCount: listaJogadores.length,
+        itemBuilder: (context, index) {
+          return Scaffold(
+            body: Card(
+              color: listaJogadores[index].id != null
+                  ? listaJogadores[index].possuiTime == 1
+                      ? Colors.blueGrey
+                      : Colors.blue
+                  : Colors.red,
+              child: DefaultTextStyle(
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: SizedBox(
+                  height: 70,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        children: [
+                          Text(listaJogadores[index].nome.toString()),
+                          Text(listaJogadores[index].possuiTime == 1
+                              ? "Indisponivel"
+                              : "Disponivel"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: SpeedDial(
-            icon: Icons.menu,
-            mini: true,
-            overlayColor: Colors.blue.withAlpha(100),
-            backgroundColor: Colors.cyan,
-            direction: SpeedDialDirection.down,
-            switchLabelPosition: verificaIndex(index),
-            children: [
-              SpeedDialChild(
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "Editar",
-                child: const Icon(Icons.edit),
-                onTap: () {
-                  updateJogadorLista(context, listaJogadores[index]);
-                },
-              ),
-              SpeedDialChild(
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "Apagar",
-                child: const Icon(Icons.delete),
-                visible: listaJogadores[index].possuiTime != 1 ? true : false,
-                onTap: () {
-                  if (listaJogadores[index].possuiTime != 1) {
-                    Provider.of<Jogador>(context, listen: false)
-                        .removeJogador(listaJogadores[index]);
-                  }
-                },
-              ),
-              SpeedDialChild(
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "liberar",
-                child: const Icon(Icons.refresh),
-                visible: listaJogadores[index].possuiTime == 1 ? true : false,
-                onTap: () {
-                  // libera o jogador e remove do grupo
-                  if (listaJogadores[index].possuiTime == 1) {
-                    Provider.of<Jogador>(context, listen: false)
-                        .liberaJogadorId(listaJogadores[index].id!, context);
-                  }
-                },
-              ),
-            ],
-          ),
-        );
-      },
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: SpeedDial(
+              icon: Icons.menu,
+              mini: true,
+              overlayColor: Colors.blue.withAlpha(100),
+              backgroundColor: Colors.cyan,
+              direction: SpeedDialDirection.down,
+              switchLabelPosition: verificaIndex(index),
+              children: [
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "Editar",
+                  child: const Icon(Icons.edit),
+                  onTap: () {
+                    updateJogadorLista(context, listaJogadores[index]);
+                  },
+                ),
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "Apagar",
+                  child: const Icon(Icons.delete),
+                  visible: listaJogadores[index].possuiTime != 1 ? true : false,
+                  onTap: () {
+                    if (listaJogadores[index].possuiTime != 1) {
+                      Provider.of<Jogador>(context, listen: false)
+                          .removeJogador(listaJogadores[index]);
+                    }
+                  },
+                ),
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "liberar",
+                  child: const Icon(Icons.refresh),
+                  visible: listaJogadores[index].possuiTime == 1 ? true : false,
+                  onTap: () {
+                    // libera o jogador e remove do grupo
+                    if (listaJogadores[index].possuiTime == 1) {
+                      Provider.of<Jogador>(context, listen: false)
+                          .liberaJogadorId(listaJogadores[index].id!, context);
+                    }
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

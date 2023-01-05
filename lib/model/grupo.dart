@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
@@ -91,14 +93,29 @@ class Grupo with ChangeNotifier {
 //deve ser maior que a de grupos
   sorteiaTimes(BuildContext context) {
     // verificar a quantidade de participantes
-    int jogadores = Provider.of<Jogador>(context).listaJogadores.length;
+    int jogadores =
+        Provider.of<Jogador>(context, listen: false).listaJogadores.length;
     // verificar a quantidade de grupos
-    int times = Provider.of<Time>(context).listaTimes.length;
+    int times = Provider.of<Time>(context, listen: false).listaTimes.length;
     // dividir a quantidade de participantes por grupos
     int numeroJogadores = 0;
     if (jogadores >= times) {
       numeroJogadores = (jogadores / times).floor();
       // verifica a quantide de jogadores por time
+      var listaJogadores =
+          Provider.of<Jogador>(context, listen: false).listaJogadores;
+      for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
+        for (var i = 0; i < numeroJogadores; i++) {
+          // buscar os jogadores habilitados
+          var teste = Random().nextInt(listaJogadores.length);
+          // adicionar info jogador possui time
+          // jogadorPossuiTime
+          adicionarGrupo(
+              Grupo(idJogador: listaJogadores[teste].id, idTime: time.id));
+          listaJogadores.removeAt(teste);
+          // print(listaJogadores.length);
+        }
+      }
       // percore os times inserindo os jogadores disponiveis
 
     } else {

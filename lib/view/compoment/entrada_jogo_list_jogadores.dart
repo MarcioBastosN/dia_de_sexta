@@ -87,7 +87,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
               borderRadius: BorderRadius.all(Radius.circular(18)),
             ),
             labelStyle: TextStyle(
-              color: Colors.white,
+              color: Colors.white60,
             ),
           ),
           items:

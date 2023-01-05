@@ -144,7 +144,7 @@ class _GridTimesState extends State<GridTimes> {
                     ? false
                     : true,
                 labelStyle: const TextStyle(color: Colors.black),
-                label: "Novo Jogador",
+                label: "Jogador",
                 child: const Icon(Icons.person_add),
                 onTap: () =>
                     selecionarJogadoresTime(context, listaTimes[index].id!),
