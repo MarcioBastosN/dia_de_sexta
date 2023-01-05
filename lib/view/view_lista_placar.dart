@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
@@ -45,12 +46,13 @@ class _MyWidgetState extends State<ListaPlacar> {
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-          Row(
-            children: [
-              const Icon(Icons.timer, color: Colors.white),
-              Text(Provider.of<Jogo>(context, listen: false).tempoJogado()),
-            ],
-          ),
+          // TODO arrumar
+          // Row(
+          //   children: [
+          //     const Icon(Icons.timer, color: Colors.white),
+          //     Text(Provider.of<Jogo>(context, listen: false).tempoJogado()),
+          //   ],
+          // ),
         ],
       ),
       actions: [
@@ -78,8 +80,8 @@ class _MyWidgetState extends State<ListaPlacar> {
       ],
     );
 
-    final listaJogo = Provider.of<Jogo>(context).listaJogos;
     Provider.of<Jogo>(context, listen: false).loadDate();
+    final listaJogo = Provider.of<Jogo>(context).listaJogos;
 
     void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
@@ -118,8 +120,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                           pontosEq1: jogo.pontosEquipe_1.toString(),
                           pontosEq2: jogo.pontosEquipe_2.toString(),
                           data: jogo.data.toString(),
-                          tempo: Provider.of<Jogo>(context, listen: false)
-                              .retonaTempo(jogo.tempoJogo.toString()),
+                          tempo: jogo.tempoJogo!,
                         ),
                         Text(msn),
                       ],
@@ -176,7 +177,7 @@ class _MyWidgetState extends State<ListaPlacar> {
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
-        body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
+        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
             ? ListView.builder(
                 reverse: true,
                 addRepaintBoundaries: true,
@@ -212,13 +213,17 @@ class _MyWidgetState extends State<ListaPlacar> {
                     ),
                     child: CardListaPlacar(
                       indexCard: (index + 1).toString(),
-                      equipe1: listaJogo[index].equipe_1.toString(),
-                      equipe2: listaJogo[index].equipe_2.toString(),
+                      equipe1: Provider.of<Time>(context, listen: false)
+                          .retornaNomeTime(listaJogo[index].equipe_1!),
+                      equipe2: Provider.of<Time>(context, listen: false)
+                          .retornaNomeTime(listaJogo[index].equipe_2!),
                       pontosEq1: listaJogo[index].pontosEquipe_1.toString(),
                       pontosEq2: listaJogo[index].pontosEquipe_2.toString(),
                       data: listaJogo[index].data.toString(),
-                      tempo: Provider.of<Jogo>(context, listen: false)
-                          .retonaTempo(listaJogo[index].tempoJogo.toString()),
+                      // TODO corrigir tempo
+                      tempo: listaJogo[index].tempoJogo!,
+                      // Provider.of<Jogo>(context, listen: false)
+                      //     .retonaTempo(listaJogo[index].tempoJogo.toString()),
                     ),
                   );
                 })

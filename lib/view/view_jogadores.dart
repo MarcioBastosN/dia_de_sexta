@@ -1,6 +1,7 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
+import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,30 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     Provider.of<Jogador>(context, listen: false).loadDate();
     Provider.of<Time>(context, listen: false).loadDate();
     super.initState();
+  }
+
+  bool verificaSorteio() {
+    bool valida = false;
+    // verifica a quantidade de jogadores
+    if (Provider.of<Jogador>(context).listaJogadores.length >= 2) {
+      // verifica a quantidade de times
+      if (Provider.of<Time>(context).listaTimes.length <=
+          Provider.of<Jogador>(context).listaJogadores.length) {
+        valida = true;
+      }
+    }
+    return valida;
+  }
+
+  dicasSorteio(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const DialogComponent(
+        titulo: "Sorteio",
+        mensagem: Text(
+            "Para realizar o sorteio a quantidade de jogadores deve ser maior ou igual a quantidade de times"),
+      ),
+    );
   }
 
   @override
@@ -113,6 +138,25 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               child: const Icon(Icons.refresh),
               onTap: () => Provider.of<Grupo>(context, listen: false)
                   .zerarTimes(context),
+            ),
+            SpeedDialChild(
+              visible: verificaSorteio(),
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Sorteia Times",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.playlist_add_check_circle_outlined),
+              onTap: () => Provider.of<Grupo>(context, listen: false)
+                  .sorteiaTimes(context),
+            ),
+            SpeedDialChild(
+              visible: !verificaSorteio(),
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Info",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.info_outline),
+              onTap: () => dicasSorteio(context),
             ),
           ],
         ),

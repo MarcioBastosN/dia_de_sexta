@@ -87,12 +87,50 @@ class Grupo with ChangeNotifier {
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
+// para realizar o sorteio a quantidade de participantes
+//deve ser maior que a de grupos
+  sorteiaTimes(BuildContext context) {
+    // verificar a quantidade de participantes
+    int jogadores = Provider.of<Jogador>(context).listaJogadores.length;
+    // verificar a quantidade de grupos
+    int times = Provider.of<Time>(context).listaTimes.length;
+    // dividir a quantidade de participantes por grupos
+    int numeroJogadores = 0;
+    if (jogadores >= times) {
+      numeroJogadores = (jogadores / times).floor();
+      // verifica a quantide de jogadores por time
+      // percore os times inserindo os jogadores disponiveis
+
+    } else {
+      return;
+    }
+  }
+
 // remove um jogador do grupo de acordo com seu id
   removeRegistroJogadorId(int idJogador) {
     for (var grupo in grupos) {
       if (grupo.idJogador == idJogador) {
         removeGrupo(grupo.id!);
       }
+    }
+  }
+
+  //
+  List<DropdownMenuItem<int>> listaGruposDisponiveis = [];
+  List<Time> listaTimes = [];
+
+  carregaTimesDisponiveis(BuildContext context) {
+    listaGruposDisponiveis.clear();
+    // carrega a lista de times
+    listaTimes = Provider.of<Time>(context, listen: false).listaTimes;
+    for (var element in listaTimes) {
+      listaGruposDisponiveis.add(
+        DropdownMenuItem(
+          value: element.id,
+          child: Text(element.nome!),
+        ),
+      );
+      // notifyListeners();
     }
   }
 }

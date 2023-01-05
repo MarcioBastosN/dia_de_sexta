@@ -1,15 +1,18 @@
+import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
 class TabelasDB {
   static const String tbPlacar =
-      "CREATE TABLE tbPlacar (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 TEXT, grupo_2 TEXT, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
+      "CREATE TABLE ${NomeTabelaDB.placar} (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 INTEGER, grupo_2 INTEGER, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
   static const String tbJogadores =
-      "CREATE TABLE tbJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE, possuiTime INTEGER);";
+      "CREATE TABLE ${NomeTabelaDB.jogadores} (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE, possuiTime INTEGER);";
   static const String tbTime =
-      "CREATE TABLE tbTime (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+      "CREATE TABLE ${NomeTabelaDB.time} (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
   static const String tbGrupos =
-      "CREATE TABLE tbGrupoJogadores (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
+      "CREATE TABLE ${NomeTabelaDB.grupos} (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
+  static const String tbNomeJogadoresGrupo =
+      "CREATE TABLE ${NomeTabelaDB.nomeJogadoresGrupo} (id INTEGER PRIMARY KEY AUTOINCREMENT, idPlacar INTEGER, nomeJogador TEXT, idTime INTEGER)";
 }
 
 class DbUtil {
@@ -19,6 +22,7 @@ class DbUtil {
       TabelasDB.tbJogadores,
       TabelasDB.tbTime,
       TabelasDB.tbGrupos,
+      TabelasDB.tbNomeJogadoresGrupo,
     ];
 
     for (String query in queryes) {

@@ -53,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Historico",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.playlist_add_check_circle_outlined),
-            label: "Jogadores",
+            icon: Icon(Icons.groups),
+            label: "Times",
           ),
         ],
       ),

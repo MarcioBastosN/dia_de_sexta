@@ -182,4 +182,14 @@ class Time with ChangeNotifier {
       }
     }
   }
+
+  String retornaNomeTime(int idTimeSelecionado) {
+    String nomeTime = "";
+    for (var element in listaTimes) {
+      if (element.id == idTimeSelecionado) {
+        nomeTime = element.nome!;
+      }
+    }
+    return nomeTime;
+  }
 }

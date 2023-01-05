@@ -1,6 +1,5 @@
-import 'package:dia_de_sexta/model/times.dart';
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,18 +15,16 @@ class EntradaListajogadores extends StatefulWidget {
 
 class _EntradaListajogadoresState extends State<EntradaListajogadores> {
   final _pontos = TextEditingController();
-  String? time_1;
-  String? time_2;
+  int? idTime_1;
+  int? idTime_2;
 
   _iniciaJogo() {
-    if (time_1!.isNotEmpty &&
-        time_2!.isNotEmpty &&
-        _pontos.text.toString().isNotEmpty) {
+    if (idTime_1 != null && idTime_2 != null && _pontos.text.isNotEmpty) {
       Provider.of<Jogo>(context, listen: false).criarjgo(
         Jogo(
-          equipe_1: time_1,
-          equipe_2: time_2,
-          fimJogo: int.parse(_pontos.text.toString()),
+          equipe_1: idTime_1,
+          equipe_2: idTime_2,
+          pontosFimJogo: int.parse(_pontos.text.toString()),
         ),
       );
 
@@ -39,56 +36,16 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Time>(context, listen: false).loadDate();
-    final jogadores = Provider.of<Time>(context).getNomeTimes();
+    Provider.of<Grupo>(context).carregaTimesDisponiveis(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // select list
         Padding(
-          padding: const EdgeInsets.only(bottom: 10, top: 10),
-          child: DropdownSearch<String>(
-            popupProps: PopupProps.menu(
-              showSelectedItems: true,
-              disabledItemFn: (String s) => s.startsWith(time_2.toString()),
-            ),
-            items: jogadores,
-            dropdownDecoratorProps: const DropDownDecoratorProps(
-              dropdownSearchDecoration: InputDecoration(
-                isDense: true,
-                labelText: "Time 1",
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.cyan,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.white60,
-                ),
-              ),
-            ),
-            onChanged: (String? value) {
-              setState(() {
-                time_1 = value;
-              });
-            },
-          ),
-        ),
-        DropdownSearch<String>(
-          popupProps: PopupProps.menu(
-            showSelectedItems: true,
-            disabledItemFn: (String s) => s.startsWith(time_1.toString()),
-          ),
-          items: jogadores,
-          dropdownDecoratorProps: const DropDownDecoratorProps(
-            dropdownSearchDecoration: InputDecoration(
-              labelText: "Time 2",
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: DropdownButtonFormField(
+            decoration: const InputDecoration(
+              isDense: true,
+              labelText: "Time",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.cyan,
@@ -104,11 +61,41 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
                 color: Colors.white60,
               ),
             ),
+            items: Provider.of<Grupo>(context, listen: false)
+                .listaGruposDisponiveis,
+            onChanged: (value) => {
+              setState(() {
+                idTime_1 = value;
+              }),
+            },
           ),
-          onChanged: (String? value) {
+        ),
+
+        DropdownButtonFormField(
+          decoration: const InputDecoration(
+            isDense: true,
+            labelText: "Time",
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.cyan,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
+            ),
+            labelStyle: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          items:
+              Provider.of<Grupo>(context, listen: false).listaGruposDisponiveis,
+          onChanged: (value) => {
             setState(() {
-              time_2 = value;
-            });
+              idTime_2 = value;
+            }),
           },
         ),
 
@@ -127,9 +114,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
             height: 50,
             child: ElevatedButton(
               onPressed: () => _iniciaJogo(),
-              child: const Text(
-                'Iniciar',
-              ),
+              child: const Text('Iniciar'),
             ),
           ),
         ),

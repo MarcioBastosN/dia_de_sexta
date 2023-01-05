@@ -153,6 +153,9 @@ class _GridTimesState extends State<GridTimes> {
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Apagar",
                 child: const Icon(Icons.delete),
+                visible: Provider.of<Time>(context).listaTimes.length > 2
+                    ? true
+                    : false,
                 onTap: () => {
                   // Apagar o time e Liberar os jogadores do time
                   Provider.of<Time>(context, listen: false)

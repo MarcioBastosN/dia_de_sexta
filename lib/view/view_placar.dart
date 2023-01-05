@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/mostrador_placar_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,25 +23,71 @@ class Placar extends StatefulWidget {
 class _PlacarState extends State<Placar> {
   bool trocaLadoJogo = false;
 
+  int tempoJogo = 0;
+  // mantem o contador do timer
+  Timer? timeActive;
+  // salva o tempo de jogo da partida
+  String? tempoDaPartida;
+
   @override
   void initState() {
+    super.initState();
+    // mantem a tela ativa
     Wakelock.enable();
+    // define a orientacao da tela
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
     );
-    super.initState();
+    // inicia o timer
+    disparaTempo();
   }
 
   @override
   void dispose() {
+    // libera a tela ativa
     Wakelock.disable();
+    // libera o timer
+    timeActive!.cancel();
     super.dispose();
+  }
+
+  // Exibe tempo do jogo
+  disparaTempo() {
+    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        tempoJogo++;
+      });
+    });
+  }
+
+  // formata o tempo de jogo para exibir na tela
+  String formataTempo(int tempo) {
+    int nim = 0;
+    int sec = 0;
+    if (tempoJogo > 60) {
+      do {
+        tempo = tempo - 60;
+        if (tempo > 1) {
+          nim++;
+        }
+      } while (tempo > 60);
+    }
+
+    sec = tempo;
+    setState(() {
+      tempoDaPartida = "$nim m $sec s";
+    });
+    return "$nim m $sec s";
   }
 
   @override
   Widget build(BuildContext context) {
+    // inicia o jogo;
     Jogo jogo = Provider.of<Jogo>(context);
+    // registra o tempo
+    jogo.tempoJogo = tempoDaPartida;
 
+    // inverte o placar de lado
     void trocaLado() {
       setState(() => trocaLadoJogo = !trocaLadoJogo);
     }
@@ -81,8 +130,15 @@ class _PlacarState extends State<Placar> {
       ),
     );
 
+// app bar
     final appBar = AppBar(
-      title: Text("${widget.title} ${jogo.fimJogo.toString()} pontos"),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text("${widget.title} ${jogo.pontosFimJogo.toString()} pontos"),
+          Text(formataTempo(tempoJogo)),
+        ],
+      ),
       actions: [
         ButtonBar(children: [
           PopupMenuButton(
@@ -106,39 +162,36 @@ class _PlacarState extends State<Placar> {
                 ? Row(
                     children: <Widget>[
                       PlacarComponent(
-                        titulo: jogo.equipe_1.toString(),
+                        titulo: Provider.of<Time>(context, listen: false)
+                            .retornaNomeTime(jogo.equipe_1!),
                         placar: jogo.pontosEquipe_1.toString(),
                         addPontosEquipe: "Equipe_1",
                         decrementaPontosEquipe: "Equipe_1",
-                        // decrementa: () => jogo.removePontosEquipe_1(),
                       ),
                       PlacarComponent(
-                        titulo: jogo.equipe_2.toString(),
+                        titulo: Provider.of<Time>(context, listen: false)
+                            .retornaNomeTime(jogo.equipe_2!),
                         placar: jogo.pontosEquipe_2.toString(),
                         addPontosEquipe: "Equipe_2",
                         decrementaPontosEquipe: "Equipe_2",
-                        // adciona: () => jogo.adicionaPontosEqp2(context),
-                        // decrementa: () => jogo.removePontosEquipe_2(),
                       ),
                     ],
                   )
                 : Row(
                     children: <Widget>[
                       PlacarComponent(
-                        titulo: jogo.equipe_2.toString(),
+                        titulo: Provider.of<Time>(context, listen: false)
+                            .retornaNomeTime(jogo.equipe_2!),
                         placar: jogo.pontosEquipe_2.toString(),
                         addPontosEquipe: "Equipe_2",
                         decrementaPontosEquipe: "Equipe_2",
-                        // adciona: () => jogo.adicionaPontosEqp2(context),
-                        // decrementa: () => jogo.removePontosEquipe_2(),
                       ),
                       PlacarComponent(
-                        titulo: jogo.equipe_1.toString(),
+                        titulo: Provider.of<Time>(context, listen: false)
+                            .retornaNomeTime(jogo.equipe_1!),
                         placar: jogo.pontosEquipe_1.toString(),
                         addPontosEquipe: "Equipe_1",
                         decrementaPontosEquipe: "Equipe_1",
-                        // decrementa: () => jogo.removePontosEquipe_1(),
-                        // adciona: () => jogo.adicionaPontosEqp1(context),
                       ),
                     ],
                   ),

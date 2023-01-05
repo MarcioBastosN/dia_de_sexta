@@ -16,8 +16,8 @@ class ListajogadoresTime extends StatefulWidget {
 class _ListajogadoresTimeState extends State<ListajogadoresTime> {
   @override
   Widget build(BuildContext context) {
-    List<Jogador> jogadores = Provider.of<Grupo>(context, listen: false)
-        .jogadoresTimes(widget.timeId, context);
+    List<Jogador> jogadores =
+        Provider.of<Grupo>(context).jogadoresTimes(widget.timeId, context);
     return ListView.builder(
       itemCount: jogadores.length,
       itemBuilder: (context, int index) {
