@@ -62,7 +62,9 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
               ),
             ),
             items: Provider.of<Grupo>(context, listen: false)
-                .listaGruposDisponiveis,
+                .listaGruposDisponiveis
+                .where((e) => e.value != idTime_2)
+                .toList(),
             onChanged: (value) => {
               setState(() {
                 idTime_1 = value;
@@ -90,8 +92,10 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
               color: Colors.white60,
             ),
           ),
-          items:
-              Provider.of<Grupo>(context, listen: false).listaGruposDisponiveis,
+          items: Provider.of<Grupo>(context, listen: false)
+              .listaGruposDisponiveis
+              .where((e) => e.value != idTime_1)
+              .toList(),
           onChanged: (value) => {
             setState(() {
               idTime_2 = value;
