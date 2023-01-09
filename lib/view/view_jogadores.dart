@@ -54,7 +54,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
       builder: (context) => const DialogComponent(
         titulo: "Sorteio",
         mensagem: Text(
-            "Para realizar o sorteio a quantidade de jogadores deve ser maior ou igual a quantidade de times"),
+            "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times"),
       ),
     );
   }
@@ -76,8 +76,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                               children: const [
                                 Text("Adicione Jogadores"),
                                 Text(
-                                    "Necessario 2 ou mais jodadores para formar times!"),
-                                Center(child: CircularProgressIndicator()),
+                                    "Necessario 2 ou mais jodadores para realizar o sorteio!"),
+                                // Center(child: CircularProgressIndicator()),
                               ],
                             ),
                           )

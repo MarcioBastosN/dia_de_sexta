@@ -81,7 +81,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     );
 
     Provider.of<Jogo>(context, listen: false).loadDate();
-    final listaJogo = Provider.of<Jogo>(context).listaJogos;
+    final listaJogo = Provider.of<Jogo>(context, listen: false).listaJogos;
 
     void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
@@ -115,8 +115,10 @@ class _MyWidgetState extends State<ListaPlacar> {
                         const TituloHome(),
                         CardListaPlacar(
                           indexCard: jogo.id.toString(),
-                          equipe1: jogo.equipe_1.toString(),
-                          equipe2: jogo.equipe_2.toString(),
+                          equipe1: Provider.of<Time>(context, listen: false)
+                              .retornaNomeTime(jogo.equipe_1!),
+                          equipe2: Provider.of<Time>(context, listen: false)
+                              .retornaNomeTime(jogo.equipe_2!),
                           pontosEq1: jogo.pontosEquipe_1.toString(),
                           pontosEq2: jogo.pontosEquipe_2.toString(),
                           data: jogo.data.toString(),
@@ -177,7 +179,7 @@ class _MyWidgetState extends State<ListaPlacar> {
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         appBar: appBar,
-        body: Provider.of<Jogo>(context).tamanhoListaJogos() > 0
+        body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
                 reverse: true,
                 addRepaintBoundaries: true,

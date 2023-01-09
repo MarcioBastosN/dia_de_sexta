@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import '../app_routes/tabelas_db.dart';
@@ -101,8 +100,7 @@ class Grupo with ChangeNotifier {
     return teste;
   }
 
-// para realizar o sorteio a quantidade de participantes
-//deve ser maior que a de grupos
+// para realizar o sorteio a quantidade de participantes disponiveis deve ser maior que a de grupos
 // buscar lista de jogadores validos
   sorteiaTimes(BuildContext context) {
     // verificar a quantidade de participantes DISPONIVEIS

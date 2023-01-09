@@ -129,7 +129,7 @@ class Jogo with ChangeNotifier {
   }
 
   void vaiUm() {
-    pontosFimJogo! + 1;
+    pontosFimJogo = pontosFimJogo! + 1;
     notifyListeners();
   }
 
