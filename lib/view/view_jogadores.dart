@@ -32,14 +32,19 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 
   bool verificaSorteio() {
     bool valida = false;
-    // verifica a quantidade de jogadores
-    if (Provider.of<Jogador>(context).listaJogadores.length >= 2) {
-      // verifica a quantidade de times
-      if (Provider.of<Time>(context).listaTimes.length <=
-          Provider.of<Jogador>(context).listaJogadores.length) {
-        valida = true;
+
+    if (Provider.of<Grupo>(context, listen: false)
+        .verificaParticipantesDisponiveis(context)) {
+      // verifica a quantidade de jogadores
+      if (Provider.of<Jogador>(context).listaJogadores.length >= 2) {
+        // verifica a quantidade de times
+        if (Provider.of<Time>(context).listaTimes.length <=
+            Provider.of<Jogador>(context).listaJogadores.length) {
+          valida = true;
+        }
       }
     }
+
     return valida;
   }
 

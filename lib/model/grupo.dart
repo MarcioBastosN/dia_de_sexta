@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import '../app_routes/tabelas_db.dart';
@@ -89,35 +90,49 @@ class Grupo with ChangeNotifier {
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
+  bool verificaParticipantesDisponiveis(BuildContext context) {
+    var teste = false;
+    for (var element
+        in Provider.of<Jogador>(context, listen: false).listaJogadores) {
+      if (element.possuiTime == 0) {
+        teste = true;
+      }
+    }
+    return teste;
+  }
+
 // para realizar o sorteio a quantidade de participantes
 //deve ser maior que a de grupos
+// buscar lista de jogadores validos
   sorteiaTimes(BuildContext context) {
-    // verificar a quantidade de participantes
-    int jogadores =
-        Provider.of<Jogador>(context, listen: false).listaJogadores.length;
+    // verificar a quantidade de participantes DISPONIVEIS
+    int jogadores = Provider.of<Jogador>(context, listen: false)
+        .getListaJogadoresDisponiveis()
+        .length;
     // verificar a quantidade de grupos
     int times = Provider.of<Time>(context, listen: false).listaTimes.length;
-    // dividir a quantidade de participantes por grupos
+    // dividir a quantidade de participantes por grupos (jogadores validos)
     int numeroJogadores = 0;
     if (jogadores >= times) {
       numeroJogadores = (jogadores / times).floor();
       // verifica a quantide de jogadores por time
-      var listaJogadores =
-          Provider.of<Jogador>(context, listen: false).listaJogadores;
+      var listaJogadores = Provider.of<Jogador>(context, listen: false)
+          .getListaJogadoresDisponiveis();
       for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
         for (var i = 0; i < numeroJogadores; i++) {
           // buscar os jogadores habilitados
           var teste = Random().nextInt(listaJogadores.length);
-          // adicionar info jogador possui time
-          // jogadorPossuiTime
+          do {
+            teste = Random().nextInt(listaJogadores.length);
+          } while (listaJogadores[teste].possuiTime == 1);
+
           adicionarGrupo(
-              Grupo(idJogador: listaJogadores[teste].id, idTime: time.id));
+              Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
+          Provider.of<Jogador>(context, listen: false)
+              .jogadorPossuiTime(listaJogadores[teste].id!);
           listaJogadores.removeAt(teste);
-          // print(listaJogadores.length);
         }
       }
-      // percore os times inserindo os jogadores disponiveis
-
     } else {
       return;
     }
