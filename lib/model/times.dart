@@ -15,10 +15,7 @@ class Time with ChangeNotifier {
   int? id;
   String? nome;
 
-  Time({
-    this.id,
-    this.nome,
-  });
+  Time({this.id, this.nome});
 
   // variaveis de controle
   final nomeTime = TextEditingController();
@@ -70,9 +67,7 @@ class Time with ChangeNotifier {
 
   // remove um time e seus participantes
   removeTime(Time time, BuildContext context) {
-    // remover registro dos jogadores do grupo; tbGrupos
     DbUtil.delete(NomeTabelaDB.time, time.id).whenComplete(() => {loadDate()});
-    // busca todos os id de grupos que possuem o time removido;
     List<Grupo> jogadoresTime =
         Provider.of<Grupo>(context, listen: false).listaGrupos;
     for (var jogador in jogadoresTime) {
@@ -167,7 +162,6 @@ class Time with ChangeNotifier {
 
   carregaJogadoresDisponiveis(BuildContext context) {
     listaJogadoresDisponiveis.clear();
-    // carrega a list de jogadores
     listaJogadores =
         Provider.of<Jogador>(context, listen: false).listaJogadores;
     for (var element in listaJogadores) {

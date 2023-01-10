@@ -23,6 +23,7 @@ class Grupo with ChangeNotifier {
   });
 
   // retorna dados do banco;
+  // TODO - alterar map para while ou do while || foreach
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.grupos);
     grupos = dataList
@@ -52,10 +53,8 @@ class Grupo with ChangeNotifier {
         Provider.of<Jogador>(context, listen: false).listaJogadores;
     for (var grupo in grupos) {
       if (grupo.idTime == idTime) {
-        // percorre a lista de jogadores para buscar o id do jogador
         for (var jogador in jogadores) {
           if (jogador.id == grupo.idJogador) {
-            // adiciona o jogador a lista
             time.add(jogador);
           }
         }
@@ -85,7 +84,6 @@ class Grupo with ChangeNotifier {
       removeGrupo(grupo.id!);
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
-    //recarrega lista times
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
@@ -101,24 +99,18 @@ class Grupo with ChangeNotifier {
   }
 
 // para realizar o sorteio a quantidade de participantes disponiveis deve ser maior que a de grupos
-// buscar lista de jogadores validos
   sorteiaTimes(BuildContext context) {
-    // verificar a quantidade de participantes DISPONIVEIS
     int jogadores = Provider.of<Jogador>(context, listen: false)
         .getListaJogadoresDisponiveis()
         .length;
-    // verificar a quantidade de grupos
     int times = Provider.of<Time>(context, listen: false).listaTimes.length;
-    // dividir a quantidade de participantes por grupos (jogadores validos)
     int numeroJogadores = 0;
     if (jogadores >= times) {
       numeroJogadores = (jogadores / times).floor();
-      // verifica a quantide de jogadores por time
       var listaJogadores = Provider.of<Jogador>(context, listen: false)
           .getListaJogadoresDisponiveis();
       for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
         for (var i = 0; i < numeroJogadores; i++) {
-          // buscar os jogadores habilitados
           var teste = Random().nextInt(listaJogadores.length);
           do {
             teste = Random().nextInt(listaJogadores.length);
@@ -151,7 +143,6 @@ class Grupo with ChangeNotifier {
 
   carregaTimesDisponiveis(BuildContext context) {
     listaGruposDisponiveis.clear();
-    // carrega a lista de times
     listaTimes = Provider.of<Time>(context, listen: false).listaTimes;
     for (var element in listaTimes) {
       listaGruposDisponiveis.add(
@@ -160,7 +151,6 @@ class Grupo with ChangeNotifier {
           child: Text(element.nome!),
         ),
       );
-      // notifyListeners();
     }
   }
 }

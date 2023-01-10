@@ -16,9 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // final _pontosJogoRapido = TextEditingController();
-  // final _focusJogoRapido = FocusNode();
-
   bool shouldPop = true;
 
   @override
@@ -44,53 +41,6 @@ class _HomeState extends State<Home> {
   void dispose() {
     super.dispose();
   }
-
-// removido inicio rapido - nao e necessario devido o select de times ja trazer
-// os time, com isso dispensa inserir nomes
-  // void inicioRapido() {
-  //   if (int.parse(_pontosJogoRapido.text.toString()) > 0) {
-  //     Provider.of<Jogo>(context, listen: false).criarjgo(
-  //       Jogo(
-  //         equipe_1: "equipe_1",
-  //         equipe_2: "equipe_2",
-  //         fimJogo: int.parse(_pontosJogoRapido.text.toString()),
-  //       ),
-  //     );
-  //     Navigator.of(context).popAndPushNamed(AppRoutes.placar);
-  //   }
-  // }
-
-  // void _consultaPontosJogo(BuildContext context) {
-  //   _focusJogoRapido.requestFocus();
-  //   showDialog(
-  //     // barrierDismissible: false,
-  //     context: context,
-  //     builder: (context) => DialogComponent(
-  //       titulo: "Placar",
-  //       listaCompomentes: [
-  //         TextFormCompoment(
-  //           label: "Quantos Pontos vai o Jogo?",
-  //           maxLength: 2,
-  //           controller: _pontosJogoRapido,
-  //           inputType: TextInputType.phone,
-  //           focus: _focusJogoRapido,
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           children: [
-  //             ElevatedButton(
-  //               child: const Text("Iniciar"),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //                 inicioRapido();
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -121,48 +71,7 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: const [
-                      // entrada de dados jogo simples
-                      // Provider.of<Time>(context).tamanhoListaTimes() < 2
-                      //     ? const EntradaJogoSimples()
-                      // :
                       EntradaListajogadores(),
-                      // divisor
-                      // Row(
-                      //   children: const [
-                      //     Expanded(
-                      //       child: Divider(),
-                      //     ),
-                      //     Padding(
-                      //       padding: EdgeInsets.symmetric(horizontal: 10),
-                      //       child: Text(
-                      //         "OU",
-                      //         style: TextStyle(fontWeight: FontWeight.bold),
-                      //       ),
-                      //     ),
-                      //     Expanded(
-                      //       child: Divider(),
-                      //     ),
-                      //   ],
-                      // ),
-
-                      // button jogo rapido
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 10),
-                      //   child: SizedBox(
-                      //     height: 50,
-                      //     child: OutlinedButton(
-                      //       onPressed: () => _consultaPontosJogo(context),
-                      //       child: const Text(
-                      //         'Jogo Rapido',
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.bold,
-                      //           fontSize: 16,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

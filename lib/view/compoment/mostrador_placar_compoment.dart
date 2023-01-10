@@ -1,13 +1,10 @@
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class PlacarComponent extends StatefulWidget {
   final String titulo;
   final String placar;
-  // final void Function() adciona;
-  // final void Function() decrementa;
   final String addPontosEquipe;
   final String decrementaPontosEquipe;
 
@@ -37,10 +34,8 @@ class _MyWidgetState extends State<PlacarComponent> {
       }
 
       setState(() => animatedButton = !animatedButton);
-      // print("anima: $animatedButton");
       await Future.delayed(const Duration(milliseconds: 1500));
       setState(() => animatedButton = !animatedButton);
-      // print("anima: $animatedButton");
     }
 
     Future<void> animatedButtonDecrement(BuildContext context) async {
@@ -51,10 +46,8 @@ class _MyWidgetState extends State<PlacarComponent> {
       }
 
       setState(() => animatedButton = !animatedButton);
-      // print("anima: $animatedButton");
       await Future.delayed(const Duration(milliseconds: 1500));
       setState(() => animatedButton = !animatedButton);
-      // print("anima: $animatedButton");
     }
 
     final media = MediaQuery.of(context).size;
@@ -82,12 +75,10 @@ class _MyWidgetState extends State<PlacarComponent> {
                       children: [
                         ElevatedButton(
                           onPressed: () => animatedButtonIncrement(context),
-                          // onPressed: widget.adciona,
                           child: const Icon(Icons.add),
                         ),
                         ElevatedButton(
                           onPressed: () => animatedButtonDecrement(context),
-                          // onPressed: widget.decrementa,
                           child: const Icon(Icons.remove),
                         ),
                       ],
