@@ -10,14 +10,31 @@ class Jogo with ChangeNotifier {
   List<Jogo> _jogos = [];
   List<Jogo> get listaJogos => [..._jogos];
 
+  //incializado apos salvar no banco
+  int? id;
+  // relaçao times
+  int? equipe_1;
+  int? equipe_2;
+  // ralacao pontos jogo
+  int? pontosEquipe_1;
+  int? pontosEquipe_2;
+  // Data da partida
+  String? data;
+
+  String? tempoJogo;
+  // bool? jogoEncerado;
+  int? pontosFimJogo;
+  // auxiliares
+  // DateTime? _inicioPartida;
+
   Future<void> loadDate() async {
-    final dataList = await DbUtil.getData(TabelaDB.placar);
+    final dataList = await DbUtil.getData(NomeTabelaDB.placar);
     _jogos = dataList
         .map(
           (item) => Jogo(
             id: item['id'],
-            equipe_1: item['grupo_1'],
-            equipe_2: item['grupo_2'],
+            equipe_1: int.parse(item['grupo_1'].toString()),
+            equipe_2: int.parse(item['grupo_2'].toString()),
             pontosEquipe_1: item['placar1'],
             pontosEquipe_2: item['placar2'],
             data: item['data'],
@@ -28,26 +45,14 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  int? id;
-  String? equipe_1;
-  String? equipe_2;
-  int? pontosEquipe_1;
-  int? pontosEquipe_2;
-  int fimJogo;
-  String? tempoJogo;
-  String? data;
-  bool? jogoEncerado;
-  // auxiliares
-  DateTime? _inicioPartida;
-
   Jogo({
     this.id,
     this.equipe_1,
     this.equipe_2,
     this.pontosEquipe_1,
     this.pontosEquipe_2,
-    this.fimJogo = 10,
-    this.jogoEncerado,
+    this.pontosFimJogo,
+    // this.jogoEncerado,
     this.data,
     this.tempoJogo,
   });
@@ -64,50 +69,45 @@ class Jogo with ChangeNotifier {
     return tempo;
   }
 
-  tempoJogado() {
-    double tempo = 0;
-    if (_jogos.isNotEmpty) {
-      for (var item in _jogos) {
-        tempo += int.parse(item.tempoJogo!.toString());
-      }
-    }
-    if (tempo > 60) {
-      tempo = (tempo / 60);
-    }
-    return tempo.toStringAsPrecision(3);
-  }
+  // tempoJogado() {
+  //   // guardar os minutos
+  //   double tempo = 0;
+  //   if (_jogos.isNotEmpty) {
+  //     for (var item in _jogos) {
+  //       tempo += int.parse(item.tempoJogo!.toString());
+  //     }
+  //   }
+  //   if (tempo > 60) {
+  //     tempo = (tempo / 60);
+  //   }
+  //   return tempo.toStringAsPrecision(3);
+  // }
 
+// TODO arrumar  tempo jogo;
   registraJogoDbLista(BuildContext context) {
-    Jogo jogo = Jogo(
-      equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
-      equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
-      pontosEquipe_1: Provider.of<Jogo>(context, listen: false).pontosEquipe_1,
-      pontosEquipe_2: Provider.of<Jogo>(context, listen: false).pontosEquipe_2,
-      fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
-      data: Provider.of<Jogo>(context, listen: false).data,
-    );
-    _jogos.add(jogo);
-    final fimPartida = DateTime.now();
-    final DateTime test = _inicioPartida!;
-    var tempoJogo = fimPartida.difference(test);
-    jogo.tempoJogo = tempoJogo.inSeconds.toString();
+    // final fimPartida = DateTime.now();
+    // final DateTime test = _inicioPartida!;
+    // var tempoJogo = fimPartida.difference(test);
+    print("grupo_1: ${Provider.of<Jogo>(context, listen: false).equipe_1!}" +
+        "grupo_2: ${Provider.of<Jogo>(context, listen: false).equipe_2!}" +
+        "placar1: ${Provider.of<Jogo>(context, listen: false).pontosEquipe_1!}" +
+        "placar2: ${Provider.of<Jogo>(context, listen: false).pontosEquipe_2!}" +
+        "data: ${Provider.of<Jogo>(context, listen: false).data!}" +
+        "tempoJogo: ${Provider.of<Jogo>(context, listen: false).tempoJogo!}");
 
-    DbUtil.insert(TabelaDB.placar, {
-      'grupo_1': jogo.equipe_1.toString(),
-      'grupo_2': jogo.equipe_2.toString(),
-      'placar1': int.parse(jogo.pontosEquipe_1.toString()),
-      'placar2': int.parse(jogo.pontosEquipe_2.toString()),
-      'data': jogo.data.toString(),
-      'tempoJogo': jogo.tempoJogo.toString(),
-    });
-    notifyListeners();
+    DbUtil.insert(NomeTabelaDB.placar, {
+      'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
+      'grupo_2': Provider.of<Jogo>(context, listen: false).equipe_2!,
+      'placar1': Provider.of<Jogo>(context, listen: false).pontosEquipe_1!,
+      'placar2': Provider.of<Jogo>(context, listen: false).pontosEquipe_2!,
+      'data': Provider.of<Jogo>(context, listen: false).data!,
+      'tempoJogo': Provider.of<Jogo>(context, listen: false).tempoJogo!,
+    }).whenComplete(() => loadDate());
   }
 
   removeJogo(Jogo jogo) {
-    DbUtil.delete(TabelaDB.placar, jogo.id).whenComplete(() => {
-          _jogos.remove(jogo),
-          notifyListeners(),
-        });
+    DbUtil.delete(NomeTabelaDB.placar, jogo.id)
+        .whenComplete(() => {loadDate()});
   }
 
   fecharPartida(BuildContext context) {
@@ -122,23 +122,23 @@ class Jogo with ChangeNotifier {
     equipe_2 = jogo.equipe_2;
     pontosEquipe_1 = 0;
     pontosEquipe_2 = 0;
-    fimJogo = jogo.fimJogo;
+    pontosFimJogo = jogo.pontosFimJogo;
     data = dataCorrigida;
-    _inicioPartida = registroData;
+    // _inicioPartida = registroData;
     notifyListeners();
   }
 
   void vaiUm() {
-    fimJogo++;
+    pontosFimJogo = pontosFimJogo! + 1;
     notifyListeners();
   }
 
-  void desativaJogo() {
-    jogoEncerado = true;
-  }
+  // void desativaJogo() {
+  //   jogoEncerado = true;
+  // }
 
   bool verificaEmpateUltimoPonto() {
-    int valor = (fimJogo - 1);
+    int valor = (pontosFimJogo! - 1);
     bool compara = false;
     if ((pontosEquipe_1 == valor) && (pontosEquipe_2 == valor)) {
       compara = true;
@@ -148,15 +148,15 @@ class Jogo with ChangeNotifier {
 
   void adicionaPontosEqp1(BuildContext context) {
     pontosEquipe_1 = pontosEquipe_1! + 1;
-    if (pontosEquipe_1! <= (fimJogo - 1)) {
-      if ((pontosEquipe_1 == (fimJogo - 1)) &&
+    if (pontosEquipe_1! <= (pontosFimJogo! - 1)) {
+      if ((pontosEquipe_1 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
         _alertUltimoPonto(context);
       }
       notifyListeners();
     } else {
       notifyListeners();
-      _alertFimJogo(context);
+      _alertpontosFimJogo(context);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
@@ -165,15 +165,15 @@ class Jogo with ChangeNotifier {
 
   void adicionaPontosEqp2(BuildContext context) {
     pontosEquipe_2 = pontosEquipe_2! + 1;
-    if (pontosEquipe_2! <= (fimJogo - 1)) {
-      if ((pontosEquipe_2 == (fimJogo - 1)) &&
+    if (pontosEquipe_2! <= (pontosFimJogo! - 1)) {
+      if ((pontosEquipe_2 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
         _alertUltimoPonto(context);
       }
       notifyListeners();
     } else {
       notifyListeners();
-      _alertFimJogo(context);
+      _alertpontosFimJogo(context);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
@@ -194,13 +194,13 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  void _alertFimJogo(BuildContext context) {
+  void _alertpontosFimJogo(BuildContext context) {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: const Text("reiniciar mantem as equipes"),
+        mensagem: const Text("reiniciar jogo"),
         listaCompomentes: [
           OutlinedButton(
             child: const Text(
@@ -216,18 +216,15 @@ class Jogo with ChangeNotifier {
               // registra o jogo
               registraJogoDbLista(context);
               // inicia novo jogo
+              // TODO verificar e corrigir
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
-                  equipe_1:
-                      Provider.of<Jogo>(context, listen: false).equipe_1 ??
-                          "equipe_1",
-                  equipe_2:
-                      Provider.of<Jogo>(context, listen: false).equipe_2 ??
-                          "equipe_2",
-                  fimJogo: Provider.of<Jogo>(context, listen: false).fimJogo,
+                  equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
+                  equipe_2: Provider.of<Jogo>(context, listen: false).equipe_2,
+                  pontosFimJogo:
+                      Provider.of<Jogo>(context, listen: false).pontosFimJogo,
                 ),
               );
-              notifyListeners();
             },
           ),
           ElevatedButton(
@@ -263,7 +260,7 @@ class Jogo with ChangeNotifier {
         listaCompomentes: [
           ElevatedButton(
             child: Text(
-                "Vai a Dois\n (${(Provider.of<Jogo>(context, listen: false).fimJogo + 1)} pontos)"),
+                "Vai a Dois\n (${(Provider.of<Jogo>(context, listen: false).pontosFimJogo! + 1)} pontos)"),
             onPressed: () {
               Provider.of<Jogo>(context, listen: false).vaiUm();
               Navigator.of(context).pop();
@@ -271,7 +268,7 @@ class Jogo with ChangeNotifier {
           ),
           ElevatedButton(
             child: Text(
-                "fechar em ${Provider.of<Jogo>(context, listen: false).fimJogo}"),
+                "fechar em ${Provider.of<Jogo>(context, listen: false).pontosFimJogo}"),
             onPressed: () {
               Navigator.of(context).pop();
             },

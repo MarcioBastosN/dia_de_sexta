@@ -1,10 +1,12 @@
+import 'package:dia_de_sexta/model/grupo.dart';
+import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
 import '../dialog_component.dart';
-import '../text_form_compoment.dart';
+import 'lista_jogadores_time.dart';
 
 class GridTimes extends StatefulWidget {
   const GridTimes({super.key});
@@ -14,64 +16,74 @@ class GridTimes extends StatefulWidget {
 }
 
 class _GridTimesState extends State<GridTimes> {
-  final nomeTime = TextEditingController();
-  final focusTime = FocusNode();
+  @override
+  void initState() {
+    Provider.of<Grupo>(context, listen: false).loadDate();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final listaTimes = Provider.of<Time>(context).listaTimes;
 
-// edita o nome do Time
-    editaNomeTime(BuildContext context, Time time) {
-      setState(() {
-        nomeTime.text = time.nome!;
-        focusTime.requestFocus();
-      });
+// Selecionar Jogadores para um time
+    selecionarJogadoresTime(BuildContext context, int idTimeSelecionado) {
+      int? idJogadorTemp;
+      Provider.of<Time>(context, listen: false)
+          .carregaJogadoresDisponiveis(context);
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
-          titulo: 'Qual novo nome do seu Time?',
+          titulo: "Selecione",
           listaCompomentes: [
-            TextFormCompoment(
-              controller: nomeTime,
-              focus: focusTime,
-              label: "Nome",
-              inputType: TextInputType.text,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    child: const Text("salvar"),
-                    onPressed: () {
-                      final player = nomeTime.text.toString().trim();
-                      if (player.isNotEmpty) {
-                        Provider.of<Time>(context, listen: false)
-                            .editarNomeTime(
-                              Time(
-                                id: time.id!,
-                                nome: player,
-                              ),
-                            )
-                            .whenComplete(() =>
-                                Provider.of<Time>(context, listen: false)
-                                    .loadDate());
-                      }
-                      Navigator.of(context).pop();
-                    },
+            DropdownButtonFormField(
+              decoration: const InputDecoration(
+                isDense: true,
+                labelText: "jogador(es)",
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.cyan,
+                    width: 2,
                   ),
-                ],
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                ),
+                labelStyle: TextStyle(
+                  color: Colors.white60,
+                ),
               ),
+              items: Provider.of<Time>(context, listen: false)
+                  .listaJogadoresDisponiveis,
+              onChanged: (value) => {
+                setState(() {
+                  idJogadorTemp = value;
+                }),
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // altera o status do jogador - jogador reservado por um time
+                Provider.of<Jogador>(context, listen: false)
+                    .jogadorPossuiTime(idJogadorTemp!)
+                    .whenComplete(() {
+                  // registra jogador e time ao grupo
+                  Provider.of<Grupo>(context, listen: false)
+                      .adicionarGrupo(Grupo(
+                    idJogador: idJogadorTemp,
+                    idTime: idTimeSelecionado,
+                  ));
+                });
+              },
+              child: const Text("Salvar"),
             ),
           ],
         ),
       );
     }
-
-// adiciona um jogador ao time
-// deve retornar apenas a lista de jogadores disponiveis
 
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -92,11 +104,7 @@ class _GridTimesState extends State<GridTimes> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    right: 16.0,
-                    top: 8,
-                    bottom: 8,
-                    left: 8,
-                  ),
+                      right: 16.0, top: 8, bottom: 8, left: 8),
                   child: Row(
                     children: [
                       Text(
@@ -110,21 +118,7 @@ class _GridTimesState extends State<GridTimes> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 8),
-                        child: Text(
-                          index.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  child: ListajogadoresTime(timeId: listaTimes[index].id!),
                 ),
               ],
             ),
@@ -140,23 +134,32 @@ class _GridTimesState extends State<GridTimes> {
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Editar",
                 child: const Icon(Icons.edit),
-                onTap: () => editaNomeTime(context, listaTimes[index]),
+                onTap: () => Provider.of<Time>(context, listen: false)
+                    .editaNomeTime(context, listaTimes[index]),
               ),
               SpeedDialChild(
+                visible: Provider.of<Jogador>(context)
+                        .getListaJogadoresDisponiveis()
+                        .isEmpty
+                    ? false
+                    : true,
                 labelStyle: const TextStyle(color: Colors.black),
-                label: "Novo Jogador",
+                label: "Jogador",
                 child: const Icon(Icons.person_add),
-                onTap: () {
-                  // adicionar funcao
-                },
+                onTap: () =>
+                    selecionarJogadoresTime(context, listaTimes[index].id!),
               ),
               SpeedDialChild(
                 labelStyle: const TextStyle(color: Colors.black),
                 label: "Apagar",
                 child: const Icon(Icons.delete),
+                visible: Provider.of<Time>(context).listaTimes.length > 2
+                    ? true
+                    : false,
                 onTap: () => {
+                  // Apagar o time e Liberar os jogadores do time
                   Provider.of<Time>(context, listen: false)
-                      .removeTime(listaTimes[index])
+                      .removeTime(listaTimes[index], context)
                 },
               ),
             ],

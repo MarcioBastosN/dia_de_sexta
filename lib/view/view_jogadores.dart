@@ -1,8 +1,8 @@
+import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
 import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -18,16 +18,8 @@ class ListaJogadores extends StatefulWidget {
 }
 
 class _ListaJogadoresState extends State<ListaJogadores> {
-  final _nomeJogador = TextEditingController();
-  final focusJogador = FocusNode();
-
-  final _nomeTime = TextEditingController();
-  final focusTime = FocusNode();
-
   @override
   void dispose() {
-    _nomeJogador.dispose();
-    focusJogador.dispose();
     super.dispose();
   }
 
@@ -38,99 +30,37 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     super.initState();
   }
 
+  bool verificaSorteio() {
+    bool valida = false;
+
+    if (Provider.of<Grupo>(context, listen: false)
+        .verificaParticipantesDisponiveis(context)) {
+      // verifica a quantidade de jogadores
+      if (Provider.of<Jogador>(context).listaJogadores.length >= 2) {
+        // verifica a quantidade de times
+        if (Provider.of<Time>(context).listaTimes.length <=
+            Provider.of<Jogador>(context).listaJogadores.length) {
+          valida = true;
+        }
+      }
+    }
+
+    return valida;
+  }
+
+  dicasSorteio(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const DialogComponent(
+        titulo: "Sorteio",
+        mensagem: Text(
+            "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-// adicona jogador
-    addJogadorLista(BuildContext context) {
-      setState(() => focusJogador.requestFocus());
-      showDialog(
-        context: context,
-        builder: (context) => DialogComponent(
-          titulo: 'Registrar jogador',
-          listaCompomentes: [
-            TextFormCompoment(
-              controller: _nomeJogador,
-              focus: focusJogador,
-              label: "Nome",
-              inputType: TextInputType.text,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    child: const Text("salvar"),
-                    onPressed: () {
-                      final player = _nomeJogador.text.toString().trim();
-                      if (player.isNotEmpty) {
-                        Provider.of<Jogador>(context, listen: false)
-                            .adicionarJogador(
-                              Jogador(
-                                nome: player,
-                              ),
-                            )
-                            .whenComplete(() =>
-                                Provider.of<Jogador>(context, listen: false)
-                                    .loadDate());
-                        _nomeJogador.value = const TextEditingValue(text: "");
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    addTimeLista(BuildContext context) {
-      setState(() => focusTime.requestFocus());
-      showDialog(
-        context: context,
-        builder: (context) => DialogComponent(
-          titulo: 'Registrar time',
-          listaCompomentes: [
-            TextFormCompoment(
-              controller: _nomeTime,
-              focus: focusTime,
-              label: "Nome do time",
-              inputType: TextInputType.text,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    child: const Text("salvar"),
-                    onPressed: () {
-                      final time = _nomeTime.text.toString().trim();
-                      if (time.isNotEmpty) {
-                        Provider.of<Time>(context, listen: false)
-                            .adicionarTime(
-                              Time(
-                                nome: time,
-                              ),
-                            )
-                            .whenComplete(() =>
-                                Provider.of<Time>(context, listen: false)
-                                    .loadDate());
-                        _nomeTime.value = const TextEditingValue(text: "");
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
@@ -146,8 +76,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                               children: const [
                                 Text("Adicione Jogadores"),
                                 Text(
-                                    "Necessario 2 ou mais jodadores para formar times!"),
-                                Center(child: CircularProgressIndicator()),
+                                    "Necessario 2 ou mais jodadores para realizar o sorteio!"),
+                                // Center(child: CircularProgressIndicator()),
                               ],
                             ),
                           )
@@ -182,7 +112,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Jogador",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.person_add),
-              onTap: () => addJogadorLista(context),
+              onTap: () => Provider.of<Jogador>(context, listen: false)
+                  .addJogadorLista(context),
             ),
             SpeedDialChild(
               visible: Provider.of<Jogador>(context, listen: false)
@@ -195,7 +126,42 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Time",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.gamepad),
-              onTap: () => addTimeLista(context),
+              onTap: () => Provider.of<Time>(context, listen: false)
+                  .addTimeLista(context),
+            ),
+            // apagar registros grupos
+            SpeedDialChild(
+              visible: Provider.of<Jogador>(context, listen: false)
+                          .tamanhoListaJogadores() >=
+                      2
+                  ? true
+                  : false,
+              backgroundColor: Colors.red,
+              labelBackgroundColor: Colors.red,
+              label: "Zerar times",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.refresh),
+              onTap: () => Provider.of<Grupo>(context, listen: false)
+                  .zerarTimes(context),
+            ),
+            SpeedDialChild(
+              visible: verificaSorteio(),
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Sorteia Times",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.playlist_add_check_circle_outlined),
+              onTap: () => Provider.of<Grupo>(context, listen: false)
+                  .sorteiaTimes(context),
+            ),
+            SpeedDialChild(
+              visible: !verificaSorteio(),
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Info",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.info_outline),
+              onTap: () => dicasSorteio(context),
             ),
           ],
         ),

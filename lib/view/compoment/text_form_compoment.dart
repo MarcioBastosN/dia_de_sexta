@@ -33,7 +33,7 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
         onEditingComplete: widget.submit,
         focusNode: widget.focus,
         cursorColor: Colors.white,
-        style: const TextStyle(color: Colors.white),
+        // style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
