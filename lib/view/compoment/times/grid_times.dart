@@ -37,6 +37,7 @@ class _GridTimesState extends State<GridTimes> {
           titulo: "Selecione",
           listaCompomentes: [
             DropdownButtonFormField(
+              isExpanded: true,
               decoration: const InputDecoration(
                 isDense: true,
                 labelText: "jogador(es)",
@@ -53,6 +54,7 @@ class _GridTimesState extends State<GridTimes> {
                 ),
                 labelStyle: TextStyle(
                   color: Colors.white60,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               items: Provider.of<Time>(context, listen: false)
