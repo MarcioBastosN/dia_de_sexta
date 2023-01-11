@@ -116,10 +116,8 @@ class Jogador with ChangeNotifier {
 
   // remove o jogador do grupo e habilita ele para possuir um novo time
   Future<void> liberaJogadorId(int idjogador, BuildContext context) async {
-    // buasca o id do grupo onde o jogador esta para removelo
     Provider.of<Grupo>(context, listen: false)
         .removeRegistroJogadorId(idjogador);
-    // habilita o jogador
     await DbUtil.update(NomeTabelaDB.jogadores, idjogador, {
       'possuiTime': 0,
     }).whenComplete(() => loadDate());
@@ -127,7 +125,6 @@ class Jogador with ChangeNotifier {
 
   liberaJogadoresGrupo() {}
 
-// chamada para o Dialog, registar um jogador
   addJogadorLista(BuildContext context) {
     showDialog(
       context: context,

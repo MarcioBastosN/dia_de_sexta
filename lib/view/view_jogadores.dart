@@ -35,9 +35,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
 
     if (Provider.of<Grupo>(context, listen: false)
         .verificaParticipantesDisponiveis(context)) {
-      // verifica a quantidade de jogadores
       if (Provider.of<Jogador>(context).listaJogadores.length >= 2) {
-        // verifica a quantidade de times
         if (Provider.of<Time>(context).listaTimes.length <=
             Provider.of<Jogador>(context).listaJogadores.length) {
           valida = true;
@@ -77,7 +75,6 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                                 Text("Adicione Jogadores"),
                                 Text(
                                     "Necessario 2 ou mais jodadores para realizar o sorteio!"),
-                                // Center(child: CircularProgressIndicator()),
                               ],
                             ),
                           )

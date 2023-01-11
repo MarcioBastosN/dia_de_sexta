@@ -66,11 +66,9 @@ class _GridTimesState extends State<GridTimes> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // altera o status do jogador - jogador reservado por um time
                 Provider.of<Jogador>(context, listen: false)
                     .jogadorPossuiTime(idJogadorTemp!)
                     .whenComplete(() {
-                  // registra jogador e time ao grupo
                   Provider.of<Grupo>(context, listen: false)
                       .adicionarGrupo(Grupo(
                     idJogador: idJogadorTemp,
@@ -157,7 +155,6 @@ class _GridTimesState extends State<GridTimes> {
                     ? true
                     : false,
                 onTap: () => {
-                  // Apagar o time e Liberar os jogadores do time
                   Provider.of<Time>(context, listen: false)
                       .removeTime(listaTimes[index], context)
                 },

@@ -46,13 +46,6 @@ class _MyWidgetState extends State<ListaPlacar> {
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-          // TODO arrumar
-          // Row(
-          //   children: [
-          //     const Icon(Icons.timer, color: Colors.white),
-          //     Text(Provider.of<Jogo>(context, listen: false).tempoJogado()),
-          //   ],
-          // ),
         ],
       ),
       actions: [
@@ -222,10 +215,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                       pontosEq1: listaJogo[index].pontosEquipe_1.toString(),
                       pontosEq2: listaJogo[index].pontosEquipe_2.toString(),
                       data: listaJogo[index].data.toString(),
-                      // TODO corrigir tempo
                       tempo: listaJogo[index].tempoJogo!,
-                      // Provider.of<Jogo>(context, listen: false)
-                      //     .retonaTempo(listaJogo[index].tempoJogo.toString()),
                     ),
                   );
                 })

@@ -18,11 +18,9 @@ class TituloHome extends StatelessWidget {
             children: [
               TextSpan(
                 text: "Dia de ",
-                // style: TextStyle(color: Colors.blue),
               ),
               TextSpan(
                 text: 'Sexta',
-                // style: TextStyle(color: Colors.white),
               ),
             ],
           ),
@@ -31,7 +29,6 @@ class TituloHome extends StatelessWidget {
           TextSpan(
             style: TextStyle(
               fontSize: 20,
-              // color: Colors.blue,
             ),
             children: [
               TextSpan(text: "Seu placar do vôlei"),

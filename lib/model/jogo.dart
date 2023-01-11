@@ -69,32 +69,8 @@ class Jogo with ChangeNotifier {
     return tempo;
   }
 
-  // tempoJogado() {
-  //   // guardar os minutos
-  //   double tempo = 0;
-  //   if (_jogos.isNotEmpty) {
-  //     for (var item in _jogos) {
-  //       tempo += int.parse(item.tempoJogo!.toString());
-  //     }
-  //   }
-  //   if (tempo > 60) {
-  //     tempo = (tempo / 60);
-  //   }
-  //   return tempo.toStringAsPrecision(3);
-  // }
-
-// TODO arrumar  tempo jogo;
+// TODO arrumar  tempo jogo verificar;
   registraJogoDbLista(BuildContext context) {
-    // final fimPartida = DateTime.now();
-    // final DateTime test = _inicioPartida!;
-    // var tempoJogo = fimPartida.difference(test);
-    print("grupo_1: ${Provider.of<Jogo>(context, listen: false).equipe_1!}" +
-        "grupo_2: ${Provider.of<Jogo>(context, listen: false).equipe_2!}" +
-        "placar1: ${Provider.of<Jogo>(context, listen: false).pontosEquipe_1!}" +
-        "placar2: ${Provider.of<Jogo>(context, listen: false).pontosEquipe_2!}" +
-        "data: ${Provider.of<Jogo>(context, listen: false).data!}" +
-        "tempoJogo: ${Provider.of<Jogo>(context, listen: false).tempoJogo!}");
-
     DbUtil.insert(NomeTabelaDB.placar, {
       'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
       'grupo_2': Provider.of<Jogo>(context, listen: false).equipe_2!,
@@ -124,7 +100,6 @@ class Jogo with ChangeNotifier {
     pontosEquipe_2 = 0;
     pontosFimJogo = jogo.pontosFimJogo;
     data = dataCorrigida;
-    // _inicioPartida = registroData;
     notifyListeners();
   }
 
@@ -132,10 +107,6 @@ class Jogo with ChangeNotifier {
     pontosFimJogo = pontosFimJogo! + 1;
     notifyListeners();
   }
-
-  // void desativaJogo() {
-  //   jogoEncerado = true;
-  // }
 
   bool verificaEmpateUltimoPonto() {
     int valor = (pontosFimJogo! - 1);
@@ -213,7 +184,6 @@ class Jogo with ChangeNotifier {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              // registra o jogo
               registraJogoDbLista(context);
               // inicia novo jogo
               // TODO verificar e corrigir

@@ -50,13 +50,3 @@ class MyTheme {
         ),
       ));
 }
-
-      // sliderTheme: const SliderThemeData(
-      //   thumbColor: Colors.lightBlue,
-      //   valueIndicatorColor: Colors.lightBlue,
-      //   inactiveTrackColor: Colors.amber,
-      //   inactiveTickMarkColor: Colors.white,
-      //   valueIndicatorTextStyle: TextStyle(
-      //     color: Colors.white,
-      //   ),
-      // ),

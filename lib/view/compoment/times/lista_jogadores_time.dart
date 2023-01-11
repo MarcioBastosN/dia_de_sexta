@@ -1,4 +1,3 @@
-// import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,6 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
               ),
               IconButton(
                 onPressed: () {
-                  //remove do grupo e libera o jogador
                   Provider.of<Jogador>(context, listen: false)
                       .liberaJogadorId(jogadores[index].id!, context);
                 },
