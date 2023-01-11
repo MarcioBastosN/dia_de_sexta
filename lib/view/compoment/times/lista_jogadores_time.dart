@@ -24,11 +24,15 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
           padding: const EdgeInsets.only(left: 16, bottom: 8),
           child: Row(
             children: [
-              Text(
-                jogadores[index].nome!,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  jogadores[index].nome!,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(

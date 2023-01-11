@@ -105,10 +105,19 @@ class _GridJogadoresState extends State<GridJogadores> {
                       padding: const EdgeInsets.all(4.0),
                       child: Column(
                         children: [
-                          Text(listaJogadores[index].nome.toString()),
-                          Text(listaJogadores[index].possuiTime == 1
-                              ? "Indisponivel"
-                              : "Disponivel"),
+                          Expanded(
+                            child: SizedBox(
+                              height: 40,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child:
+                                    Text(listaJogadores[index].nome.toString()),
+                              ),
+                            ),
+                          ),
+                          // Text(listaJogadores[index].possuiTime == 1
+                          //     ? "Indisponivel"
+                          //     : "Disponivel"),
                         ],
                       ),
                     ),
