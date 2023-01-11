@@ -42,6 +42,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                     style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -56,7 +57,14 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Text(widget.equipe1),
+                              SingleChildScrollView(
+                                child: Expanded(
+                                  child: Text(
+                                    widget.equipe1,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ),
                               Text(widget.pontosEq1),
                             ],
                           ),
@@ -65,7 +73,13 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Text(widget.equipe2),
+                              SingleChildScrollView(
+                                child: Expanded(
+                                  child: Text(
+                                    widget.equipe2,
+                                  ),
+                                ),
+                              ),
                               Text(widget.pontosEq2),
                             ],
                           ),

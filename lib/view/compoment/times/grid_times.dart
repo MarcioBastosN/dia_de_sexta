@@ -107,11 +107,15 @@ class _GridTimesState extends State<GridTimes> {
                       right: 16.0, top: 8, bottom: 8, left: 8),
                   child: Row(
                     children: [
-                      Text(
-                        listaTimes[index].nome!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      Expanded(
+                        child: Text(
+                          listaTimes[index].nome!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

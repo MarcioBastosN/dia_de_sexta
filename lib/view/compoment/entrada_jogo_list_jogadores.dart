@@ -43,6 +43,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: DropdownButtonFormField(
+            isExpanded: true,
             decoration: const InputDecoration(
               isDense: true,
               labelText: "Time",
@@ -59,6 +60,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
               ),
               labelStyle: TextStyle(
                 color: Colors.white60,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             items: Provider.of<Grupo>(context, listen: false)
@@ -74,6 +76,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
         ),
 
         DropdownButtonFormField(
+          isExpanded: true,
           decoration: const InputDecoration(
             isDense: true,
             labelText: "Time",
@@ -90,6 +93,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
             ),
             labelStyle: TextStyle(
               color: Colors.white60,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           items: Provider.of<Grupo>(context, listen: false)
