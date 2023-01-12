@@ -102,7 +102,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                       color: Colors.cyan,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    height: 350,
+                    height: 300,
                     child: Column(
                       children: [
                         const TituloHome(),
