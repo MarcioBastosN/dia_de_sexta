@@ -42,7 +42,7 @@ class _MyWidgetState extends State<ListaPlacar> {
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
               "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
@@ -74,17 +74,17 @@ class _MyWidgetState extends State<ListaPlacar> {
     );
 
     Provider.of<Jogo>(context, listen: false).loadDate();
-    final listaJogo = Provider.of<Jogo>(context, listen: false).listaJogos;
+    final listaJogo = Provider.of<Jogo>(context).listaJogos;
 
     void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
       String? origemImagem;
       if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
         msn =
-            "${jogo.equipe_1} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${jogo.equipe_2}";
+            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)}";
       } else {
         msn =
-            "${jogo.equipe_2} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${jogo.equipe_1}";
+            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)}";
       }
       // aqui gera a imagem a ser compatilhada;
       screenshotController
@@ -102,7 +102,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                       color: Colors.cyan,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    height: 250,
+                    height: 350,
                     child: Column(
                       children: [
                         const TituloHome(),

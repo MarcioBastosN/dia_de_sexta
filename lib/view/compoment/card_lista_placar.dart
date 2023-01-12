@@ -57,12 +57,10 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              SingleChildScrollView(
-                                child: Expanded(
-                                  child: Text(
-                                    widget.equipe1,
-                                    maxLines: 2,
-                                  ),
+                              SizedBox(
+                                width: 120,
+                                child: Text(
+                                  widget.equipe1,
                                 ),
                               ),
                               Text(widget.pontosEq1),
@@ -73,11 +71,10 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              SingleChildScrollView(
-                                child: Expanded(
-                                  child: Text(
-                                    widget.equipe2,
-                                  ),
+                              SizedBox(
+                                width: 120,
+                                child: Text(
+                                  widget.equipe2,
                                 ),
                               ),
                               Text(widget.pontosEq2),

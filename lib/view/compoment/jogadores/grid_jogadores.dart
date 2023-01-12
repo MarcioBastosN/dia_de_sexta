@@ -81,7 +81,7 @@ class _GridJogadoresState extends State<GridJogadores> {
           crossAxisCount: 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 4 / 3,
+          childAspectRatio: 4 / 3.1,
         ),
         itemCount: listaJogadores.length,
         itemBuilder: (context, index) {
@@ -102,7 +102,12 @@ class _GridJogadoresState extends State<GridJogadores> {
                   height: 70,
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        left: 8,
+                        right: 8,
+                        bottom: 16,
+                      ),
                       child: Column(
                         children: [
                           Expanded(
@@ -110,8 +115,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                               height: 40,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
-                                child:
-                                    Text(listaJogadores[index].nome.toString()),
+                                child: Text(listaJogadores[index].nome!),
                               ),
                             ),
                           ),

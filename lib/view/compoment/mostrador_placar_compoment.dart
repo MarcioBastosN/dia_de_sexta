@@ -53,44 +53,54 @@ class _MyWidgetState extends State<PlacarComponent> {
     final media = MediaQuery.of(context).size;
     return SizedBox(
       width: media.width * .5,
-      child: Container(
-        color: Theme.of(context).copyWith().primaryColor,
-        child: Column(
-          children: [
-            Text(
-              widget.titulo,
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Text(
-              widget.placar,
-              style: Theme.of(context).textTheme.headline1,
-              // style: GoogleFonts.getFont('Play'),
-              textScaleFactor: 1.5,
-            ),
-            // botoes
-            SizedBox(
-              child: animatedButton == false
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => animatedButtonIncrement(context),
-                          child: const Icon(Icons.add),
+      child: DefaultTextStyle(
+        style: const TextStyle(),
+        overflow: TextOverflow.ellipsis,
+        child: Container(
+          color: Theme.of(context).copyWith().primaryColor,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  widget.titulo,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  widget.placar,
+                  style: Theme.of(context).textTheme.headline1,
+                  // style: GoogleFonts.getFont('Play'),
+                  textScaleFactor: 1.5,
+                ),
+              ),
+              // botoes
+              SizedBox(
+                child: animatedButton == false
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => animatedButtonIncrement(context),
+                            child: const Icon(Icons.add),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => animatedButtonDecrement(context),
+                            child: const Icon(Icons.remove),
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: Text(
+                          "Placar alterado",
+                          style: TextStyle(color: Colors.white),
                         ),
-                        ElevatedButton(
-                          onPressed: () => animatedButtonDecrement(context),
-                          child: const Icon(Icons.remove),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text(
-                        "Placar alterado",
-                        style: TextStyle(color: Colors.white),
                       ),
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
