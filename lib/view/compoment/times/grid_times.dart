@@ -90,7 +90,7 @@ class _GridTimesState extends State<GridTimes> {
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        childAspectRatio: 4 / 3.5,
+        childAspectRatio: 2.7 / 3.5,
       ),
       itemCount: listaTimes.length,
       itemBuilder: (context, index) {

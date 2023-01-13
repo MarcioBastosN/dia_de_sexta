@@ -21,7 +21,7 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
       itemCount: jogadores.length,
       itemBuilder: (context, int index) {
         return Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 8),
+          padding: const EdgeInsets.only(left: 8, bottom: 4),
           child: Row(
             children: [
               Expanded(
