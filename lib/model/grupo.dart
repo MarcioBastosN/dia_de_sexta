@@ -98,29 +98,51 @@ class Grupo with ChangeNotifier {
     return teste;
   }
 
-// para realizar o sorteio a quantidade de participantes disponiveis deve ser maior que a de grupos
+// passos para sortear - definir limite de jogadores por time
+// 1 - buscar jogadores disponiveis
+// 2 - buscar times com vagas
+// 3 -
   sorteiaTimes(BuildContext context) {
-    int jogadores = Provider.of<Jogador>(context, listen: false)
-        .getListaJogadoresDisponiveis()
+    int numeroJogadoresDisponiveis =
+        Provider.of<Jogador>(context, listen: false)
+            .getListaJogadoresDisponiveis()
+            .length;
+    int numeroJogadoresParaAdicionar = 0;
+    // consultar times validos (com espaco disponivel)
+    var consultaTimes = Provider.of<Time>(context, listen: false).listaTimes;
+
+// trocar map por for para desempenho
+    int times = consultaTimes
+        .map((e) =>
+            numeroJogadoresTime(e.id!, context) < numeroJogadoresParaAdicionar)
+        .toList()
         .length;
-    int times = Provider.of<Time>(context, listen: false).listaTimes.length;
-    int numeroJogadores = 0;
-    if (jogadores >= times) {
-      numeroJogadores = (jogadores / times).floor();
+
+    if (numeroJogadoresDisponiveis >= times) {
+      numeroJogadoresParaAdicionar =
+          (numeroJogadoresDisponiveis / times).floor();
+
       var listaJogadores = Provider.of<Jogador>(context, listen: false)
           .getListaJogadoresDisponiveis();
       for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
-        for (var i = 0; i < numeroJogadores; i++) {
-          var teste = Random().nextInt(listaJogadores.length);
-          do {
-            teste = Random().nextInt(listaJogadores.length);
-          } while (listaJogadores[teste].possuiTime == 1);
+        // verifica quantidade de jogadores do grupo ao qual possui o time
+        if (numeroJogadoresParaAdicionar >=
+            numeroJogadoresTime(time.id!, context)) {
+          int tempNumeroJogadores = (numeroJogadoresParaAdicionar -
+              numeroJogadoresTime(time.id!, context));
 
-          adicionarGrupo(
-              Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
-          Provider.of<Jogador>(context, listen: false)
-              .jogadorPossuiTime(listaJogadores[teste].id!);
-          listaJogadores.removeAt(teste);
+          for (var i = 0; i < tempNumeroJogadores; i++) {
+            var teste = Random().nextInt(listaJogadores.length);
+            do {
+              teste = Random().nextInt(listaJogadores.length);
+            } while (listaJogadores[teste].possuiTime == 1);
+
+            adicionarGrupo(
+                Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
+            Provider.of<Jogador>(context, listen: false)
+                .jogadorPossuiTime(listaJogadores[teste].id!);
+            listaJogadores.removeAt(teste);
+          }
         }
       }
     } else {
@@ -152,5 +174,17 @@ class Grupo with ChangeNotifier {
         ),
       );
     }
+  }
+
+// retorna o numero de jogadores em um time
+  int numeroJogadoresTime(int time, BuildContext context) {
+    int numeroJogadores = 0;
+    for (var grupo in Provider.of<Grupo>(context, listen: false).grupos) {
+      if (grupo.idTime! == time) {
+        numeroJogadores += 1;
+      }
+    }
+    // print("Jogadores $numeroJogadores, Time $time");
+    return numeroJogadores;
   }
 }
