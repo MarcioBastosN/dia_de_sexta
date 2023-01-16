@@ -4,4 +4,5 @@ class NomeTabelaDB {
   static const time = "tbTime";
   static const grupos = "tbGrupoJogadores";
   static const nomeJogadoresGrupo = "tbNomeJogadoresGrupo";
+  static const definicoesJogo = "tbDefinicoes";
 }

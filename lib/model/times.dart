@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
@@ -14,8 +15,13 @@ class Time with ChangeNotifier {
 
   int? id;
   String? nome;
+  int? qtdParticipantes;
 
-  Time({this.id, this.nome});
+  Time({
+    this.id,
+    this.nome,
+    this.qtdParticipantes,
+  });
 
   // variaveis de controle
   final nomeTime = TextEditingController();
@@ -31,6 +37,7 @@ class Time with ChangeNotifier {
           (item) => Time(
             id: item['id'],
             nome: item['nome'],
+            qtdParticipantes: item['qtdParticipantes'],
           ),
         )
         .toList();
@@ -41,6 +48,7 @@ class Time with ChangeNotifier {
   Future<void> adicionarTime(Time time) async {
     await DbUtil.insert(NomeTabelaDB.time, {
       'nome': time.nome.toString(),
+      'qtdParticipantes': time.qtdParticipantes!,
     }).whenComplete(() => loadDate());
   }
 
@@ -62,6 +70,12 @@ class Time with ChangeNotifier {
   Future<void> editarNomeTime(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'nome': time.nome,
+    }).whenComplete(() => loadDate());
+  }
+
+  Future<void> editarQtdJogadores(int valor) async {
+    await DbUtil.update(NomeTabelaDB.time, valor, {
+      'qtdParticipantes': valor,
     }).whenComplete(() => loadDate());
   }
 
@@ -103,7 +117,12 @@ class Time with ChangeNotifier {
                   onPressed: () {
                     final time = nomeTime.text.toString().trim();
                     if (time.isNotEmpty) {
-                      adicionarTime(Time(nome: time)).whenComplete(
+                      adicionarTime(Time(
+                              nome: time,
+                              qtdParticipantes: Provider.of<Definicoes>(context,
+                                      listen: false)
+                                  .retornaLimiteJogadores()))
+                          .whenComplete(
                         () => nomeTime.value = const TextEditingValue(text: ""),
                       );
                     }

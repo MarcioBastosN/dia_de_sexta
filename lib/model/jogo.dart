@@ -69,7 +69,6 @@ class Jogo with ChangeNotifier {
     return tempo;
   }
 
-// TODO arrumar  tempo jogo verificar;
   registraJogoDbLista(BuildContext context) {
     DbUtil.insert(NomeTabelaDB.placar, {
       'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
@@ -186,7 +185,6 @@ class Jogo with ChangeNotifier {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
               // inicia novo jogo
-              // TODO verificar e corrigir
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,

@@ -3,12 +3,14 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
 class TabelasDB {
+  static const String tbDefinicoes =
+      "CREATE TABLE ${NomeTabelaDB.definicoesJogo} (id INTEGER PRIMARY KEY AUTOINCREMENT, numeroJogadores INTEGER)";
   static const String tbPlacar =
       "CREATE TABLE ${NomeTabelaDB.placar} (id INTEGER PRIMARY KEY AUTOINCREMENT, grupo_1 INTEGER, grupo_2 INTEGER, placar1 INTEGER, placar2 INTEGER, data TEXT, tempoJogo TEXT);";
   static const String tbJogadores =
       "CREATE TABLE ${NomeTabelaDB.jogadores} (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE, possuiTime INTEGER);";
   static const String tbTime =
-      "CREATE TABLE ${NomeTabelaDB.time} (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
+      "CREATE TABLE ${NomeTabelaDB.time} (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, qtdParticipantes INTEGER);";
   static const String tbGrupos =
       "CREATE TABLE ${NomeTabelaDB.grupos} (id INTEGER PRIMARY KEY AUTOINCREMENT, idTime INTEGER, idJogador INTEGER);";
   static const String tbNomeJogadoresGrupo =
@@ -18,6 +20,7 @@ class TabelasDB {
 class DbUtil {
   static Future<void> criarTabelasBanco(sql.Database db, int version) async {
     List<String> queryes = [
+      TabelasDB.tbDefinicoes,
       TabelasDB.tbPlacar,
       TabelasDB.tbJogadores,
       TabelasDB.tbTime,

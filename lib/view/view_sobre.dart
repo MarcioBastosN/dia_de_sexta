@@ -1,6 +1,8 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -50,6 +52,19 @@ class _SobreState extends State<Sobre> {
                       Text("(93) 9 9175-3545"),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadores().toString()}",
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/asset/custon/my_theme.dart';
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => Definicoes(),
+        ),
         ChangeNotifierProvider(
           create: (context) => Jogo(),
         ),

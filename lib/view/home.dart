@@ -1,12 +1,9 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/model/grupo.dart';
-import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/compoment/alert_exit.dart';
 import 'package:dia_de_sexta/view/compoment/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,18 +18,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // inicializa os providers
-    Provider.of<Grupo>(context, listen: false).loadDate();
-
-    // verifica se possui times -se não houver cria.
-    Provider.of<Time>(context, listen: false).loadDate().whenComplete(() {
-      if (Provider.of<Time>(context, listen: false).listaTimes.isEmpty) {
-        Provider.of<Time>(context, listen: false)
-            .adicionarTime(Time(nome: "Time 01"));
-        Provider.of<Time>(context, listen: false)
-            .adicionarTime(Time(nome: "Time 02"));
-      }
-    });
     // defini orientação
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
