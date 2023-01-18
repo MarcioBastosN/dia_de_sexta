@@ -5,6 +5,7 @@ import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
 import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
 import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,8 @@ class ListaJogadores extends StatefulWidget {
 }
 
 class _ListaJogadoresState extends State<ListaJogadores> {
+  final controller_flip = FlipCardController();
+
   @override
   void dispose() {
     super.dispose();
@@ -63,38 +66,35 @@ class _ListaJogadoresState extends State<ListaJogadores> {
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child:
-                    Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("Adicione Jogadores"),
-                                Text(
-                                    "Necessario 2 ou mais jodadores para realizar o sorteio!"),
-                              ],
-                            ),
-                          )
-                        : const GridJogadores(),
-              ),
-              Expanded(
-                child: Provider.of<Time>(context).tamanhoListaTimes() == 0
+          child: FlipCard(
+            rotateSide: RotateSide.bottom,
+            controller: controller_flip,
+            onTapFlipping: true,
+            frontWidget:
+                Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Text("Adicione Times"),
-                            Text("Crie 2 ou mais times pra usalos no inicio!"),
-                            Center(child: CircularProgressIndicator()),
+                            Text("Adicione Jogadores"),
+                            Text(
+                                "Necessario 2 ou mais jodadores para realizar o sorteio!"),
                           ],
                         ),
                       )
-                    : const GridTimes(),
-              ),
-            ],
+                    : const GridJogadores(),
+            backWidget: Provider.of<Time>(context).tamanhoListaTimes() == 0
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text("Adicione Times"),
+                        Text("Crie 2 ou mais times pra usalos no inicio!"),
+                        Center(child: CircularProgressIndicator()),
+                      ],
+                    ),
+                  )
+                : const GridTimes(),
           ),
         ),
         // floatingActionButtonLocation:
@@ -159,6 +159,14 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.info_outline),
               onTap: () => dicasSorteio(context),
+            ),
+            SpeedDialChild(
+              backgroundColor: Colors.cyan,
+              labelBackgroundColor: Colors.cyan,
+              label: "Flip card",
+              labelStyle: const TextStyle(color: Colors.black),
+              child: const Icon(Icons.info_outline),
+              onTap: () => controller_flip.flipcard(),
             ),
           ],
         ),
