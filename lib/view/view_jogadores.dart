@@ -19,7 +19,7 @@ class ListaJogadores extends StatefulWidget {
 }
 
 class _ListaJogadoresState extends State<ListaJogadores> {
-  final controller_flip = FlipCardController();
+  final controllerFlip = FlipCardController();
 
   @override
   void dispose() {
@@ -68,7 +68,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
         body: SafeArea(
           child: FlipCard(
             rotateSide: RotateSide.bottom,
-            controller: controller_flip,
+            controller: controllerFlip,
             onTapFlipping: true,
             frontWidget:
                 Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
@@ -82,14 +82,14 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                           ],
                         ),
                       )
-                    : const GridJogadores(),
+                    : GridJogadores(flip: controllerFlip),
             backWidget: Provider.of<Time>(context).tamanhoListaTimes() == 0
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Text("Adicione Times"),
-                        Text("Crie 2 ou mais times pra usalos no inicio!"),
+                        Text("Crie 2 ou mais times para usalos no inicio!"),
                         Center(child: CircularProgressIndicator()),
                       ],
                     ),
@@ -104,28 +104,42 @@ class _ListaJogadoresState extends State<ListaJogadores> {
           overlayColor: Colors.blue.withAlpha(100),
           children: [
             SpeedDialChild(
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
-              label: "Jogador",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.person_add),
-              onTap: () => Provider.of<Jogador>(context, listen: false)
-                  .addJogadorLista(context),
-            ),
+                backgroundColor: Colors.cyan,
+                labelBackgroundColor: Colors.cyan,
+                label: "Jogador",
+                labelStyle: const TextStyle(color: Colors.black),
+                child: const Icon(Icons.person_add),
+                onTap: () {
+                  if (controllerFlip.state!.isFront != true) {
+                    controllerFlip.flipcard().whenComplete(() =>
+                        Provider.of<Jogador>(context, listen: false)
+                            .addJogadorLista(context));
+                  } else {
+                    Provider.of<Jogador>(context, listen: false)
+                        .addJogadorLista(context);
+                  }
+                }),
             SpeedDialChild(
-              visible: Provider.of<Jogador>(context, listen: false)
-                          .tamanhoListaJogadores() >=
-                      2
-                  ? true
-                  : false,
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
-              label: "Time",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.gamepad),
-              onTap: () => Provider.of<Time>(context, listen: false)
-                  .addTimeLista(context),
-            ),
+                visible: Provider.of<Jogador>(context, listen: false)
+                            .tamanhoListaJogadores() >=
+                        2
+                    ? true
+                    : false,
+                backgroundColor: Colors.cyan,
+                labelBackgroundColor: Colors.cyan,
+                label: "Time",
+                labelStyle: const TextStyle(color: Colors.black),
+                child: const Icon(Icons.gamepad),
+                onTap: () {
+                  if (controllerFlip.state!.isFront == true) {
+                    controllerFlip.flipcard().whenComplete(() =>
+                        Provider.of<Time>(context, listen: false)
+                            .addTimeLista(context));
+                  } else {
+                    Provider.of<Time>(context, listen: false)
+                        .addTimeLista(context);
+                  }
+                }),
             // apagar registros grupos
             SpeedDialChild(
               visible: Provider.of<Jogador>(context, listen: false)
@@ -166,7 +180,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Flip card",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.info_outline),
-              onTap: () => controller_flip.flipcard(),
+              onTap: () => controllerFlip.flipcard(),
             ),
           ],
         ),

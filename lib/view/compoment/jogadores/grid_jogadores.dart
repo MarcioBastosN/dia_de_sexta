@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +8,9 @@ import '../dialog_component.dart';
 import '../text_form_compoment.dart';
 
 class GridJogadores extends StatefulWidget {
-  const GridJogadores({super.key});
+  final FlipCardController? flip;
+
+  const GridJogadores({super.key, this.flip});
 
   @override
   State<GridJogadores> createState() => _GridJogadoresState();
@@ -170,6 +173,15 @@ class _GridJogadoresState extends State<GridJogadores> {
                       Provider.of<Jogador>(context, listen: false)
                           .liberaJogadorId(listaJogadores[index].id!, context);
                     }
+                  },
+                ),
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "adicionar a um time",
+                  // child: const Icon(Icons.refresh),
+                  visible: listaJogadores[index].possuiTime != 1 ? true : false,
+                  onTap: () {
+                    widget.flip!.flipcard();
                   },
                 ),
               ],

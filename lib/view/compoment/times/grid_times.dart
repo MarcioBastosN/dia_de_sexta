@@ -85,90 +85,95 @@ class _GridTimesState extends State<GridTimes> {
       );
     }
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 2.7 / 3.5,
-      ),
-      itemCount: listaTimes.length,
-      itemBuilder: (context, index) {
-        return Scaffold(
-          body: Card(
-            color: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 16.0, top: 8, bottom: 8, left: 8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          listaTimes[index].nome!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 2.7 / 3.5,
+        ),
+        itemCount: listaTimes.length,
+        itemBuilder: (context, index) {
+          return Scaffold(
+            body: Card(
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 16.0, top: 8, bottom: 8, left: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            listaTimes[index].nome!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  Expanded(
+                    child: ListajogadoresTime(timeId: listaTimes[index].id!),
+                  ),
+                ],
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniEndTop,
+            floatingActionButton: SpeedDial(
+              icon: Icons.menu,
+              mini: true,
+              overlayColor: Colors.blue.withAlpha(100),
+              backgroundColor: Colors.cyan,
+              direction: SpeedDialDirection.down,
+              children: [
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "Editar",
+                  child: const Icon(Icons.edit),
+                  onTap: () => Provider.of<Time>(context, listen: false)
+                      .editaNomeTime(context, listaTimes[index]),
                 ),
-                Expanded(
-                  child: ListajogadoresTime(timeId: listaTimes[index].id!),
+                SpeedDialChild(
+                  visible: Provider.of<Jogador>(context)
+                          .getListaJogadoresDisponiveis()
+                          .isEmpty
+                      ? false
+                      : true,
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "Jogador",
+                  child: const Icon(Icons.person_add),
+                  onTap: () =>
+                      selecionarJogadoresTime(context, listaTimes[index].id!),
+                ),
+                SpeedDialChild(
+                  labelStyle: const TextStyle(color: Colors.black),
+                  label: "Apagar",
+                  child: const Icon(Icons.delete),
+                  visible: Provider.of<Time>(context).listaTimes.length > 2
+                      ? true
+                      : false,
+                  onTap: () => {
+                    Provider.of<Time>(context, listen: false)
+                        .removeTime(listaTimes[index], context)
+                  },
                 ),
               ],
             ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-          floatingActionButton: SpeedDial(
-            icon: Icons.menu,
-            mini: true,
-            overlayColor: Colors.blue.withAlpha(100),
-            backgroundColor: Colors.cyan,
-            children: [
-              SpeedDialChild(
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "Editar",
-                child: const Icon(Icons.edit),
-                onTap: () => Provider.of<Time>(context, listen: false)
-                    .editaNomeTime(context, listaTimes[index]),
-              ),
-              SpeedDialChild(
-                visible: Provider.of<Jogador>(context)
-                        .getListaJogadoresDisponiveis()
-                        .isEmpty
-                    ? false
-                    : true,
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "Jogador",
-                child: const Icon(Icons.person_add),
-                onTap: () =>
-                    selecionarJogadoresTime(context, listaTimes[index].id!),
-              ),
-              SpeedDialChild(
-                labelStyle: const TextStyle(color: Colors.black),
-                label: "Apagar",
-                child: const Icon(Icons.delete),
-                visible: Provider.of<Time>(context).listaTimes.length > 2
-                    ? true
-                    : false,
-                onTap: () => {
-                  Provider.of<Time>(context, listen: false)
-                      .removeTime(listaTimes[index], context)
-                },
-              ),
-            ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
