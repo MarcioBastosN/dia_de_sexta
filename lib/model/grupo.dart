@@ -102,7 +102,7 @@ class Grupo with ChangeNotifier {
 // 1 - buscar jogadores disponiveis
 // 2 - buscar times com vagas
 // 3 -
-  sorteiaTimes(BuildContext context) {
+  Future<void> sorteiaTimes(BuildContext context) async {
     int numeroJogadoresDisponiveis =
         Provider.of<Jogador>(context, listen: false)
             .getListaJogadoresDisponiveis()

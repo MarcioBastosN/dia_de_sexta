@@ -163,7 +163,12 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.playlist_add_check_circle_outlined),
               onTap: () => Provider.of<Grupo>(context, listen: false)
-                  .sorteiaTimes(context),
+                  .sorteiaTimes(context)
+                  .whenComplete(() {
+                if (controllerFlip.state!.isFront == true) {
+                  controllerFlip.flipcard();
+                }
+              }),
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
