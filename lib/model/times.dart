@@ -179,6 +179,16 @@ class Time with ChangeNotifier {
   List<DropdownMenuItem<int>> listaJogadoresDisponiveis = [];
   List<Jogador> listaJogadores = [];
 
+  List<Jogador> loadDisponiveis(BuildContext context) {
+    List<Jogador> jogadores = [];
+    for (var item in Provider.of<Jogador>(context).listaJogadores) {
+      if (item.possuiTime! == 0) {
+        jogadores.add(item);
+      }
+    }
+    return jogadores;
+  }
+
 // TODO arrumar lista disponiveis
 
   carregaJogadoresDisponiveis(BuildContext context) {

@@ -71,8 +71,8 @@ class Jogador with ChangeNotifier {
   }
 
 // informa jogador esta em um time
-  Future<void> jogadorPossuiTime(List<Jogador> jogdores) async {
-    for (var item in jogadores) {
+  Future<void> jogadorPossuiTime(List<Jogador> playes) async {
+    for (var item in playes) {
       await DbUtil.update(NomeTabelaDB.jogadores, item.id!, {
         "possuiTime": 1,
       }).whenComplete(() => loadDate());

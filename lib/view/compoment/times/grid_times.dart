@@ -31,10 +31,10 @@ class _GridTimesState extends State<GridTimes> {
 // Selecionar Jogadores para um time
     selecionarJogadoresTime(BuildContext context, int idTimeSelecionado) {
       // List<int>? idJogadorTemp;
-      int? idJogadorTemp;
+      // int? idJogadorTemp;
       List<Jogador>? jogadoresTemp;
-      Provider.of<Time>(context, listen: false)
-          .carregaJogadoresDisponiveis(context);
+      // Provider.of<Time>(context, listen: false)
+      //     .carregaJogadoresDisponiveis(context);
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
@@ -76,8 +76,12 @@ class _GridTimesState extends State<GridTimes> {
                 color: Colors.cyan,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
+              selectedColor: Colors.blue,
+              selectedItemsTextStyle: const TextStyle(
+                color: Colors.white,
+              ),
               items: Provider.of<Time>(context, listen: false)
-                  .listaJogadores
+                  .loadDisponiveis(context)
                   .map((e) => MultiSelectItem(e, e.nome!))
                   .toList(),
               listType: MultiSelectListType.CHIP,
