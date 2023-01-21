@@ -39,11 +39,13 @@ class Grupo with ChangeNotifier {
   }
 
 // adiciona grupo
-  Future<void> adicionarGrupo(Grupo grupo) async {
-    await DbUtil.insert(NomeTabelaDB.grupos, {
-      'idJogador': grupo.idJogador!,
-      'idTime': grupo.idTime!,
-    }).whenComplete(() => loadDate());
+  Future<void> adicionarGrupo(List<Jogador>? jogadores, int idTime) async {
+    for (var jogador in jogadores!) {
+      await DbUtil.insert(NomeTabelaDB.grupos, {
+        'idJogador': jogador.id!,
+        'idTime': idTime,
+      }).whenComplete(() => loadDate());
+    }
   }
 
 // retorna os jogadores de um grupo
@@ -137,11 +139,12 @@ class Grupo with ChangeNotifier {
               teste = Random().nextInt(listaJogadores.length);
             } while (listaJogadores[teste].possuiTime == 1);
 
-            adicionarGrupo(
-                Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
-            Provider.of<Jogador>(context, listen: false)
-                .jogadorPossuiTime(listaJogadores[teste].id!);
-            listaJogadores.removeAt(teste);
+// TODO arrumar sorteio
+            // adicionarGrupo(
+            //     Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
+            // Provider.of<Jogador>(context, listen: false)
+            //     .jogadorPossuiTime(listaJogadores[teste].id!);
+            // listaJogadores.removeAt(teste);
           }
         }
       }

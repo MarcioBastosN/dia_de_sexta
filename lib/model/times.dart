@@ -179,6 +179,8 @@ class Time with ChangeNotifier {
   List<DropdownMenuItem<int>> listaJogadoresDisponiveis = [];
   List<Jogador> listaJogadores = [];
 
+// TODO arrumar lista disponiveis
+
   carregaJogadoresDisponiveis(BuildContext context) {
     listaJogadoresDisponiveis.clear();
     listaJogadores =

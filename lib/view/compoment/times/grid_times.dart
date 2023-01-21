@@ -3,6 +3,8 @@ import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../dialog_component.dart';
@@ -28,7 +30,9 @@ class _GridTimesState extends State<GridTimes> {
 
 // Selecionar Jogadores para um time
     selecionarJogadoresTime(BuildContext context, int idTimeSelecionado) {
+      // List<int>? idJogadorTemp;
       int? idJogadorTemp;
+      List<Jogador>? jogadoresTemp;
       Provider.of<Time>(context, listen: false)
           .carregaJogadoresDisponiveis(context);
       showDialog(
@@ -36,46 +40,60 @@ class _GridTimesState extends State<GridTimes> {
         builder: (context) => DialogComponent(
           titulo: "Selecione",
           listaCompomentes: [
-            DropdownButtonFormField(
-              isExpanded: true,
-              decoration: const InputDecoration(
-                isDense: true,
-                labelText: "jogador(es)",
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.cyan,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                labelStyle: TextStyle(
-                  color: Colors.white60,
-                  overflow: TextOverflow.ellipsis,
-                ),
+            // DropdownButtonFormField(
+            //   isExpanded: true,
+            //   decoration: const InputDecoration(
+            //     isDense: true,
+            //     labelText: "jogador(es)",
+            //     enabledBorder: OutlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: Colors.cyan,
+            //         width: 2,
+            //       ),
+            //       borderRadius: BorderRadius.all(Radius.circular(18)),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderSide: BorderSide(color: Colors.white),
+            //       borderRadius: BorderRadius.all(Radius.circular(18)),
+            //     ),
+            //     labelStyle: TextStyle(
+            //       color: Colors.white60,
+            //       overflow: TextOverflow.ellipsis,
+            //     ),
+            //   ),
+            //   items: Provider.of<Time>(context, listen: false)
+            //       .listaJogadoresDisponiveis,
+            //   onChanged: (value) => {
+            //     setState(() {
+            //       idJogadorTemp = value;
+            //     }),
+            //   },
+            // ),
+
+// teste
+            MultiSelectDialogField(
+              decoration: const BoxDecoration(
+                color: Colors.cyan,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
               items: Provider.of<Time>(context, listen: false)
-                  .listaJogadoresDisponiveis,
-              onChanged: (value) => {
-                setState(() {
-                  idJogadorTemp = value;
-                }),
+                  .listaJogadores
+                  .map((e) => MultiSelectItem(e, e.nome!))
+                  .toList(),
+              listType: MultiSelectListType.CHIP,
+              onConfirm: (values) {
+                jogadoresTemp = values;
               },
             ),
+// fim teste
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Provider.of<Jogador>(context, listen: false)
-                    .jogadorPossuiTime(idJogadorTemp!)
+                    .jogadorPossuiTime(jogadoresTemp!)
                     .whenComplete(() {
                   Provider.of<Grupo>(context, listen: false)
-                      .adicionarGrupo(Grupo(
-                    idJogador: idJogadorTemp,
-                    idTime: idTimeSelecionado,
-                  ));
+                      .adicionarGrupo(jogadoresTemp!, idTimeSelecionado);
                 });
               },
               child: const Text("Salvar"),
