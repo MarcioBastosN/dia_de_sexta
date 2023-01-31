@@ -28,7 +28,6 @@ class _PlacarState extends State<Placar> {
 
   @override
   void initState() {
-    super.initState();
     // mantem a tela ativa
     Wakelock.enable();
     // define a orientacao da tela
@@ -37,6 +36,8 @@ class _PlacarState extends State<Placar> {
     );
     // inicia o timer
     Provider.of<Jogo>(context, listen: false).disparaTempo();
+
+    super.initState();
   }
 
   @override
