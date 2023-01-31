@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    super.initState();
     // defini o limite de jogadores no grupo
     Provider.of<Definicoes>(context, listen: false).loadDate().whenComplete(() {
       if (Provider.of<Definicoes>(context, listen: false).listaDef.isEmpty) {
@@ -40,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 .retornaLimiteJogadores()));
       }
     });
+    super.initState();
   }
 
   final pageController = PageController();
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).copyWith().backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
@@ -71,8 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        selectedItemColor: Theme.of(context).colorScheme.onSecondary,
         unselectedItemColor: Colors.white.withAlpha(100),
         currentIndex: currentindex,
         items: const [

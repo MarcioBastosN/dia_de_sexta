@@ -64,16 +64,16 @@ class _MyWidgetState extends State<PlacarComponent> {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   widget.titulo,
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   widget.placar,
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.displayLarge,
                   // style: GoogleFonts.getFont('Play'),
-                  textScaleFactor: 1.5,
+                  textScaleFactor: 2.5,
                 ),
               ),
               // botoes

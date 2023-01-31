@@ -189,24 +189,22 @@ class Time with ChangeNotifier {
     return jogadores;
   }
 
-// TODO arrumar lista disponiveis
-
-  carregaJogadoresDisponiveis(BuildContext context) {
-    listaJogadoresDisponiveis.clear();
-    listaJogadores =
-        Provider.of<Jogador>(context, listen: false).listaJogadores;
-    for (var element in listaJogadores) {
-      if (element.possuiTime == 0) {
-        listaJogadoresDisponiveis.add(
-          DropdownMenuItem(
-            value: element.id,
-            child: Text(element.nome!),
-          ),
-        );
-        notifyListeners();
-      }
-    }
-  }
+  // carregaJogadoresDisponiveis(BuildContext context) {
+  //   listaJogadoresDisponiveis.clear();
+  //   listaJogadores =
+  //       Provider.of<Jogador>(context, listen: false).listaJogadores;
+  //   for (var element in listaJogadores) {
+  //     if (element.possuiTime == 0) {
+  //       listaJogadoresDisponiveis.add(
+  //         DropdownMenuItem(
+  //           value: element.id,
+  //           child: Text(element.nome!),
+  //         ),
+  //       );
+  //       notifyListeners();
+  //     }
+  //   }
+  // }
 
   String retornaNomeTime(int idTimeSelecionado) {
     String nomeTime = "";
