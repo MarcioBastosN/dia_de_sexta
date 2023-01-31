@@ -24,9 +24,6 @@ class _PlacarState extends State<Placar> {
   bool trocaLadoJogo = false;
 
   int tempoJogo = 0;
-  // mantem o contador do timer
-  Timer? timeActive;
-  // salva o tempo de jogo da partida
   String? tempoDaPartida;
 
   @override
@@ -39,7 +36,7 @@ class _PlacarState extends State<Placar> {
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
     );
     // inicia o timer
-    disparaTempo();
+    Provider.of<Jogo>(context, listen: false).disparaTempo();
   }
 
   @override
@@ -47,17 +44,8 @@ class _PlacarState extends State<Placar> {
     // libera a tela ativa
     Wakelock.disable();
     // libera o timer
-    timeActive!.cancel();
+    Provider.of<Jogo>(context, listen: false).cancelaContador();
     super.dispose();
-  }
-
-  // Exibe tempo do jogo
-  disparaTempo() {
-    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        tempoJogo++;
-      });
-    });
   }
 
   // formata o tempo de jogo para exibir na tela
@@ -136,7 +124,7 @@ class _PlacarState extends State<Placar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text("${widget.title} ${jogo.pontosFimJogo.toString()} pontos"),
-          Text(formataTempo(tempoJogo)),
+          Text(formataTempo(Provider.of<Jogo>(context, listen: true).time)),
         ],
       ),
       actions: [
