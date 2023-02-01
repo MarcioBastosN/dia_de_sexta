@@ -104,8 +104,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
           overlayColor: Colors.blue.withAlpha(100),
           children: [
             SpeedDialChild(
-                backgroundColor: Colors.cyan,
-                labelBackgroundColor: Colors.cyan,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                labelBackgroundColor: Theme.of(context).colorScheme.primary,
                 label: "Jogador",
                 labelStyle: const TextStyle(color: Colors.black),
                 child: const Icon(Icons.person_add),
@@ -125,8 +125,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                         2
                     ? true
                     : false,
-                backgroundColor: Colors.cyan,
-                labelBackgroundColor: Colors.cyan,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                labelBackgroundColor: Theme.of(context).colorScheme.primary,
                 label: "Time",
                 labelStyle: const TextStyle(color: Colors.black),
                 child: const Icon(Icons.gamepad),
@@ -157,8 +157,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ),
             SpeedDialChild(
               visible: verificaSorteio(),
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              labelBackgroundColor: Theme.of(context).colorScheme.primary,
               label: "Sorteia Times",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.playlist_add_check_circle_outlined),
@@ -172,21 +172,13 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              labelBackgroundColor: Theme.of(context).colorScheme.primary,
               label: "Info",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.info_outline),
               onTap: () => dicasSorteio(context),
             ),
-            // SpeedDialChild(
-            //   backgroundColor: Colors.cyan,
-            //   labelBackgroundColor: Colors.cyan,
-            //   label: "Flip card",
-            //   labelStyle: const TextStyle(color: Colors.black),
-            //   child: const Icon(Icons.info_outline),
-            //   onTap: () => controllerFlip.flipcard(),
-            // ),
           ],
         ),
       ),
