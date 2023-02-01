@@ -53,7 +53,7 @@ class _PlacarState extends State<Placar> {
   String formataTempo(int tempo) {
     int nim = 0;
     int sec = 0;
-    if (tempoJogo > 60) {
+    if (tempo > 60) {
       do {
         tempo = tempo - 60;
         if (tempo > 1) {
@@ -61,7 +61,6 @@ class _PlacarState extends State<Placar> {
         }
       } while (tempo > 60);
     }
-
     sec = tempo;
     setState(() {
       tempoDaPartida = "$nim m $sec s";
@@ -125,7 +124,9 @@ class _PlacarState extends State<Placar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text("${widget.title} ${jogo.pontosFimJogo.toString()} pontos"),
+          // TODO corrigir
           Text(formataTempo(Provider.of<Jogo>(context, listen: true).time)),
+          // Consumer(builder: builder)
         ],
       ),
       actions: [
