@@ -51,7 +51,7 @@ class _MyWidgetState extends State<ListaPlacar> {
       actions: [
         Provider.of<Jogo>(context, listen: false).equipe_1 != null
             ? PopupMenuButton(
-                color: Colors.blue,
+                // color: Colors.blue,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     child: InkWell(

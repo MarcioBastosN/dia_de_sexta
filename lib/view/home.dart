@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
             right: 10,
             child: SafeArea(
               child: PopupMenuButton(
-                color: Colors.cyan,
+                // TODO - arrumar
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Sobre",

@@ -74,7 +74,7 @@ class _SobreState extends State<Sobre> {
             right: 10,
             child: SafeArea(
               child: PopupMenuButton(
-                color: Colors.cyan,
+                // color: Colors.cyan,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Home",
