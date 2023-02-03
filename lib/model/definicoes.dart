@@ -1,8 +1,6 @@
 import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
-import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Definicoes with ChangeNotifier {
   int? id;
@@ -49,20 +47,9 @@ class Definicoes with ChangeNotifier {
     return valor;
   }
 
-  // TODO - utilizar esta funcao
-  // edita o numero de Jogadores disponiveis - atualiza a quantidade dos times
   atualizaDefinicoes(Definicoes definicoes, BuildContext context) {
     DbUtil.update(NomeTabelaDB.definicoesJogo, definicoes.id!, {
       'numeroJogadores': definicoes.numeroJogadores,
-    }).whenComplete(() => loadDate().whenComplete(
-          () {
-            // atualiza os grupos
-            var times = Provider.of<Time>(context, listen: false).times;
-
-            for (var item in times) {
-              item.editarQtdJogadores(definicoes.numeroJogadores!);
-            }
-          },
-        ));
+    }).whenComplete(() => loadDate());
   }
 }
