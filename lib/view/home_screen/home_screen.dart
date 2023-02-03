@@ -29,14 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
     // verifica se possui times -se não houver cria.
     Provider.of<Time>(context, listen: false).loadDate().whenComplete(() {
       if (Provider.of<Time>(context, listen: false).listaTimes.isEmpty) {
-        Provider.of<Time>(context, listen: false).adicionarTime(Time(
-            nome: "Time 01",
-            qtdParticipantes: Provider.of<Definicoes>(context, listen: false)
-                .retornaLimiteJogadores()));
-        Provider.of<Time>(context, listen: false).adicionarTime(Time(
-            nome: "Time 02",
-            qtdParticipantes: Provider.of<Definicoes>(context, listen: false)
-                .retornaLimiteJogadores()));
+        Provider.of<Time>(context, listen: false)
+            .adicionarTime(Time(nome: "Time 01", qtdParticipantes: 0));
+        Provider.of<Time>(context, listen: false)
+            .adicionarTime(Time(nome: "Time 02", qtdParticipantes: 0));
       }
     });
     super.initState();

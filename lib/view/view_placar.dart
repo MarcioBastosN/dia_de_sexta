@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';

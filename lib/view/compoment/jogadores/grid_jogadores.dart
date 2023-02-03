@@ -122,9 +122,6 @@ class _GridJogadoresState extends State<GridJogadores> {
                               ),
                             ),
                           ),
-                          // Text(listaJogadores[index].possuiTime == 1
-                          //     ? "Indisponivel"
-                          //     : "Disponivel"),
                         ],
                       ),
                     ),

@@ -60,7 +60,11 @@ class _GridTimesState extends State<GridTimes> {
                     .jogadorPossuiTime(jogadoresTemp!)
                     .whenComplete(() {
                   Provider.of<Grupo>(context, listen: false)
-                      .adicionarGrupo(jogadoresTemp!, idTimeSelecionado);
+                      .adicionarGrupo(jogadoresTemp!, idTimeSelecionado)
+                      .whenComplete(() {
+                    Provider.of<Time>(context, listen: false)
+                        .atualizaParticipantes(idTimeSelecionado);
+                  });
                 });
               },
               child: const Text("Salvar"),

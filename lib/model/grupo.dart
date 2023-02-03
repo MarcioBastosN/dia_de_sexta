@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,8 @@ class Grupo with ChangeNotifier {
       removeGrupo(grupo.id!);
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
+    // zerar lista de jogadorestime
+    Provider.of<Time>(context, listen: false).zerarJogadoresTime();
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
@@ -100,57 +103,45 @@ class Grupo with ChangeNotifier {
     return teste;
   }
 
-// passos para sortear - definir limite de jogadores por time
+// passos para sortear
 // 1 - buscar jogadores disponiveis
 // 2 - buscar times com vagas
-// 3 -
+// 3 - realizar sorteio jogador
   Future<void> sorteiaTimes(BuildContext context) async {
-    int numeroJogadoresDisponiveis =
-        Provider.of<Jogador>(context, listen: false)
-            .getListaJogadoresDisponiveis()
-            .length;
-    int numeroJogadoresParaAdicionar = 0;
-    // consultar times validos (com espaco disponivel)
-    var consultaTimes = Provider.of<Time>(context, listen: false).listaTimes;
+    // retorna o limite de jogadores que um time pode possuir no sorteio.
+    int defLimitJogadores = Provider.of<Definicoes>(context, listen: false)
+        .retornaLimiteJogadores();
 
-// trocar map por for para desempenho
-    int times = consultaTimes
-        .map((e) =>
-            numeroJogadoresTime(e.id!, context) < numeroJogadoresParaAdicionar)
-        .toList()
-        .length;
+    do {
+      List<Jogador> jogadoresDisponiveis =
+          Provider.of<Jogador>(context, listen: false)
+              .getListaJogadoresDisponiveis();
+      // consultar times validos
+      var consultaTimesValidos = Provider.of<Time>(context, listen: false)
+          .retornaTimesValidos(context);
 
-    if (numeroJogadoresDisponiveis >= times) {
-      numeroJogadoresParaAdicionar =
-          (numeroJogadoresDisponiveis / times).floor();
-
-      var listaJogadores = Provider.of<Jogador>(context, listen: false)
-          .getListaJogadoresDisponiveis();
-      for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
-        // verifica quantidade de jogadores do grupo ao qual possui o time
-        if (numeroJogadoresParaAdicionar >=
-            numeroJogadoresTime(time.id!, context)) {
-          int tempNumeroJogadores = (numeroJogadoresParaAdicionar -
-              numeroJogadoresTime(time.id!, context));
-
-          for (var i = 0; i < tempNumeroJogadores; i++) {
-            var teste = Random().nextInt(listaJogadores.length);
-            do {
-              teste = Random().nextInt(listaJogadores.length);
-            } while (listaJogadores[teste].possuiTime == 1);
-
-// TODO arrumar sorteio
-            // adicionarGrupo(
-            //     Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
-            // Provider.of<Jogador>(context, listen: false)
-            //     .jogadorPossuiTime(listaJogadores[teste].id!);
-            // listaJogadores.removeAt(teste);
+      for (var time in consultaTimesValidos) {
+        //
+        var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
+        List<Jogador> jogadores = [];
+        for (var i = 0; i < jogadoresDisponiveis.length; i++) {
+          if (i == jogadorSorteado) {
+            jogadores.add(jogadoresDisponiveis[i]);
           }
         }
+
+        adicionarGrupo(jogadores, time.id!)
+            .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+                .jogadorPossuiTime(jogadores))
+            .whenComplete(() => Provider.of<Time>(context, listen: false)
+                .atualizaParticipantes(time.id!));
+        //
       }
-    } else {
-      return;
-    }
+    } while (
+        Provider.of<Time>(context).retornaTimesValidos(context).isNotEmpty ||
+            Provider.of<Jogador>(context)
+                .getListaJogadoresDisponiveis()
+                .isNotEmpty);
   }
 
 // remove um jogador do grupo de acordo com seu id

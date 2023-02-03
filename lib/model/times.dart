@@ -52,6 +52,18 @@ class Time with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
+  List<Time> retornaTimesValidos(BuildContext context) {
+    List<Time> timesValidos = [];
+    for (var element in listaTimes) {
+      if (element.qtdParticipantes! <
+          Provider.of<Definicoes>(context, listen: false)
+              .retornaLimiteJogadores()) {
+        timesValidos.add(element);
+      }
+    }
+    return timesValidos;
+  }
+
 // retorna o tamanho da lista bde times
   int tamanhoListaTimes() {
     return times.length;
@@ -73,9 +85,36 @@ class Time with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-  Future<void> editarQtdJogadores(int valor) async {
-    await DbUtil.update(NomeTabelaDB.time, valor, {
-      'qtdParticipantes': valor,
+  int qtdParticipantesTime(int idTime) {
+    int valor = 0;
+    for (var element in listaTimes) {
+      if (element.id == idTime) {
+        valor = element.qtdParticipantes!;
+      }
+    }
+    return valor;
+  }
+
+  atualizaParticipantes(int idTime) {
+    for (var element in listaTimes) {
+      if (element.id == idTime) {
+        element.qtdParticipantes = (qtdParticipantesTime(idTime) + 1);
+        editarQtdJogadores(element);
+      }
+    }
+  }
+
+  zerarJogadoresTime() {
+    for (var element in listaTimes) {
+      element.qtdParticipantes = 0;
+      editarQtdJogadores(element);
+      notifyListeners();
+    }
+  }
+
+  Future<void> editarQtdJogadores(Time time) async {
+    await DbUtil.update(NomeTabelaDB.time, time.id!, {
+      'qtdParticipantes': time.qtdParticipantes,
     }).whenComplete(() => loadDate());
   }
 
@@ -117,11 +156,7 @@ class Time with ChangeNotifier {
                   onPressed: () {
                     final time = nomeTime.text.toString().trim();
                     if (time.isNotEmpty) {
-                      adicionarTime(Time(
-                              nome: time,
-                              qtdParticipantes: Provider.of<Definicoes>(context,
-                                      listen: false)
-                                  .retornaLimiteJogadores()))
+                      adicionarTime(Time(nome: time, qtdParticipantes: 0))
                           .whenComplete(
                         () => nomeTime.value = const TextEditingValue(text: ""),
                       );
@@ -188,23 +223,6 @@ class Time with ChangeNotifier {
     }
     return jogadores;
   }
-
-  // carregaJogadoresDisponiveis(BuildContext context) {
-  //   listaJogadoresDisponiveis.clear();
-  //   listaJogadores =
-  //       Provider.of<Jogador>(context, listen: false).listaJogadores;
-  //   for (var element in listaJogadores) {
-  //     if (element.possuiTime == 0) {
-  //       listaJogadoresDisponiveis.add(
-  //         DropdownMenuItem(
-  //           value: element.id,
-  //           child: Text(element.nome!),
-  //         ),
-  //       );
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
 
   String retornaNomeTime(int idTimeSelecionado) {
     String nomeTime = "";
