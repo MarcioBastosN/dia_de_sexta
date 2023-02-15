@@ -36,8 +36,8 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
             children: [
               Expanded(
                 child: Card(
+                  color: Theme.of(context).colorScheme.secondary,
                   elevation: 2.0,
-                  color: Theme.of(context).copyWith().backgroundColor,
                   child: DefaultTextStyle(
                     style: const TextStyle(
                       fontSize: 20.0,
@@ -88,31 +88,27 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
               ),
             ],
           ),
-          DefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_month_outlined,
-                        color: Colors.white),
-                    Text(widget.data),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.timer,
-                      color: Colors.white,
-                    ),
-                    Text(widget.tempo),
-                  ],
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.calendar_month_outlined,
+                  ),
+                  Text(widget.data),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.timer,
+                    // color: Colors.white,
+                  ),
+                  Text(widget.tempo),
+                ],
+              ),
+            ],
           )
         ],
       ),

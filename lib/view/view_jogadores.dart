@@ -65,6 +65,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         body: SafeArea(
           child: FlipCard(
             rotateSide: RotateSide.bottom,
@@ -101,7 +102,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
         //     FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: SpeedDial(
           icon: Icons.menu,
-          overlayColor: Colors.blue.withAlpha(100),
+          overlayColor: Theme.of(context).colorScheme.secondary,
           children: [
             SpeedDialChild(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -162,13 +163,14 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               label: "Sorteia Times",
               labelStyle: const TextStyle(color: Colors.black),
               child: const Icon(Icons.playlist_add_check_circle_outlined),
-              onTap: () => Provider.of<Grupo>(context, listen: false)
-                  .sorteiaTimes(context)
-                  .whenComplete(() {
-                if (controllerFlip.state!.isFront == true) {
-                  controllerFlip.flipcard();
-                }
-              }),
+              onTap: () {},
+              // => Provider.of<Grupo>(context, listen: false)
+              //     .sorteiaTimes(context)
+              //     .whenComplete(() {
+              //   if (controllerFlip.state!.isFront == true) {
+              //     controllerFlip.flipcard();
+              //   }
+              // }),
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),

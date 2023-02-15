@@ -7,21 +7,16 @@ class TituloHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
+      children: [
         Text.rich(
           TextSpan(
             style: TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
-            children: [
-              TextSpan(
-                text: "Dia de ",
-              ),
-              TextSpan(
-                text: 'Sexta',
-              ),
+            children: const [
+              TextSpan(text: "Dia de Sexta"),
             ],
           ),
         ),
@@ -29,8 +24,9 @@ class TituloHome extends StatelessWidget {
           TextSpan(
             style: TextStyle(
               fontSize: 20,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
-            children: [
+            children: const [
               TextSpan(text: "Seu placar do vôlei"),
             ],
           ),

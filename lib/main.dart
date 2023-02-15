@@ -5,7 +5,6 @@ import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/src/shared/themes/color_schemes.g.dart';
 import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
 import 'package:dia_de_sexta/view/splash_screen.dart';
 import 'package:dia_de_sexta/view/view_lista_placar.dart';
@@ -69,40 +68,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
         themeMode: ThemeMode.system,
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: lightColorScheme,
-          textTheme: myTextTheme,
-          popupMenuTheme: myPopupMenuTheme,
-          dividerTheme: myDividerTheme,
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: lightColorScheme.primary,
-              foregroundColor: lightColorScheme.onPrimaryContainer,
-              textStyle: const TextStyle(fontSize: 18),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18)),
-              ),
-            ),
-          ),
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: darkColorScheme,
-          textTheme: myTextTheme,
-          popupMenuTheme: myPopupMenuTheme,
-          dividerTheme: myDividerTheme,
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: darkColorScheme.primary,
-              foregroundColor: darkColorScheme.onPrimaryContainer,
-              textStyle: const TextStyle(fontSize: 18),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18)),
-              ),
-            ),
-          ),
-        ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
         routes: {
           AppRoutes.splash: (context) => const SplashScreen(),
           AppRoutes.home: (context) => const HomeScreen(),

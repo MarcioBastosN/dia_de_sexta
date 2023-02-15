@@ -86,8 +86,9 @@ class _GridTimesState extends State<GridTimes> {
         itemCount: listaTimes.length,
         itemBuilder: (context, index) {
           return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             body: Card(
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -123,8 +124,8 @@ class _GridTimesState extends State<GridTimes> {
             floatingActionButton: SpeedDial(
               icon: Icons.menu,
               mini: true,
-              overlayColor: Colors.blue.withAlpha(100),
-              backgroundColor: Colors.cyan,
+              overlayColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Theme.of(context).colorScheme.onSecondary,
               direction: SpeedDialDirection.down,
               children: [
                 SpeedDialChild(

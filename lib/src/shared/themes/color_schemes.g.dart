@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+// part of == esse arquivo faz parte de outro arquivo
+part of 'my_theme.dart';
 
-const lightColorScheme = ColorScheme(
+const _lightColorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0xFF006876),
   onPrimary: Color(0xFFFFFFFF),
@@ -34,7 +35,7 @@ const lightColorScheme = ColorScheme(
   scrim: Color(0xFF000000),
 );
 
-const darkColorScheme = ColorScheme(
+const _darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
   primary: Color(0xFF44D8F1),
   onPrimary: Color(0xFF00363E),

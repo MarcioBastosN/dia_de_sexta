@@ -122,15 +122,12 @@ class _PlacarState extends State<Placar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text("${widget.title} ${jogo.pontosFimJogo.toString()} pontos"),
-          // TODO corrigir
           Text(formataTempo(Provider.of<Jogo>(context, listen: true).time)),
-          // Consumer(builder: builder)
         ],
       ),
       actions: [
         ButtonBar(children: [
           PopupMenuButton(
-            // color: Colors.lightBlue,
             itemBuilder: (BuildContext context) =>
                 Provider.of<Jogo>(context, listen: false).equipe_1 != null
                     ? <PopupMenuEntry>[menuItem_1, menuItem_2]

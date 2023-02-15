@@ -89,11 +89,12 @@ class _GridJogadoresState extends State<GridJogadores> {
         itemCount: listaJogadores.length,
         itemBuilder: (context, index) {
           return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             body: Card(
               color: listaJogadores[index].id != null
                   ? listaJogadores[index].possuiTime == 1
                       ? Colors.blueGrey
-                      : Colors.blue
+                      : Theme.of(context).colorScheme.secondary
                   : Colors.red,
               child: DefaultTextStyle(
                 style: const TextStyle(
@@ -134,8 +135,8 @@ class _GridJogadoresState extends State<GridJogadores> {
             floatingActionButton: SpeedDial(
               icon: Icons.menu,
               mini: true,
-              overlayColor: Colors.blue.withAlpha(100),
-              backgroundColor: Colors.cyan,
+              overlayColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Theme.of(context).colorScheme.onSecondary,
               direction: SpeedDialDirection.down,
               switchLabelPosition: verificaIndex(index),
               children: [

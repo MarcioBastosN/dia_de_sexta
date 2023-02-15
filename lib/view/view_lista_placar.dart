@@ -41,13 +41,9 @@ class _MyWidgetState extends State<ListaPlacar> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-              "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-        ],
-      ),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      title: Text(
+          "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
       actions: [
         Provider.of<Jogo>(context, listen: false).equipe_1 != null
             ? PopupMenuButton(
@@ -171,6 +167,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         appBar: appBar,
         body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
