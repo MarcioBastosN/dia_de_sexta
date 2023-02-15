@@ -47,10 +47,10 @@ class _HomeState extends State<Home> {
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.manual,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(30)),
+                        const BorderRadius.vertical(top: Radius.circular(30)),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 28),
                   child: Column(
@@ -69,7 +69,6 @@ class _HomeState extends State<Home> {
             right: 10,
             child: SafeArea(
               child: PopupMenuButton(
-                // TODO - arrumar
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Sobre",
