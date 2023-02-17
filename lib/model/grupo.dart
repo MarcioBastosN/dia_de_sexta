@@ -24,7 +24,6 @@ class Grupo with ChangeNotifier {
   });
 
   // retorna dados do banco;
-  // TODO - alterar map para while ou do while || foreach
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.grupos);
     grupos = dataList

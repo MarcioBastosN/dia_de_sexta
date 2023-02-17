@@ -38,50 +38,35 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                 child: Card(
                   color: Theme.of(context).colorScheme.secondary,
                   elevation: 2.0,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   child: DefaultTextStyle(
                     style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
                             children: [Text("Jogo\n ${widget.indexCard}")],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
+                          Column(
                             children: [
-                              SizedBox(
-                                width: 120,
-                                child: Text(
-                                  widget.equipe1,
-                                ),
-                              ),
+                              Text(widget.equipe1),
                               Text(widget.pontosEq1),
                             ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
+                          Column(
                             children: [
-                              SizedBox(
-                                width: 120,
-                                child: Text(
-                                  widget.equipe2,
-                                ),
-                              ),
+                              Text(widget.equipe2),
                               Text(widget.pontosEq2),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -93,18 +78,13 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.calendar_month_outlined,
-                  ),
+                  const Icon(Icons.calendar_month_outlined),
                   Text(widget.data),
                 ],
               ),
               Row(
                 children: [
-                  const Icon(
-                    Icons.timer,
-                    // color: Colors.white,
-                  ),
+                  const Icon(Icons.timer),
                   Text(widget.tempo),
                 ],
               ),
