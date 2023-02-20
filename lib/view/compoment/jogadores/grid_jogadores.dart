@@ -143,7 +143,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: const TextStyle(color: Colors.black),
                   label: "Apagar",
                   child: const Icon(Icons.delete),
                   visible: listaJogadores[index].possuiTime != 1 ? true : false,

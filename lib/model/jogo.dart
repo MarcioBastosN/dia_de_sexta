@@ -31,6 +31,17 @@ class Jogo with ChangeNotifier {
   Timer? timeActive;
   int time = 0;
 
+  Jogo({
+    this.id,
+    this.equipe_1,
+    this.equipe_2,
+    this.pontosEquipe_1,
+    this.pontosEquipe_2,
+    this.pontosFimJogo,
+    this.data,
+    this.tempoJogo,
+  });
+
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.placar);
     _jogos = dataList
@@ -48,17 +59,6 @@ class Jogo with ChangeNotifier {
         .toList();
     notifyListeners();
   }
-
-  Jogo({
-    this.id,
-    this.equipe_1,
-    this.equipe_2,
-    this.pontosEquipe_1,
-    this.pontosEquipe_2,
-    this.pontosFimJogo,
-    this.data,
-    this.tempoJogo,
-  });
 
   disparaTempo() {
     timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
