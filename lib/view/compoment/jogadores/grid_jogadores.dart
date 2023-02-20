@@ -107,11 +107,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 8,
-                        left: 8,
-                        right: 8,
-                        bottom: 16,
-                      ),
+                          top: 8, left: 8, right: 8, bottom: 16),
                       child: Column(
                         children: [
                           Expanded(

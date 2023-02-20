@@ -20,7 +20,7 @@ class _MyWidgetState extends State<DialogComponent> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
       ),

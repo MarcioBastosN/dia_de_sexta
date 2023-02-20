@@ -90,12 +90,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                 Material(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: const BorderSide(color: Colors.cyan, width: 2),
+                    // side: const BorderSide(color: Colors.cyan, width: 2),
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: Colors.cyan,
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     height: 300,

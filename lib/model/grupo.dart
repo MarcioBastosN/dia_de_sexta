@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class Grupo with ChangeNotifier {
   });
 
   // retorna dados do banco;
-  // TODO - alterar map para while ou do while || foreach
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.grupos);
     grupos = dataList
@@ -107,12 +105,8 @@ class Grupo with ChangeNotifier {
 // 1 - buscar jogadores disponiveis
 // 2 - buscar times com vagas
 // 3 - realizar sorteio jogador
-  Future<void> sorteiaTimes(BuildContext context) async {
-    // retorna o limite de jogadores que um time pode possuir no sorteio.
-    int defLimitJogadores = Provider.of<Definicoes>(context, listen: false)
-        .retornaLimiteJogadores();
-
-    do {
+  sorteiaTimes(BuildContext context) {
+    while (verificaSorteio(context)) {
       List<Jogador> jogadoresDisponiveis =
           Provider.of<Jogador>(context, listen: false)
               .getListaJogadoresDisponiveis();
@@ -135,13 +129,22 @@ class Grupo with ChangeNotifier {
                 .jogadorPossuiTime(jogadores))
             .whenComplete(() => Provider.of<Time>(context, listen: false)
                 .atualizaParticipantes(time.id!));
-        //
       }
-    } while (
-        Provider.of<Time>(context).retornaTimesValidos(context).isNotEmpty ||
-            Provider.of<Jogador>(context)
-                .getListaJogadoresDisponiveis()
-                .isNotEmpty);
+    }
+  }
+
+  bool verificaSorteio(BuildContext context) {
+    bool sorteio = false;
+    if (Provider.of<Time>(context, listen: false)
+        .retornaTimesValidos(context)
+        .isNotEmpty) {
+      if (Provider.of<Jogador>(context, listen: false)
+          .getListaJogadoresDisponiveis()
+          .isNotEmpty) {
+        sorteio = !sorteio;
+      }
+    }
+    return sorteio;
   }
 
 // remove um jogador do grupo de acordo com seu id

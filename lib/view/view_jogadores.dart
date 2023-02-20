@@ -105,11 +105,17 @@ class _ListaJogadoresState extends State<ListaJogadores> {
           overlayColor: Theme.of(context).colorScheme.secondary,
           children: [
             SpeedDialChild(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                labelBackgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                labelBackgroundColor:
+                    Theme.of(context).colorScheme.primaryContainer,
                 label: "Jogador",
-                labelStyle: const TextStyle(color: Colors.black),
-                child: const Icon(Icons.person_add),
+                labelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Icon(
+                  Icons.person_add,
+                  color: Theme.of(context).colorScheme.background,
+                ),
                 onTap: () {
                   if (controllerFlip.state!.isFront != true) {
                     controllerFlip.flipcard().whenComplete(() =>
@@ -126,11 +132,17 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                         2
                     ? true
                     : false,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                labelBackgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                labelBackgroundColor:
+                    Theme.of(context).colorScheme.primaryContainer,
                 label: "Time",
-                labelStyle: const TextStyle(color: Colors.black),
-                child: const Icon(Icons.gamepad),
+                labelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Icon(
+                  Icons.gamepad,
+                  color: Theme.of(context).colorScheme.background,
+                ),
                 onTap: () {
                   if (controllerFlip.state!.isFront == true) {
                     controllerFlip.flipcard().whenComplete(() =>
@@ -158,11 +170,17 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ),
             SpeedDialChild(
               visible: verificaSorteio(),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              labelBackgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              labelBackgroundColor:
+                  Theme.of(context).colorScheme.primaryContainer,
               label: "Sorteia Times",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.playlist_add_check_circle_outlined),
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: Icon(
+                Icons.playlist_add_check_circle_outlined,
+                color: Theme.of(context).colorScheme.background,
+              ),
               onTap: () {},
               // => Provider.of<Grupo>(context, listen: false)
               //     .sorteiaTimes(context)
@@ -174,11 +192,17 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              labelBackgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              labelBackgroundColor:
+                  Theme.of(context).colorScheme.primaryContainer,
               label: "Info",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.info_outline),
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).colorScheme.background,
+              ),
               onTap: () => dicasSorteio(context),
             ),
           ],
