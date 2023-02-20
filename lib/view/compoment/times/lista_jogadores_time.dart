@@ -40,7 +40,10 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
                   Provider.of<Jogador>(context, listen: false)
                       .liberaJogadorId(jogadores[index].id!, context);
                 },
-                icon: const Icon(Icons.delete),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
               )
             ],
           ),

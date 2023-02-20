@@ -26,7 +26,7 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
           Center(

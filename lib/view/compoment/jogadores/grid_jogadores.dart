@@ -78,7 +78,7 @@ class _GridJogadoresState extends State<GridJogadores> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 64.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
@@ -93,12 +93,12 @@ class _GridJogadoresState extends State<GridJogadores> {
             body: Card(
               color: listaJogadores[index].id != null
                   ? listaJogadores[index].possuiTime == 1
-                      ? Colors.blueGrey
+                      ? Theme.of(context).colorScheme.outline
                       : Theme.of(context).colorScheme.secondary
-                  : Colors.red,
+                  : Theme.of(context).colorScheme.error,
               child: DefaultTextStyle(
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -107,16 +107,13 @@ class _GridJogadoresState extends State<GridJogadores> {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 8, left: 8, right: 8, bottom: 16),
+                          top: 8, left: 16, right: 16, bottom: 16),
                       child: Column(
                         children: [
                           Expanded(
-                            child: SizedBox(
-                              height: 40,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: Text(listaJogadores[index].nome!),
-                              ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Text(listaJogadores[index].nome!),
                             ),
                           ),
                         ],
@@ -131,13 +128,14 @@ class _GridJogadoresState extends State<GridJogadores> {
             floatingActionButton: SpeedDial(
               icon: Icons.menu,
               mini: true,
-              overlayColor: Theme.of(context).colorScheme.secondary,
-              backgroundColor: Theme.of(context).colorScheme.onSecondary,
+              overlayColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               direction: SpeedDialDirection.down,
               switchLabelPosition: verificaIndex(index),
               children: [
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                   label: "Editar",
                   child: const Icon(Icons.edit),
                   onTap: () {
@@ -145,7 +143,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black),
                   label: "Apagar",
                   child: const Icon(Icons.delete),
                   visible: listaJogadores[index].possuiTime != 1 ? true : false,
