@@ -44,22 +44,25 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: DropdownButtonFormField(
             isExpanded: true,
-            decoration: const InputDecoration(
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+            dropdownColor: Theme.of(context).colorScheme.primary,
+            decoration: InputDecoration(
               isDense: true,
               labelText: "Time",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.cyan,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   width: 2,
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(18)),
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.all(Radius.circular(18)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
               ),
               labelStyle: TextStyle(
-                color: Colors.white60,
+                color: Theme.of(context).colorScheme.outline,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -77,22 +80,25 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
 
         DropdownButtonFormField(
           isExpanded: true,
-          decoration: const InputDecoration(
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          dropdownColor: Theme.of(context).colorScheme.primary,
+          decoration: InputDecoration(
             isDense: true,
             labelText: "Time",
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.cyan,
+                color: Theme.of(context).colorScheme.onSecondary,
                 width: 2,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(18)),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(18)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             labelStyle: TextStyle(
-              color: Colors.white60,
+              color: Theme.of(context).colorScheme.outline,
               overflow: TextOverflow.ellipsis,
             ),
           ),

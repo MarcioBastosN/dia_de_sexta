@@ -26,6 +26,7 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Stack(children: [
           Center(
@@ -38,17 +39,14 @@ class _SobreState extends State<Sobre> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(Icons.person, color: Colors.white),
+                      Icon(Icons.person),
                       Text("Marcio Bastos"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(
-                        Icons.phone_android,
-                        color: Colors.white,
-                      ),
+                      Icon(Icons.phone_android),
                       Text("(93) 9 9175-3545"),
                     ],
                   ),
@@ -74,7 +72,6 @@ class _SobreState extends State<Sobre> {
             right: 10,
             child: SafeArea(
               child: PopupMenuButton(
-                // color: Colors.cyan,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Home",

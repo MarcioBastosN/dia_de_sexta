@@ -87,10 +87,7 @@ class _PlacarState extends State<Placar> {
         },
         child: Row(
           children: const [
-            Icon(
-              Icons.home,
-              color: Colors.black,
-            ),
+            Icon(Icons.home),
             Text("Home"),
           ],
         ),
@@ -106,10 +103,7 @@ class _PlacarState extends State<Placar> {
         },
         child: Row(
           children: const [
-            Icon(
-              Icons.edit_note_sharp,
-              color: Colors.black,
-            ),
+            Icon(Icons.edit_note_sharp),
             Text("Encerrar Partida"),
           ],
         ),
@@ -118,6 +112,7 @@ class _PlacarState extends State<Placar> {
 
 // app bar
     final appBar = AppBar(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -190,16 +185,16 @@ class _PlacarState extends State<Placar> {
                 children: [
                   IconButton(
                     onPressed: () => trocaLado(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.compare_arrows_rounded,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                       size: 48,
                     ),
                   ),
-                  const Text(
+                  Text(
                     "Trocar",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                     ),
                   ),
                 ],

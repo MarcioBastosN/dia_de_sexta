@@ -83,10 +83,20 @@ class _MyWidgetState extends State<PlacarComponent> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) =>
+                                      Theme.of(context).colorScheme.secondary),
+                            ),
                             onPressed: () => animatedButtonIncrement(context),
                             child: const Icon(Icons.add),
                           ),
                           ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) =>
+                                      Theme.of(context).colorScheme.secondary),
+                            ),
                             onPressed: () => animatedButtonDecrement(context),
                             child: const Icon(Icons.remove),
                           ),
