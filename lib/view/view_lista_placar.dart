@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
+import 'package:dia_de_sexta/view/component/card_lista_placar.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class ListaPlacar extends StatefulWidget {
   const ListaPlacar({super.key});

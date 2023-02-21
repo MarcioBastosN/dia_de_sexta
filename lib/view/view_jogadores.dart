@@ -1,15 +1,15 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
-import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/jogadores/grid_jogadores.dart';
+import 'package:dia_de_sexta/view/component/times/grid_times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class ListaJogadores extends StatefulWidget {
   const ListaJogadores({super.key});

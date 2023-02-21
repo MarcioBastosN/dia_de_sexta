@@ -34,7 +34,7 @@ class _MyWidgetState extends State<PlacarComponent> {
       }
 
       setState(() => animatedButton = !animatedButton);
-      await Future.delayed(const Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1000));
       setState(() => animatedButton = !animatedButton);
     }
 
@@ -46,7 +46,7 @@ class _MyWidgetState extends State<PlacarComponent> {
       }
 
       setState(() => animatedButton = !animatedButton);
-      await Future.delayed(const Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1000));
       setState(() => animatedButton = !animatedButton);
     }
 
@@ -72,7 +72,6 @@ class _MyWidgetState extends State<PlacarComponent> {
                 child: Text(
                   widget.placar,
                   style: Theme.of(context).textTheme.displayLarge,
-                  // style: GoogleFonts.getFont('Play'),
                   textScaleFactor: 2.5,
                 ),
               ),

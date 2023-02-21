@@ -1,18 +1,18 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/mostrador_placar_compoment.dart';
+import 'package:dia_de_sexta/view/component/mostrador_placar_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class Placar extends StatefulWidget {
-  const Placar({super.key, required this.title});
-
   final String title;
+
+  const Placar({super.key, required this.title});
 
   @override
   State<Placar> createState() => _PlacarState();

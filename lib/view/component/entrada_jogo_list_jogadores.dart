@@ -1,5 +1,5 @@
 import 'package:dia_de_sexta/model/grupo.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
