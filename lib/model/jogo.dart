@@ -189,10 +189,10 @@ class Jogo with ChangeNotifier {
         mensagem: const Text("reiniciar jogo"),
         listaCompomentes: [
           OutlinedButton(
-            child: const Text(
+            child: Text(
               'Reiniciar',
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.outlineVariant,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

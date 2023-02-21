@@ -20,13 +20,13 @@ class _MyWidgetState extends State<DialogComponent> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
       ),
       title: Text(
         widget.titulo,
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       content: widget.mensagem,
       actions: widget.listaCompomentes,
