@@ -27,9 +27,9 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
               Expanded(
                 child: Text(
                   jogadores[index].nome!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -40,9 +40,9 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
                   Provider.of<Jogador>(context, listen: false)
                       .liberaJogadorId(jogadores[index].id!, context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               )
             ],

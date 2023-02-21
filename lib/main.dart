@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.dark,
         theme: lightTheme,
         darkTheme: darkTheme,
         routes: {

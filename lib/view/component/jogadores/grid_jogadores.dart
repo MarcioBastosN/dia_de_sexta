@@ -134,18 +134,29 @@ class _GridJogadoresState extends State<GridJogadores> {
               switchLabelPosition: verificaIndex(index),
               children: [
                 SpeedDialChild(
-                  labelStyle:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Editar",
-                  child: const Icon(Icons.edit),
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   onTap: () {
                     updateJogadorLista(context, listaJogadores[index]);
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Apagar",
-                  child: const Icon(Icons.delete),
+                  child: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   visible: listaJogadores[index].possuiTime != 1 ? true : false,
                   onTap: () {
                     if (listaJogadores[index].possuiTime != 1) {
@@ -155,9 +166,15 @@ class _GridJogadoresState extends State<GridJogadores> {
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "liberar",
-                  child: const Icon(Icons.refresh),
+                  child: Icon(
+                    Icons.refresh,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   visible: listaJogadores[index].possuiTime == 1 ? true : false,
                   onTap: () {
                     // libera o jogador e remove do grupo
@@ -168,7 +185,10 @@ class _GridJogadoresState extends State<GridJogadores> {
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "adicionar a um time",
                   // child: const Icon(Icons.refresh),
                   visible: listaJogadores[index].possuiTime != 1 ? true : false,

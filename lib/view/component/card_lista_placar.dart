@@ -40,10 +40,11 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                   elevation: 2.0,
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: DefaultTextStyle(
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -73,22 +74,31 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.calendar_month_outlined),
-                  Text(widget.data),
-                ],
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.timer),
-                  Text(widget.tempo),
-                ],
-              ),
-            ],
+          DefaultTextStyle(
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_month_outlined,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    Text(widget.data),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.timer,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    Text(widget.tempo),
+                  ],
+                ),
+              ],
+            ),
           )
         ],
       ),

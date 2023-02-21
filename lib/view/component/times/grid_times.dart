@@ -102,9 +102,10 @@ class _GridTimesState extends State<GridTimes> {
                         Expanded(
                           child: Text(
                             listaTimes[index].nome!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -124,14 +125,20 @@ class _GridTimesState extends State<GridTimes> {
             floatingActionButton: SpeedDial(
               icon: Icons.menu,
               mini: true,
-              overlayColor: Theme.of(context).colorScheme.secondary,
-              backgroundColor: Theme.of(context).colorScheme.onSecondary,
+              overlayColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               direction: SpeedDialDirection.down,
               children: [
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Editar",
-                  child: const Icon(Icons.edit),
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   onTap: () => Provider.of<Time>(context, listen: false)
                       .editaNomeTime(context, listaTimes[index]),
                 ),
@@ -141,16 +148,28 @@ class _GridTimesState extends State<GridTimes> {
                           .isEmpty
                       ? false
                       : true,
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Jogador",
-                  child: const Icon(Icons.person_add),
+                  child: Icon(
+                    Icons.person_add,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   onTap: () =>
                       selecionarJogadoresTime(context, listaTimes[index].id!),
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Apagar",
-                  child: const Icon(Icons.delete),
+                  child: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   visible: Provider.of<Time>(context).listaTimes.length > 2
                       ? true
                       : false,

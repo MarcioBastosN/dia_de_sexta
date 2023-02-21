@@ -43,8 +43,8 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
             borderRadius: const BorderRadius.all(Radius.circular(18)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onPrimaryContainer),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.onPrimary),
             borderRadius: const BorderRadius.all(Radius.circular(18)),
           ),
           prefixIcon: widget.perfixIcon != null
@@ -55,7 +55,7 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
               : null,
           isDense: true,
           label: Text(widget.label),
-          labelStyle: TextStyle(color: Theme.of(context).colorScheme.outline),
+          labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
         controller: widget.controller,
         keyboardType: widget.inputType,

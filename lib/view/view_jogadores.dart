@@ -101,13 +101,13 @@ class _ListaJogadoresState extends State<ListaJogadores> {
         // floatingActionButtonLocation:
         //     FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: SpeedDial(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icons.menu,
-          overlayColor: Theme.of(context).colorScheme.secondary,
+          overlayColor: Theme.of(context).colorScheme.primary,
           children: [
             SpeedDialChild(
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                labelBackgroundColor:
-                    Theme.of(context).colorScheme.primaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                labelBackgroundColor: Theme.of(context).colorScheme.secondary,
                 label: "Jogador",
                 labelStyle: TextStyle(
                   color: Theme.of(context).colorScheme.background,
@@ -132,9 +132,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                         2
                     ? true
                     : false,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                labelBackgroundColor:
-                    Theme.of(context).colorScheme.primaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                labelBackgroundColor: Theme.of(context).colorScheme.secondary,
                 label: "Time",
                 labelStyle: TextStyle(
                   color: Theme.of(context).colorScheme.background,
@@ -160,19 +159,22 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       2
                   ? true
                   : false,
-              backgroundColor: Colors.red,
-              labelBackgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
+              labelBackgroundColor: Theme.of(context).colorScheme.error,
               label: "Zerar times",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.refresh),
+              labelStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.onError),
+              child: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onError,
+              ),
               onTap: () => Provider.of<Grupo>(context, listen: false)
                   .zerarTimes(context),
             ),
             SpeedDialChild(
               visible: verificaSorteio(),
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              labelBackgroundColor:
-                  Theme.of(context).colorScheme.primaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              labelBackgroundColor: Theme.of(context).colorScheme.secondary,
               label: "Sorteia Times",
               labelStyle: TextStyle(
                 color: Theme.of(context).colorScheme.background,
@@ -192,9 +194,8 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              labelBackgroundColor:
-                  Theme.of(context).colorScheme.primaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              labelBackgroundColor: Theme.of(context).colorScheme.secondary,
               label: "Info",
               labelStyle: TextStyle(
                 color: Theme.of(context).colorScheme.background,

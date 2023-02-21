@@ -43,7 +43,9 @@ class _MyWidgetState extends State<ListaPlacar> {
     final appBar = AppBar(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       title: Text(
-          "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
+        "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}",
+        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+      ),
       actions: [
         Provider.of<Jogo>(context, listen: false).equipe_1 != null
             ? PopupMenuButton(
@@ -187,8 +189,9 @@ class _MyWidgetState extends State<ListaPlacar> {
                             Provider.of<Jogo>(context, listen: false)
                                 .removeJogo(listaJogo[index]);
                           },
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           icon: Icons.delete,
                           label: 'Apagar',
                         ),
@@ -196,8 +199,10 @@ class _MyWidgetState extends State<ListaPlacar> {
                           onPressed: (context) {
                             compartilhar(context, listaJogo[index]);
                           },
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           icon: Icons.share,
                           label: 'Compartilhar',
                         ),

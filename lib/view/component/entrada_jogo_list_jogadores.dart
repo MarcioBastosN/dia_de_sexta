@@ -62,7 +62,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
                 borderRadius: const BorderRadius.all(Radius.circular(18)),
               ),
               labelStyle: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.onPrimary,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -98,7 +98,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
               borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             labelStyle: TextStyle(
-              color: Theme.of(context).colorScheme.outline,
+              color: Theme.of(context).colorScheme.onPrimary,
               overflow: TextOverflow.ellipsis,
             ),
           ),
