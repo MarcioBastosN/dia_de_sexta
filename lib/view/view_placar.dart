@@ -1,20 +1,18 @@
-import 'dart:async';
-
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/mostrador_placar_compoment.dart';
+import 'package:dia_de_sexta/view/component/mostrador_placar_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class Placar extends StatefulWidget {
-  const Placar({super.key, required this.title});
-
   final String title;
+
+  const Placar({super.key, required this.title});
 
   @override
   State<Placar> createState() => _PlacarState();
@@ -24,14 +22,10 @@ class _PlacarState extends State<Placar> {
   bool trocaLadoJogo = false;
 
   int tempoJogo = 0;
-  // mantem o contador do timer
-  Timer? timeActive;
-  // salva o tempo de jogo da partida
   String? tempoDaPartida;
 
   @override
   void initState() {
-    super.initState();
     // mantem a tela ativa
     Wakelock.enable();
     // define a orientacao da tela
@@ -39,7 +33,9 @@ class _PlacarState extends State<Placar> {
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft],
     );
     // inicia o timer
-    disparaTempo();
+    Provider.of<Jogo>(context, listen: false).disparaTempo();
+
+    super.initState();
   }
 
   @override
@@ -47,24 +43,15 @@ class _PlacarState extends State<Placar> {
     // libera a tela ativa
     Wakelock.disable();
     // libera o timer
-    timeActive!.cancel();
+    Provider.of<Jogo>(context, listen: false).cancelaContador();
     super.dispose();
-  }
-
-  // Exibe tempo do jogo
-  disparaTempo() {
-    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        tempoJogo++;
-      });
-    });
   }
 
   // formata o tempo de jogo para exibir na tela
   String formataTempo(int tempo) {
     int nim = 0;
     int sec = 0;
-    if (tempoJogo > 60) {
+    if (tempo > 60) {
       do {
         tempo = tempo - 60;
         if (tempo > 1) {
@@ -72,7 +59,6 @@ class _PlacarState extends State<Placar> {
         }
       } while (tempo > 60);
     }
-
     sec = tempo;
     setState(() {
       tempoDaPartida = "$nim m $sec s";
@@ -101,10 +87,7 @@ class _PlacarState extends State<Placar> {
         },
         child: Row(
           children: const [
-            Icon(
-              Icons.home,
-              color: Colors.black,
-            ),
+            Icon(Icons.home),
             Text("Home"),
           ],
         ),
@@ -120,10 +103,7 @@ class _PlacarState extends State<Placar> {
         },
         child: Row(
           children: const [
-            Icon(
-              Icons.edit_note_sharp,
-              color: Colors.black,
-            ),
+            Icon(Icons.edit_note_sharp),
             Text("Encerrar Partida"),
           ],
         ),
@@ -132,17 +112,17 @@ class _PlacarState extends State<Placar> {
 
 // app bar
     final appBar = AppBar(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text("${widget.title} ${jogo.pontosFimJogo.toString()} pontos"),
-          Text(formataTempo(tempoJogo)),
+          Text(formataTempo(Provider.of<Jogo>(context, listen: true).time)),
         ],
       ),
       actions: [
         ButtonBar(children: [
           PopupMenuButton(
-            color: Colors.lightBlue,
             itemBuilder: (BuildContext context) =>
                 Provider.of<Jogo>(context, listen: false).equipe_1 != null
                     ? <PopupMenuEntry>[menuItem_1, menuItem_2]
@@ -205,16 +185,16 @@ class _PlacarState extends State<Placar> {
                 children: [
                   IconButton(
                     onPressed: () => trocaLado(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.compare_arrows_rounded,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                       size: 48,
                     ),
                   ),
-                  const Text(
+                  Text(
                     "Trocar",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                     ),
                   ),
                 ],

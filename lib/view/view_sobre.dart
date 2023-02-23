@@ -1,6 +1,8 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -24,6 +26,7 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
           Center(
@@ -36,20 +39,30 @@ class _SobreState extends State<Sobre> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(Icons.person, color: Colors.white),
+                      Icon(Icons.person),
                       Text("Marcio Bastos"),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(
-                        Icons.phone_android,
-                        color: Colors.white,
-                      ),
+                      Icon(Icons.phone_android),
                       Text("(93) 9 9175-3545"),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadores().toString()}",
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -59,7 +72,6 @@ class _SobreState extends State<Sobre> {
             right: 10,
             child: SafeArea(
               child: PopupMenuButton(
-                color: Colors.cyan,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: "Home",

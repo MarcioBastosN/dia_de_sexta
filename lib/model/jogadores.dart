@@ -1,8 +1,8 @@
 import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,10 +71,12 @@ class Jogador with ChangeNotifier {
   }
 
 // informa jogador esta em um time
-  Future<void> jogadorPossuiTime(int id) async {
-    await DbUtil.update(NomeTabelaDB.jogadores, id, {
-      "possuiTime": 1,
-    }).whenComplete(() => loadDate());
+  Future<void> jogadorPossuiTime(List<Jogador> playes) async {
+    for (var item in playes) {
+      await DbUtil.update(NomeTabelaDB.jogadores, item.id!, {
+        "possuiTime": 1,
+      }).whenComplete(() => loadDate());
+    }
   }
 
 // retorna o id do jogador

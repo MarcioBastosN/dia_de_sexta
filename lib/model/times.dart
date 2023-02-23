@@ -1,8 +1,9 @@
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +15,13 @@ class Time with ChangeNotifier {
 
   int? id;
   String? nome;
+  int? qtdParticipantes;
 
-  Time({this.id, this.nome});
+  Time({
+    this.id,
+    this.nome,
+    this.qtdParticipantes,
+  });
 
   // variaveis de controle
   final nomeTime = TextEditingController();
@@ -31,6 +37,7 @@ class Time with ChangeNotifier {
           (item) => Time(
             id: item['id'],
             nome: item['nome'],
+            qtdParticipantes: item['qtdParticipantes'],
           ),
         )
         .toList();
@@ -41,7 +48,20 @@ class Time with ChangeNotifier {
   Future<void> adicionarTime(Time time) async {
     await DbUtil.insert(NomeTabelaDB.time, {
       'nome': time.nome.toString(),
+      'qtdParticipantes': time.qtdParticipantes!,
     }).whenComplete(() => loadDate());
+  }
+
+  List<Time> retornaTimesValidos(BuildContext context) {
+    List<Time> timesValidos = [];
+    for (var element in listaTimes) {
+      if (element.qtdParticipantes! <
+          Provider.of<Definicoes>(context, listen: false)
+              .retornaLimiteJogadores()) {
+        timesValidos.add(element);
+      }
+    }
+    return timesValidos;
   }
 
 // retorna o tamanho da lista bde times
@@ -62,6 +82,39 @@ class Time with ChangeNotifier {
   Future<void> editarNomeTime(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'nome': time.nome,
+    }).whenComplete(() => loadDate());
+  }
+
+  int qtdParticipantesTime(int idTime) {
+    int valor = 0;
+    for (var element in listaTimes) {
+      if (element.id == idTime) {
+        valor = element.qtdParticipantes!;
+      }
+    }
+    return valor;
+  }
+
+  atualizaParticipantes(int idTime) {
+    for (var element in listaTimes) {
+      if (element.id == idTime) {
+        element.qtdParticipantes = (qtdParticipantesTime(idTime) + 1);
+        editarQtdJogadores(element);
+      }
+    }
+  }
+
+  zerarJogadoresTime() {
+    for (var element in listaTimes) {
+      element.qtdParticipantes = 0;
+      editarQtdJogadores(element);
+      notifyListeners();
+    }
+  }
+
+  Future<void> editarQtdJogadores(Time time) async {
+    await DbUtil.update(NomeTabelaDB.time, time.id!, {
+      'qtdParticipantes': time.qtdParticipantes,
     }).whenComplete(() => loadDate());
   }
 
@@ -103,7 +156,8 @@ class Time with ChangeNotifier {
                   onPressed: () {
                     final time = nomeTime.text.toString().trim();
                     if (time.isNotEmpty) {
-                      adicionarTime(Time(nome: time)).whenComplete(
+                      adicionarTime(Time(nome: time, qtdParticipantes: 0))
+                          .whenComplete(
                         () => nomeTime.value = const TextEditingValue(text: ""),
                       );
                     }
@@ -160,21 +214,14 @@ class Time with ChangeNotifier {
   List<DropdownMenuItem<int>> listaJogadoresDisponiveis = [];
   List<Jogador> listaJogadores = [];
 
-  carregaJogadoresDisponiveis(BuildContext context) {
-    listaJogadoresDisponiveis.clear();
-    listaJogadores =
-        Provider.of<Jogador>(context, listen: false).listaJogadores;
-    for (var element in listaJogadores) {
-      if (element.possuiTime == 0) {
-        listaJogadoresDisponiveis.add(
-          DropdownMenuItem(
-            value: element.id,
-            child: Text(element.nome!),
-          ),
-        );
-        notifyListeners();
+  List<Jogador> loadDisponiveis(BuildContext context) {
+    List<Jogador> jogadores = [];
+    for (var item in Provider.of<Jogador>(context).listaJogadores) {
+      if (item.possuiTime! == 0) {
+        jogadores.add(item);
       }
     }
+    return jogadores;
   }
 
   String retornaNomeTime(int idTimeSelecionado) {

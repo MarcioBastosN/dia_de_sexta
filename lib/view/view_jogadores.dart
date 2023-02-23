@@ -1,14 +1,15 @@
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/jogadores/grid_jogadores.dart';
-import 'package:dia_de_sexta/view/compoment/times/grid_times.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/jogadores/grid_jogadores.dart';
+import 'package:dia_de_sexta/view/component/times/grid_times.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class ListaJogadores extends StatefulWidget {
   const ListaJogadores({super.key});
@@ -18,6 +19,8 @@ class ListaJogadores extends StatefulWidget {
 }
 
 class _ListaJogadoresState extends State<ListaJogadores> {
+  final controllerFlip = FlipCardController();
+
   @override
   void dispose() {
     super.dispose();
@@ -62,70 +65,93 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child:
-                    Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("Adicione Jogadores"),
-                                Text(
-                                    "Necessario 2 ou mais jodadores para realizar o sorteio!"),
-                              ],
-                            ),
-                          )
-                        : const GridJogadores(),
-              ),
-              Expanded(
-                child: Provider.of<Time>(context).tamanhoListaTimes() == 0
+          child: FlipCard(
+            rotateSide: RotateSide.bottom,
+            controller: controllerFlip,
+            onTapFlipping: true,
+            frontWidget:
+                Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            Text("Adicione Times"),
-                            Text("Crie 2 ou mais times pra usalos no inicio!"),
-                            Center(child: CircularProgressIndicator()),
+                            Text("Adicione Jogadores"),
+                            Text(
+                                "Necessario 2 ou mais jodadores para realizar o sorteio!"),
                           ],
                         ),
                       )
-                    : const GridTimes(),
-              ),
-            ],
+                    : GridJogadores(flip: controllerFlip),
+            backWidget: Provider.of<Time>(context).tamanhoListaTimes() == 0
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text("Adicione Times"),
+                        Text("Crie 2 ou mais times para usalos no inicio!"),
+                        Center(child: CircularProgressIndicator()),
+                      ],
+                    ),
+                  )
+                : const GridTimes(),
           ),
         ),
         // floatingActionButtonLocation:
         //     FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: SpeedDial(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icons.menu,
-          overlayColor: Colors.blue.withAlpha(100),
+          overlayColor: Theme.of(context).colorScheme.primary,
           children: [
             SpeedDialChild(
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
-              label: "Jogador",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.person_add),
-              onTap: () => Provider.of<Jogador>(context, listen: false)
-                  .addJogadorLista(context),
-            ),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                label: "Jogador",
+                labelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Icon(
+                  Icons.person_add,
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                onTap: () {
+                  if (controllerFlip.state!.isFront != true) {
+                    controllerFlip.flipcard().whenComplete(() =>
+                        Provider.of<Jogador>(context, listen: false)
+                            .addJogadorLista(context));
+                  } else {
+                    Provider.of<Jogador>(context, listen: false)
+                        .addJogadorLista(context);
+                  }
+                }),
             SpeedDialChild(
-              visible: Provider.of<Jogador>(context, listen: false)
-                          .tamanhoListaJogadores() >=
-                      2
-                  ? true
-                  : false,
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
-              label: "Time",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.gamepad),
-              onTap: () => Provider.of<Time>(context, listen: false)
-                  .addTimeLista(context),
-            ),
+                visible: Provider.of<Jogador>(context, listen: false)
+                            .tamanhoListaJogadores() >=
+                        2
+                    ? true
+                    : false,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                label: "Time",
+                labelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Icon(
+                  Icons.gamepad,
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                onTap: () {
+                  if (controllerFlip.state!.isFront == true) {
+                    controllerFlip.flipcard().whenComplete(() =>
+                        Provider.of<Time>(context, listen: false)
+                            .addTimeLista(context));
+                  } else {
+                    Provider.of<Time>(context, listen: false)
+                        .addTimeLista(context);
+                  }
+                }),
             // apagar registros grupos
             SpeedDialChild(
               visible: Provider.of<Jogador>(context, listen: false)
@@ -133,31 +159,51 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       2
                   ? true
                   : false,
-              backgroundColor: Colors.red,
-              labelBackgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
+              labelBackgroundColor: Theme.of(context).colorScheme.error,
               label: "Zerar times",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.refresh),
+              labelStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.onError),
+              child: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.onError,
+              ),
               onTap: () => Provider.of<Grupo>(context, listen: false)
                   .zerarTimes(context),
             ),
             SpeedDialChild(
               visible: verificaSorteio(),
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              labelBackgroundColor: Theme.of(context).colorScheme.secondary,
               label: "Sorteia Times",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.playlist_add_check_circle_outlined),
-              onTap: () => Provider.of<Grupo>(context, listen: false)
-                  .sorteiaTimes(context),
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: Icon(
+                Icons.playlist_add_check_circle_outlined,
+                color: Theme.of(context).colorScheme.background,
+              ),
+              onTap: () {},
+              // => Provider.of<Grupo>(context, listen: false)
+              //     .sorteiaTimes(context)
+              //     .whenComplete(() {
+              //   if (controllerFlip.state!.isFront == true) {
+              //     controllerFlip.flipcard();
+              //   }
+              // }),
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
-              backgroundColor: Colors.cyan,
-              labelBackgroundColor: Colors.cyan,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              labelBackgroundColor: Theme.of(context).colorScheme.secondary,
               label: "Info",
-              labelStyle: const TextStyle(color: Colors.black),
-              child: const Icon(Icons.info_outline),
+              labelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).colorScheme.background,
+              ),
               onTap: () => dicasSorteio(context),
             ),
           ],

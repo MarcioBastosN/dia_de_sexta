@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/asset/custon/my_theme.dart';
+import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => Definicoes(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => Jogo(),
         ),
         ChangeNotifierProvider(
@@ -63,7 +67,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Dia de Sexta',
-        theme: MyTheme().tema,
+        themeMode: ThemeMode.system,
+        theme: lightTheme,
+        darkTheme: darkTheme,
         routes: {
           AppRoutes.splash: (context) => const SplashScreen(),
           AppRoutes.home: (context) => const HomeScreen(),

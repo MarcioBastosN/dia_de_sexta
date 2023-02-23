@@ -1,5 +1,6 @@
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +8,9 @@ import '../dialog_component.dart';
 import '../text_form_compoment.dart';
 
 class GridJogadores extends StatefulWidget {
-  const GridJogadores({super.key});
+  final FlipCardController? flip;
+
+  const GridJogadores({super.key, this.flip});
 
   @override
   State<GridJogadores> createState() => _GridJogadoresState();
@@ -75,26 +78,27 @@ class _GridJogadoresState extends State<GridJogadores> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 64.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 4 / 3,
+          childAspectRatio: 4 / 3.1,
         ),
         itemCount: listaJogadores.length,
         itemBuilder: (context, index) {
           return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             body: Card(
               color: listaJogadores[index].id != null
                   ? listaJogadores[index].possuiTime == 1
-                      ? Colors.blueGrey
-                      : Colors.blue
-                  : Colors.red,
+                      ? Theme.of(context).colorScheme.outline
+                      : Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.error,
               child: DefaultTextStyle(
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -102,13 +106,16 @@ class _GridJogadoresState extends State<GridJogadores> {
                   height: 70,
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.only(
+                          top: 8, left: 16, right: 16, bottom: 16),
                       child: Column(
                         children: [
-                          Text(listaJogadores[index].nome.toString()),
-                          Text(listaJogadores[index].possuiTime == 1
-                              ? "Indisponivel"
-                              : "Disponivel"),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Text(listaJogadores[index].nome!),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -121,23 +128,35 @@ class _GridJogadoresState extends State<GridJogadores> {
             floatingActionButton: SpeedDial(
               icon: Icons.menu,
               mini: true,
-              overlayColor: Colors.blue.withAlpha(100),
-              backgroundColor: Colors.cyan,
+              overlayColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               direction: SpeedDialDirection.down,
               switchLabelPosition: verificaIndex(index),
               children: [
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Editar",
-                  child: const Icon(Icons.edit),
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   onTap: () {
                     updateJogadorLista(context, listaJogadores[index]);
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "Apagar",
-                  child: const Icon(Icons.delete),
+                  child: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   visible: listaJogadores[index].possuiTime != 1 ? true : false,
                   onTap: () {
                     if (listaJogadores[index].possuiTime != 1) {
@@ -147,9 +166,15 @@ class _GridJogadoresState extends State<GridJogadores> {
                   },
                 ),
                 SpeedDialChild(
-                  labelStyle: const TextStyle(color: Colors.black),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
                   label: "liberar",
-                  child: const Icon(Icons.refresh),
+                  child: Icon(
+                    Icons.refresh,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   visible: listaJogadores[index].possuiTime == 1 ? true : false,
                   onTap: () {
                     // libera o jogador e remove do grupo
@@ -157,6 +182,18 @@ class _GridJogadoresState extends State<GridJogadores> {
                       Provider.of<Jogador>(context, listen: false)
                           .liberaJogadorId(listaJogadores[index].id!, context);
                     }
+                  },
+                ),
+                SpeedDialChild(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelBackgroundColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  label: "adicionar a um time",
+                  // child: const Icon(Icons.refresh),
+                  visible: listaJogadores[index].possuiTime != 1 ? true : false,
+                  onTap: () {
+                    widget.flip!.flipcard();
                   },
                 ),
               ],

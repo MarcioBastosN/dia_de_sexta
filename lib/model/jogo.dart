@@ -1,10 +1,11 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 
 class Jogo with ChangeNotifier {
   List<Jogo> _jogos = [];
@@ -25,7 +26,21 @@ class Jogo with ChangeNotifier {
   // bool? jogoEncerado;
   int? pontosFimJogo;
   // auxiliares
-  // DateTime? _inicioPartida;
+
+  // contador tempo jogo
+  Timer? timeActive;
+  int time = 0;
+
+  Jogo({
+    this.id,
+    this.equipe_1,
+    this.equipe_2,
+    this.pontosEquipe_1,
+    this.pontosEquipe_2,
+    this.pontosFimJogo,
+    this.data,
+    this.tempoJogo,
+  });
 
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.placar);
@@ -45,17 +60,18 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  Jogo({
-    this.id,
-    this.equipe_1,
-    this.equipe_2,
-    this.pontosEquipe_1,
-    this.pontosEquipe_2,
-    this.pontosFimJogo,
-    // this.jogoEncerado,
-    this.data,
-    this.tempoJogo,
-  });
+  disparaTempo() {
+    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
+      time += 1;
+      notifyListeners();
+    });
+  }
+
+  cancelaContador() {
+    timeActive!.cancel();
+    time = 0;
+    notifyListeners();
+  }
 
   int tamanhoListaJogos() {
     return _jogos.length;
@@ -69,7 +85,6 @@ class Jogo with ChangeNotifier {
     return tempo;
   }
 
-// TODO arrumar  tempo jogo verificar;
   registraJogoDbLista(BuildContext context) {
     DbUtil.insert(NomeTabelaDB.placar, {
       'grupo_1': Provider.of<Jogo>(context, listen: false).equipe_1!,
@@ -174,10 +189,10 @@ class Jogo with ChangeNotifier {
         mensagem: const Text("reiniciar jogo"),
         listaCompomentes: [
           OutlinedButton(
-            child: const Text(
+            child: Text(
               'Reiniciar',
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.outlineVariant,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -186,7 +201,6 @@ class Jogo with ChangeNotifier {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
               // inicia novo jogo
-              // TODO verificar e corrigir
               Provider.of<Jogo>(context, listen: false).criarjgo(
                 Jogo(
                   equipe_1: Provider.of<Jogo>(context, listen: false).equipe_1,
@@ -195,6 +209,10 @@ class Jogo with ChangeNotifier {
                       Provider.of<Jogo>(context, listen: false).pontosFimJogo,
                 ),
               );
+              // fecha o tempo do jogo
+              cancelaContador();
+              // reinicia o tempo
+              disparaTempo();
             },
           ),
           ElevatedButton(
@@ -212,6 +230,7 @@ class Jogo with ChangeNotifier {
             onPressed: () {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
+              cancelaContador();
               Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),

@@ -23,7 +23,6 @@ class Grupo with ChangeNotifier {
   });
 
   // retorna dados do banco;
-  // TODO - alterar map para while ou do while || foreach
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.grupos);
     grupos = dataList
@@ -39,11 +38,13 @@ class Grupo with ChangeNotifier {
   }
 
 // adiciona grupo
-  Future<void> adicionarGrupo(Grupo grupo) async {
-    await DbUtil.insert(NomeTabelaDB.grupos, {
-      'idJogador': grupo.idJogador!,
-      'idTime': grupo.idTime!,
-    }).whenComplete(() => loadDate());
+  Future<void> adicionarGrupo(List<Jogador>? jogadores, int idTime) async {
+    for (var jogador in jogadores!) {
+      await DbUtil.insert(NomeTabelaDB.grupos, {
+        'idJogador': jogador.id!,
+        'idTime': idTime,
+      }).whenComplete(() => loadDate());
+    }
   }
 
 // retorna os jogadores de um grupo
@@ -84,6 +85,8 @@ class Grupo with ChangeNotifier {
       removeGrupo(grupo.id!);
     }
     Provider.of<Jogador>(context, listen: false).liberarjogadores();
+    // zerar lista de jogadorestime
+    Provider.of<Time>(context, listen: false).zerarJogadoresTime();
     Provider.of<Time>(context, listen: false).loadDate();
   }
 
@@ -98,34 +101,50 @@ class Grupo with ChangeNotifier {
     return teste;
   }
 
-// para realizar o sorteio a quantidade de participantes disponiveis deve ser maior que a de grupos
+// passos para sortear
+// 1 - buscar jogadores disponiveis
+// 2 - buscar times com vagas
+// 3 - realizar sorteio jogador
   sorteiaTimes(BuildContext context) {
-    int jogadores = Provider.of<Jogador>(context, listen: false)
-        .getListaJogadoresDisponiveis()
-        .length;
-    int times = Provider.of<Time>(context, listen: false).listaTimes.length;
-    int numeroJogadores = 0;
-    if (jogadores >= times) {
-      numeroJogadores = (jogadores / times).floor();
-      var listaJogadores = Provider.of<Jogador>(context, listen: false)
-          .getListaJogadoresDisponiveis();
-      for (var time in Provider.of<Time>(context, listen: false).listaTimes) {
-        for (var i = 0; i < numeroJogadores; i++) {
-          var teste = Random().nextInt(listaJogadores.length);
-          do {
-            teste = Random().nextInt(listaJogadores.length);
-          } while (listaJogadores[teste].possuiTime == 1);
-
-          adicionarGrupo(
-              Grupo(idJogador: listaJogadores[teste].id!, idTime: time.id));
+    while (verificaSorteio(context)) {
+      List<Jogador> jogadoresDisponiveis =
           Provider.of<Jogador>(context, listen: false)
-              .jogadorPossuiTime(listaJogadores[teste].id!);
-          listaJogadores.removeAt(teste);
+              .getListaJogadoresDisponiveis();
+      // consultar times validos
+      var consultaTimesValidos = Provider.of<Time>(context, listen: false)
+          .retornaTimesValidos(context);
+
+      for (var time in consultaTimesValidos) {
+        //
+        var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
+        List<Jogador> jogadores = [];
+        for (var i = 0; i < jogadoresDisponiveis.length; i++) {
+          if (i == jogadorSorteado) {
+            jogadores.add(jogadoresDisponiveis[i]);
+          }
         }
+
+        adicionarGrupo(jogadores, time.id!)
+            .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+                .jogadorPossuiTime(jogadores))
+            .whenComplete(() => Provider.of<Time>(context, listen: false)
+                .atualizaParticipantes(time.id!));
       }
-    } else {
-      return;
     }
+  }
+
+  bool verificaSorteio(BuildContext context) {
+    bool sorteio = false;
+    if (Provider.of<Time>(context, listen: false)
+        .retornaTimesValidos(context)
+        .isNotEmpty) {
+      if (Provider.of<Jogador>(context, listen: false)
+          .getListaJogadoresDisponiveis()
+          .isNotEmpty) {
+        sorteio = !sorteio;
+      }
+    }
+    return sorteio;
   }
 
 // remove um jogador do grupo de acordo com seu id
@@ -152,5 +171,17 @@ class Grupo with ChangeNotifier {
         ),
       );
     }
+  }
+
+// retorna o numero de jogadores em um time
+  int numeroJogadoresTime(int time, BuildContext context) {
+    int numeroJogadores = 0;
+    for (var grupo in Provider.of<Grupo>(context, listen: false).grupos) {
+      if (grupo.idTime! == time) {
+        numeroJogadores += 1;
+      }
+    }
+    // print("Jogadores $numeroJogadores, Time $time");
+    return numeroJogadores;
   }
 }

@@ -21,14 +21,18 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
       itemCount: jogadores.length,
       itemBuilder: (context, int index) {
         return Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 8),
+          padding: const EdgeInsets.only(left: 8, bottom: 4),
           child: Row(
             children: [
-              Text(
-                jogadores[index].nome!,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  jogadores[index].nome!,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(
@@ -36,7 +40,10 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
                   Provider.of<Jogador>(context, listen: false)
                       .liberaJogadorId(jogadores[index].id!, context);
                 },
-                icon: const Icon(Icons.delete),
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               )
             ],
           ),

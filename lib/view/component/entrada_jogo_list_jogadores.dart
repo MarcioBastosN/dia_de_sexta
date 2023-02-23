@@ -1,5 +1,5 @@
 import 'package:dia_de_sexta/model/grupo.dart';
-import 'package:dia_de_sexta/view/compoment/text_form_compoment.dart';
+import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,22 +43,27 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: DropdownButtonFormField(
-            decoration: const InputDecoration(
+            isExpanded: true,
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+            dropdownColor: Theme.of(context).colorScheme.primary,
+            decoration: InputDecoration(
               isDense: true,
               labelText: "Time",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.cyan,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   width: 2,
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(18)),
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.all(Radius.circular(18)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+                borderRadius: const BorderRadius.all(Radius.circular(18)),
               ),
               labelStyle: TextStyle(
-                color: Colors.white60,
+                color: Theme.of(context).colorScheme.onPrimary,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             items: Provider.of<Grupo>(context, listen: false)
@@ -74,22 +79,27 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
         ),
 
         DropdownButtonFormField(
-          decoration: const InputDecoration(
+          isExpanded: true,
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          dropdownColor: Theme.of(context).colorScheme.primary,
+          decoration: InputDecoration(
             isDense: true,
             labelText: "Time",
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.cyan,
+                color: Theme.of(context).colorScheme.onSecondary,
                 width: 2,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(18)),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.all(Radius.circular(18)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+              borderRadius: const BorderRadius.all(Radius.circular(18)),
             ),
             labelStyle: TextStyle(
-              color: Colors.white60,
+              color: Theme.of(context).colorScheme.onPrimary,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           items: Provider.of<Grupo>(context, listen: false)

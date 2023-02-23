@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/compoment/card_lista_placar.dart';
-import 'package:dia_de_sexta/view/compoment/dialog_component.dart';
-import 'package:dia_de_sexta/view/compoment/titulo_home.dart';
+import 'package:dia_de_sexta/view/component/card_lista_placar.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
 
-import 'compoment/alert_exit.dart';
+import 'component/alert_exit.dart';
 
 class ListaPlacar extends StatefulWidget {
   const ListaPlacar({super.key});
@@ -41,17 +41,15 @@ class _MyWidgetState extends State<ListaPlacar> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-              "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}"),
-        ],
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      title: Text(
+        "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}",
+        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       ),
       actions: [
         Provider.of<Jogo>(context, listen: false).equipe_1 != null
             ? PopupMenuButton(
-                color: Colors.blue,
+                // color: Colors.blue,
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     child: InkWell(
@@ -74,17 +72,17 @@ class _MyWidgetState extends State<ListaPlacar> {
     );
 
     Provider.of<Jogo>(context, listen: false).loadDate();
-    final listaJogo = Provider.of<Jogo>(context, listen: false).listaJogos;
+    final listaJogo = Provider.of<Jogo>(context).listaJogos;
 
     void compartilhar(BuildContext context, Jogo jogo) {
       String msn = "";
       String? origemImagem;
       if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
         msn =
-            "${jogo.equipe_1} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${jogo.equipe_2}";
+            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)}";
       } else {
         msn =
-            "${jogo.equipe_2} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${jogo.equipe_1}";
+            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)}";
       }
       // aqui gera a imagem a ser compatilhada;
       screenshotController
@@ -94,15 +92,15 @@ class _MyWidgetState extends State<ListaPlacar> {
                 Material(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: const BorderSide(color: Colors.cyan, width: 2),
+                    // side: const BorderSide(color: Colors.cyan, width: 2),
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: Colors.cyan,
+                      color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    height: 250,
+                    height: 300,
                     child: Column(
                       children: [
                         const TituloHome(),
@@ -171,6 +169,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         appBar: appBar,
         body: Provider.of<Jogo>(context, listen: false).tamanhoListaJogos() > 0
             ? ListView.builder(
@@ -190,8 +189,9 @@ class _MyWidgetState extends State<ListaPlacar> {
                             Provider.of<Jogo>(context, listen: false)
                                 .removeJogo(listaJogo[index]);
                           },
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           icon: Icons.delete,
                           label: 'Apagar',
                         ),
@@ -199,8 +199,10 @@ class _MyWidgetState extends State<ListaPlacar> {
                           onPressed: (context) {
                             compartilhar(context, listaJogo[index]);
                           },
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           icon: Icons.share,
                           label: 'Compartilhar',
                         ),

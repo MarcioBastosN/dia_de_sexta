@@ -32,31 +32,30 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
       child: TextFormField(
         onEditingComplete: widget.submit,
         focusNode: widget.focus,
-        cursorColor: Colors.white,
-        // style: const TextStyle(color: Colors.white),
+        cursorColor: Theme.of(context).colorScheme.onSecondary,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Theme.of(context).colorScheme.onSecondary,
               width: 2,
             ),
-            borderRadius: BorderRadius.all(Radius.circular(18)),
+            borderRadius: const BorderRadius.all(Radius.circular(18)),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.all(Radius.circular(18)),
+          focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+            borderRadius: const BorderRadius.all(Radius.circular(18)),
           ),
           prefixIcon: widget.perfixIcon != null
               ? Icon(
                   widget.perfixIcon,
-                  color: Colors.white60,
+                  color: Theme.of(context).colorScheme.outline,
                 )
               : null,
           isDense: true,
           label: Text(widget.label),
-          labelStyle: const TextStyle(
-            color: Colors.white60,
-          ),
+          labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
         controller: widget.controller,
         keyboardType: widget.inputType,
