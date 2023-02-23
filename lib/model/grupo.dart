@@ -126,11 +126,32 @@ class Grupo with ChangeNotifier {
 
     List<Jogador> jogadores = [];
 
-    if (participantesParaTime >=
-        Provider.of<Jogador>(context, listen: false)
+    if (Provider.of<Jogador>(context, listen: false)
             .getListaJogadoresDisponiveis()
-            .length) {
+            .length >=
+        participantesParaTime) {
       for (var i = 0; i < participantesParaTime; i++) {
+        // sorteia jogador & time
+        var jogadorSorteado = Random().nextInt(
+            Provider.of<Jogador>(context, listen: false)
+                .getListaJogadoresDisponiveis()
+                .length);
+        jogadores.add(Provider.of<Jogador>(context, listen: false)
+            .getListaJogadoresDisponiveis()[jogadorSorteado]);
+      }
+
+      await adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
+          .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+              .jogadorPossuiTime(jogadores))
+          .whenComplete(() => Provider.of<Time>(context, listen: false)
+              .atualizaParticipantes(consultaTimesValidos[timeSorteado].id!));
+    } else {
+      for (var i = 0;
+          i <
+              Provider.of<Jogador>(context, listen: false)
+                  .getListaJogadoresDisponiveis()
+                  .length;
+          i++) {
         // sorteia jogador & time
         var jogadorSorteado = Random().nextInt(
             Provider.of<Jogador>(context, listen: false)
