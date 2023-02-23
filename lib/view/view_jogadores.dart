@@ -183,14 +183,13 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                 Icons.playlist_add_check_circle_outlined,
                 color: Theme.of(context).colorScheme.background,
               ),
-              onTap: () {},
-              // => Provider.of<Grupo>(context, listen: false)
-              //     .sorteiaTimes(context)
-              //     .whenComplete(() {
-              //   if (controllerFlip.state!.isFront == true) {
-              //     controllerFlip.flipcard();
-              //   }
-              // }),
+              onTap: () => Provider.of<Grupo>(context, listen: false)
+                  .sorteiaTimes(context)
+                  .whenComplete(() {
+                if (controllerFlip.state!.isFront == true) {
+                  controllerFlip.flipcard();
+                }
+              }),
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),

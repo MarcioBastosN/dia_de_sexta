@@ -105,31 +105,46 @@ class Grupo with ChangeNotifier {
 // 1 - buscar jogadores disponiveis
 // 2 - buscar times com vagas
 // 3 - realizar sorteio jogador
-  sorteiaTimes(BuildContext context) {
-    while (verificaSorteio(context)) {
-      List<Jogador> jogadoresDisponiveis =
-          Provider.of<Jogador>(context, listen: false)
-              .getListaJogadoresDisponiveis();
-      // consultar times validos
-      var consultaTimesValidos = Provider.of<Time>(context, listen: false)
-          .retornaTimesValidos(context);
+  Future<void> sorteiaTimes(BuildContext context) async {
+    // List<Jogador> jogadoresDisponiveis =
+    //     Provider.of<Jogador>(context, listen: false)
+    //         .getListaJogadoresDisponiveis();
 
-      for (var time in consultaTimesValidos) {
-        //
-        var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
-        List<Jogador> jogadores = [];
-        for (var i = 0; i < jogadoresDisponiveis.length; i++) {
-          if (i == jogadorSorteado) {
-            jogadores.add(jogadoresDisponiveis[i]);
-          }
-        }
+    var consultaTimesValidos =
+        Provider.of<Time>(context, listen: false).retornaTimesValidos(context);
+    var timeSorteado = Random().nextInt(consultaTimesValidos.length);
 
-        adicionarGrupo(jogadores, time.id!)
-            .whenComplete(() => Provider.of<Jogador>(context, listen: false)
-                .jogadorPossuiTime(jogadores))
-            .whenComplete(() => Provider.of<Time>(context, listen: false)
-                .atualizaParticipantes(time.id!));
+    if (Provider.of<Jogador>(context, listen: false)
+        .getListaJogadoresDisponiveis()
+        .isEmpty) {
+      print("Jogadores indisponiveis");
+      return;
+    }
+
+    int participantesParaTime =
+        consultaTimesValidos[timeSorteado].qtdParticipantes!;
+
+    List<Jogador> jogadores = [];
+
+    if (participantesParaTime >=
+        Provider.of<Jogador>(context, listen: false)
+            .getListaJogadoresDisponiveis()
+            .length) {
+      for (var i = 0; i < participantesParaTime; i++) {
+        // sorteia jogador & time
+        var jogadorSorteado = Random().nextInt(
+            Provider.of<Jogador>(context, listen: false)
+                .getListaJogadoresDisponiveis()
+                .length);
+        jogadores.add(Provider.of<Jogador>(context, listen: false)
+            .getListaJogadoresDisponiveis()[jogadorSorteado]);
       }
+
+      await adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
+          .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+              .jogadorPossuiTime(jogadores))
+          .whenComplete(() => Provider.of<Time>(context, listen: false)
+              .atualizaParticipantes(consultaTimesValidos[timeSorteado].id!));
     }
   }
 
