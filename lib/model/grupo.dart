@@ -105,7 +105,7 @@ class Grupo with ChangeNotifier {
 // 1 - buscar jogadores disponiveis
 // 2 - buscar times com vagas
 // 3 - realizar sorteio jogador
-  Future<void> sorteiaTimes(BuildContext context) async {
+  sorteiaTimes(BuildContext context) {
     // List<Jogador> jogadoresDisponiveis =
     //     Provider.of<Jogador>(context, listen: false)
     //         .getListaJogadoresDisponiveis();
@@ -140,7 +140,7 @@ class Grupo with ChangeNotifier {
             .getListaJogadoresDisponiveis()[jogadorSorteado]);
       }
 
-      await adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
+      adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
           .whenComplete(() => Provider.of<Jogador>(context, listen: false)
               .jogadorPossuiTime(jogadores))
           .whenComplete(() => Provider.of<Time>(context, listen: false)
@@ -161,26 +161,19 @@ class Grupo with ChangeNotifier {
             .getListaJogadoresDisponiveis()[jogadorSorteado]);
       }
 
-      await adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
+      adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
           .whenComplete(() => Provider.of<Jogador>(context, listen: false)
               .jogadorPossuiTime(jogadores))
           .whenComplete(() => Provider.of<Time>(context, listen: false)
               .atualizaParticipantes(consultaTimesValidos[timeSorteado].id!));
     }
-  }
 
-  bool verificaSorteio(BuildContext context) {
-    bool sorteio = false;
-    if (Provider.of<Time>(context, listen: false)
-        .retornaTimesValidos(context)
-        .isNotEmpty) {
-      if (Provider.of<Jogador>(context, listen: false)
-          .getListaJogadoresDisponiveis()
-          .isNotEmpty) {
-        sorteio = !sorteio;
-      }
+    int verifica = Provider.of<Jogador>(context, listen: false)
+        .getListaJogadoresDisponiveis()
+        .length;
+    if (verifica > 0) {
+      sorteiaTimes(context);
     }
-    return sorteio;
   }
 
 // remove um jogador do grupo de acordo com seu id
