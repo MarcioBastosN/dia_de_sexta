@@ -36,13 +36,13 @@ class _GridTimesState extends State<GridTimes> {
           titulo: "Selecione",
           listaCompomentes: [
             MultiSelectDialogField(
-              decoration: const BoxDecoration(
-                color: Colors.cyan,
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
-              selectedColor: Colors.blue,
-              selectedItemsTextStyle: const TextStyle(
-                color: Colors.white,
+              selectedColor: Theme.of(context).colorScheme.secondary,
+              selectedItemsTextStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
               ),
               items: Provider.of<Time>(context, listen: false)
                   .loadDisponiveis(context)
@@ -55,6 +55,7 @@ class _GridTimesState extends State<GridTimes> {
             ),
             ElevatedButton(
               onPressed: () {
+                // TODO - corrigir atualizar participantes
                 Navigator.of(context).pop();
                 Provider.of<Jogador>(context, listen: false)
                     .jogadorPossuiTime(jogadoresTemp!)
