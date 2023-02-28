@@ -36,7 +36,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Grupo>(context).carregaTimesDisponiveis(context);
+    Provider.of<Grupo>(context).carregaListaDropdownTimes(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

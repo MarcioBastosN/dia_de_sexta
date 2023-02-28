@@ -17,17 +17,11 @@ class Time with ChangeNotifier {
   String? nome;
   int? qtdParticipantes;
 
-  Time({
-    this.id,
-    this.nome,
-    this.qtdParticipantes,
-  });
+  Time({this.id, this.nome, this.qtdParticipantes});
 
   // variaveis de controle
   final nomeTime = TextEditingController();
   final focusTime = FocusNode();
-
-  // Inicio funcoes
 
   // retorna dados do banco;
   Future<void> loadDate() async {
@@ -44,7 +38,7 @@ class Time with ChangeNotifier {
     notifyListeners();
   }
 
-  // adiciona Time na lista e no banco
+  // adiciona Time
   Future<void> adicionarTime(Time time) async {
     await DbUtil.insert(NomeTabelaDB.time, {
       'nome': time.nome.toString(),
@@ -52,12 +46,13 @@ class Time with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-  List<Time> retornaTimesValidos(BuildContext context) {
+  // Retorna os times que não estao completos.
+  List<Time> retornaListaTimesIncompletos(BuildContext context) {
+    final limiteJogadores = Provider.of<Definicoes>(context, listen: false)
+        .retornaLimiteJogadoresParaUmGrupo();
     List<Time> timesValidos = [];
     for (var element in listaTimes) {
-      if (element.qtdParticipantes! <
-          Provider.of<Definicoes>(context, listen: false)
-              .retornaLimiteJogadores()) {
+      if (element.qtdParticipantes! < limiteJogadores) {
         timesValidos.add(element);
       }
     }
@@ -69,22 +64,14 @@ class Time with ChangeNotifier {
     return times.length;
   }
 
-// Retorna a lista de Nomes de times
-  List<String> getNomeTimes() {
-    List<String> nomes = [];
-    for (var time in times) {
-      nomes.add(time.nome.toString());
-    }
-    return nomes;
-  }
-
-// Editar nome do time
+// Editar o nome do time
   Future<void> editarNomeTime(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'nome': time.nome,
     }).whenComplete(() => loadDate());
   }
 
+  // retorna a quantidade de participantes do time
   int qtdParticipantesTime(int idTime) {
     int valor = 0;
     for (var element in listaTimes) {
@@ -95,15 +82,29 @@ class Time with ChangeNotifier {
     return valor;
   }
 
-  atualizaParticipantes(int idTime) {
+  //incrementa a quantidade de participantes de um Time
+  incrementaQtdParticipantesTime(int idTime, int qtdParticipantes) {
+    print("adicionado p - $qtdParticipantes");
     for (var element in listaTimes) {
       if (element.id == idTime) {
-        element.qtdParticipantes = (qtdParticipantesTime(idTime) + 1);
+        element.qtdParticipantes =
+            (qtdParticipantesTime(idTime) + qtdParticipantes);
         editarQtdJogadores(element);
       }
     }
   }
 
+  // decrementa a quantidade de participantes de um Time
+  decrementaQtdParticipantesTime(int idTime) {
+    for (var element in listaTimes) {
+      if (element.id == idTime) {
+        element.qtdParticipantes = (qtdParticipantesTime(idTime) - 1);
+        editarQtdJogadores(element);
+      }
+    }
+  }
+
+// zera a quantidade de jogadores de todos os time
   zerarJogadoresTime() {
     for (var element in listaTimes) {
       element.qtdParticipantes = 0;
@@ -112,6 +113,7 @@ class Time with ChangeNotifier {
     }
   }
 
+  // atualiza a quantidade de participantes de um time
   Future<void> editarQtdJogadores(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'qtdParticipantes': time.qtdParticipantes,
@@ -119,18 +121,30 @@ class Time with ChangeNotifier {
   }
 
   // remove um time e seus participantes
-  removeTime(Time time, BuildContext context) {
-    DbUtil.delete(NomeTabelaDB.time, time.id).whenComplete(() => {loadDate()});
+  Future<void> removeTimeEParticipantes(Time time, BuildContext context) async {
     List<Grupo> jogadoresTime =
         Provider.of<Grupo>(context, listen: false).listaGrupos;
+    await DbUtil.delete(NomeTabelaDB.time, time.id)
+        .whenComplete(() => loadDate());
     for (var jogador in jogadoresTime) {
       if (jogador.idTime! == time.id) {
-        DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
+        await DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
           "possuiTime": 0,
-        });
+        }).whenComplete(
+            () => Provider.of<Jogador>(context, listen: false).loadDate());
       }
     }
-    Provider.of<Jogador>(context, listen: false).loadDate();
+  }
+
+  // retorna o nome do Time
+  String retornaNomeTime(int idTimeSelecionado) {
+    String nomeTime = "";
+    for (var element in listaTimes) {
+      if (element.id == idTimeSelecionado) {
+        nomeTime = element.nome!;
+      }
+    }
+    return nomeTime;
   }
 
   // chamada para o Dialog, registrar um time
@@ -172,7 +186,7 @@ class Time with ChangeNotifier {
     );
   }
 
-  // Editar nome time
+  // chamada para o Dialog, Editar nome time
   editaNomeTime(BuildContext context, Time time) {
     nomeTime.text = time.nome!;
     focusTime.requestFocus();
@@ -208,29 +222,5 @@ class Time with ChangeNotifier {
         ],
       ),
     );
-  }
-
-  // retornar lista de dropdown Jogadores disponiveis
-  List<DropdownMenuItem<int>> listaJogadoresDisponiveis = [];
-  List<Jogador> listaJogadores = [];
-
-  List<Jogador> loadDisponiveis(BuildContext context) {
-    List<Jogador> jogadores = [];
-    for (var item in Provider.of<Jogador>(context).listaJogadores) {
-      if (item.possuiTime! == 0) {
-        jogadores.add(item);
-      }
-    }
-    return jogadores;
-  }
-
-  String retornaNomeTime(int idTimeSelecionado) {
-    String nomeTime = "";
-    for (var element in listaTimes) {
-      if (element.id == idTimeSelecionado) {
-        nomeTime = element.nome!;
-      }
-    }
-    return nomeTime;
   }
 }

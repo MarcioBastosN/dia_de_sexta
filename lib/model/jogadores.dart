@@ -12,15 +12,10 @@ class Jogador with ChangeNotifier {
 
   int? id;
   String? nome;
-  // equilave ao booleano que nao possui representaçao no sqflite
   // assume valor de 0 || 1
   int? possuiTime;
 
-  Jogador({
-    this.id,
-    this.nome,
-    this.possuiTime,
-  });
+  Jogador({this.id, this.nome, this.possuiTime});
 
 // controller
   final nomeJogador = TextEditingController();
@@ -45,7 +40,7 @@ class Jogador with ChangeNotifier {
     return jogadores.length;
   }
 
-// retorna o nome dos jogadores disponiveis
+// retorna a lista de jogadores disponiveis
   List<Jogador> getListaJogadoresDisponiveis() {
     List<Jogador> listaJogadores = [];
     for (var jogador in jogadores) {
@@ -56,13 +51,14 @@ class Jogador with ChangeNotifier {
     return listaJogadores;
   }
 
-// remove jogador do banco e da lista
+// remove jogador
+// TODO - deve liberar o jogador do grupo e atualizar a qtdParticipantes
   Future<void> removeJogador(Jogador jogador) async {
     await DbUtil.delete(NomeTabelaDB.jogadores, jogador.id!)
         .whenComplete(() => loadDate());
   }
 
-// edita um jogador
+// editar um jogador
   editarJogador(Jogador jogador) {
     DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
@@ -70,7 +66,7 @@ class Jogador with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-// informa jogador esta em um time
+// alterar o status do jogador para indiponivel
   Future<void> jogadorPossuiTime(List<Jogador> playes) async {
     for (var item in playes) {
       await DbUtil.update(NomeTabelaDB.jogadores, item.id!, {
@@ -79,7 +75,7 @@ class Jogador with ChangeNotifier {
     }
   }
 
-// retorna o id do jogador
+// retornar o id do jogador com base no nome
   retornaIdJogador(String nome) {
     for (var jogador in jogadores) {
       if (jogador.nome! == nome) {
@@ -88,7 +84,7 @@ class Jogador with ChangeNotifier {
     }
   }
 
-// retorna o nome do jogador
+// retornar o nome do jogador com base no seu ID
   String retornaNomejogador(int id) {
     String nome = "";
     for (var jogador in jogadores) {
@@ -99,7 +95,7 @@ class Jogador with ChangeNotifier {
     return nome;
   }
 
-// adiciona jogador na lista e no banco
+// adicionar jogador
   Future<void> adicionarJogador(Jogador jogador) async {
     await DbUtil.insert(NomeTabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
@@ -107,8 +103,9 @@ class Jogador with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-// libera todos os jogadores de todos os times
-  Future<void> liberarjogadores() async {
+// liberar todos os jogadores de todos os times
+// TODO - verificar qtdParticipantes
+  Future<void> liberarJogadores() async {
     for (var jogador in jogadores) {
       DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
         'possuiTime': 0,
@@ -116,16 +113,14 @@ class Jogador with ChangeNotifier {
     }
   }
 
-  // remove o jogador do grupo e habilita ele para possuir um novo time
+  // remover o jogador do grupo e habilitar ele para possuir um novo time
   Future<void> liberaJogadorId(int idjogador, BuildContext context) async {
     Provider.of<Grupo>(context, listen: false)
-        .removeRegistroJogadorId(idjogador);
+        .removeRegistroJogadorId(idjogador, context);
     await DbUtil.update(NomeTabelaDB.jogadores, idjogador, {
       'possuiTime': 0,
     }).whenComplete(() => loadDate());
   }
-
-  liberaJogadoresGrupo() {}
 
   addJogadorLista(BuildContext context) {
     showDialog(

@@ -186,11 +186,9 @@ class _ListaJogadoresState extends State<ListaJogadores> {
               onTap: () {
                 Provider.of<Grupo>(context, listen: false)
                     .sorteiaTimes(context);
-                // .whenComplete(() {
                 if (controllerFlip.state!.isFront == true) {
                   controllerFlip.flipcard();
                 }
-                // })
               },
             ),
             SpeedDialChild(

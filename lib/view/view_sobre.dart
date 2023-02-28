@@ -56,7 +56,7 @@ class _SobreState extends State<Sobre> {
                       Expanded(
                         child: Center(
                           child: Text(
-                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadores().toString()}",
+                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadoresParaUmGrupo().toString()}",
                             maxLines: 2,
                           ),
                         ),

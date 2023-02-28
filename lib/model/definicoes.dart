@@ -38,8 +38,8 @@ class Definicoes with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-  //
-  int retornaLimiteJogadores() {
+  //retorna o numero de jogadores q um grupo pode possuir
+  int retornaLimiteJogadoresParaUmGrupo() {
     int valor = 0;
     for (var dados in def) {
       valor = dados.numeroJogadores!;

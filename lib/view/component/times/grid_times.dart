@@ -44,8 +44,8 @@ class _GridTimesState extends State<GridTimes> {
               selectedItemsTextStyle: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
-              items: Provider.of<Time>(context, listen: false)
-                  .loadDisponiveis(context)
+              items: Provider.of<Jogador>(context, listen: false)
+                  .getListaJogadoresDisponiveis()
                   .map((e) => MultiSelectItem(e, e.nome!))
                   .toList(),
               listType: MultiSelectListType.CHIP,
@@ -55,16 +55,19 @@ class _GridTimesState extends State<GridTimes> {
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO - corrigir atualizar participantes
                 Navigator.of(context).pop();
+                // 1º marca o jogador como indisponivel
                 Provider.of<Jogador>(context, listen: false)
                     .jogadorPossuiTime(jogadoresTemp!)
                     .whenComplete(() {
+                  // adiciona a relacao do jogador ao Time
                   Provider.of<Grupo>(context, listen: false)
                       .adicionarGrupo(jogadoresTemp!, idTimeSelecionado)
                       .whenComplete(() {
+                    // atualiza a quantidade de participantes do time
                     Provider.of<Time>(context, listen: false)
-                        .atualizaParticipantes(idTimeSelecionado);
+                        .incrementaQtdParticipantesTime(
+                            idTimeSelecionado, jogadoresTemp!.length);
                   });
                 });
               },
@@ -176,7 +179,7 @@ class _GridTimesState extends State<GridTimes> {
                       : false,
                   onTap: () => {
                     Provider.of<Time>(context, listen: false)
-                        .removeTime(listaTimes[index], context)
+                        .removeTimeEParticipantes(listaTimes[index], context)
                   },
                 ),
               ],
