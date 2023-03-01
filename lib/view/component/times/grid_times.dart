@@ -33,9 +33,10 @@ class _GridTimesState extends State<GridTimes> {
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
-          titulo: "Selecione",
+          titulo: "Selecione Jogador(es)",
           listaCompomentes: [
             MultiSelectDialogField(
+              title: const Text("Jogadores"),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary,
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -62,13 +63,12 @@ class _GridTimesState extends State<GridTimes> {
                     .whenComplete(() {
                   // adiciona a relacao do jogador ao Time
                   Provider.of<Grupo>(context, listen: false)
-                      .adicionarGrupo(jogadoresTemp!, idTimeSelecionado)
-                      .whenComplete(() {
-                    // atualiza a quantidade de participantes do time
-                    Provider.of<Time>(context, listen: false)
-                        .incrementaQtdParticipantesTime(
-                            idTimeSelecionado, jogadoresTemp!.length);
-                  });
+                      .adicionarGrupo(jogadoresTemp!, idTimeSelecionado);
+
+                  // atualiza a quantidade de participantes do time
+                  Provider.of<Time>(context, listen: false)
+                      .incrementaQtdParticipantesTime(
+                          idTimeSelecionado, jogadoresTemp!.length);
                 });
               },
               child: const Text("Salvar"),

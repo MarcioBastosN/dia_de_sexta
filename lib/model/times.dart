@@ -48,12 +48,15 @@ class Time with ChangeNotifier {
 
   // Retorna os times que não estao completos.
   List<Time> retornaListaTimesIncompletos(BuildContext context) {
+    loadDate();
     final limiteJogadores = Provider.of<Definicoes>(context, listen: false)
         .retornaLimiteJogadoresParaUmGrupo();
     List<Time> timesValidos = [];
-    for (var element in listaTimes) {
-      if (element.qtdParticipantes! < limiteJogadores) {
-        timesValidos.add(element);
+    for (var time in times) {
+      if (time.qtdParticipantes! < limiteJogadores) {
+        // print(
+        //     "sorteio_ times disponiveis - ${time.nome} idTime - ${time.id} -- elemet_participantes : ${time.qtdParticipantes}");
+        timesValidos.add(time);
       }
     }
     return timesValidos;
@@ -73,10 +76,12 @@ class Time with ChangeNotifier {
 
   // retorna a quantidade de participantes do time
   int qtdParticipantesTime(int idTime) {
+    loadDate();
     int valor = 0;
-    for (var element in listaTimes) {
-      if (element.id == idTime) {
-        valor = element.qtdParticipantes!;
+    for (var time in times) {
+      if (time.id! == idTime) {
+        valor = time.qtdParticipantes!;
+        // print("sorteio_ participantes time $idTime valor $valor");
       }
     }
     return valor;
@@ -84,18 +89,20 @@ class Time with ChangeNotifier {
 
   //incrementa a quantidade de participantes de um Time
   incrementaQtdParticipantesTime(int idTime, int qtdParticipantes) {
-    print("adicionado p - $qtdParticipantes");
-    for (var element in listaTimes) {
-      if (element.id == idTime) {
-        element.qtdParticipantes =
+    loadDate();
+    for (var time in times) {
+      if (time.id == idTime) {
+        time.qtdParticipantes =
             (qtdParticipantesTime(idTime) + qtdParticipantes);
-        editarQtdJogadores(element);
+        editarQtdJogadores(time);
+        notifyListeners();
       }
     }
   }
 
   // decrementa a quantidade de participantes de um Time
   decrementaQtdParticipantesTime(int idTime) {
+    loadDate();
     for (var element in listaTimes) {
       if (element.id == idTime) {
         element.qtdParticipantes = (qtdParticipantesTime(idTime) - 1);
@@ -118,6 +125,9 @@ class Time with ChangeNotifier {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'qtdParticipantes': time.qtdParticipantes,
     }).whenComplete(() => loadDate());
+    notifyListeners();
+    // print(
+    //     " sorteio_E time ${time.id!} novo valor de participantes ${time.qtdParticipantes}");
   }
 
   // remove um time e seus participantes

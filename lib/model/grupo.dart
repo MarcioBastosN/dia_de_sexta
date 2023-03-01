@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
@@ -88,68 +89,93 @@ class Grupo with ChangeNotifier {
     return teste;
   }
 
+  // o sorteio so inicia se tiver jogadores disponiveis
   sorteiaTimes(BuildContext context) {
-    var consultaTimesValidos = Provider.of<Time>(context, listen: false)
+    print("sorteio_ ==========================");
+    List<Time> consultaTimesValidos = Provider.of<Time>(context, listen: false)
         .retornaListaTimesIncompletos(context);
-    var timeSorteado = Random().nextInt(consultaTimesValidos.length);
+
+    if (consultaTimesValidos.isEmpty) {
+      print("sorteio_ nao ha times disponiveis");
+      return;
+    }
+
+    int timeSorteado = Random().nextInt(consultaTimesValidos.length);
+    int participantesFaltando = Provider.of<Definicoes>(context, listen: false)
+            .retornaLimiteJogadoresParaUmGrupo() -
+        consultaTimesValidos[timeSorteado].qtdParticipantes!;
+    //armazena a lista de jogadores disponiveis
+    List<Jogador> jogadoresDisponiveis = [];
+
+    jogadoresDisponiveis = Provider.of<Jogador>(context, listen: false)
+        .getListaJogadoresDisponiveis();
+    // armazenar a quantidade de jogadores para adicionar
+    List<Jogador> listaJogadoresParaAdicionar = [];
     print(
-        "times validos: ${consultaTimesValidos.length}, sorteado: $timeSorteado");
+        "sorteio_ times validos: ${consultaTimesValidos.length}, sorteado Time id: ${consultaTimesValidos[timeSorteado].id}");
     print(
-        "Qtd participantes time (${consultaTimesValidos[timeSorteado].nome}): ${consultaTimesValidos[timeSorteado].qtdParticipantes}");
+        "sorteio_ Nome e ID time: (${consultaTimesValidos[timeSorteado].nome}, ${consultaTimesValidos[timeSorteado].id}) - Qtd participantes: ${consultaTimesValidos[timeSorteado].qtdParticipantes}");
+    print("sorteio_ completar participantes: $participantesFaltando");
 
-    // int participantesParaTime =
-    //     consultaTimesValidos[timeSorteado].qtdParticipantes!;
+    print(
+        "sorteio_ iniciando jogadores disponiveis-- ${jogadoresDisponiveis.length}");
 
-    // List<Jogador> jogadores = [];
+    print(
+        "sorteio_ id time sorteado ${consultaTimesValidos[timeSorteado].id!}");
 
-    // if (Provider.of<Jogador>(context, listen: false)
-    //         .getListaJogadoresDisponiveis()
-    //         .length >=
-    //     participantesParaTime) {
-    //   for (var i = 0; i < participantesParaTime; i++) {
-    //     // sorteia jogador & time
-    //     var jogadorSorteado = Random().nextInt(
-    //         Provider.of<Jogador>(context, listen: false)
-    //             .getListaJogadoresDisponiveis()
-    //             .length);
-    //     jogadores.add(Provider.of<Jogador>(context, listen: false)
-    //         .getListaJogadoresDisponiveis()[jogadorSorteado]);
-    //   }
+    // verifica a quantidade de jogadores
+    if (jogadoresDisponiveis.length > participantesFaltando) {
+      print("sorteio_ forma de sorteio - completo");
+      for (int i = 0; i < participantesFaltando; i++) {
+        // sorteia jogador
+        var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
+        // adiciona o jogador sorteado na lista de jogadores para adicionar
+        listaJogadoresParaAdicionar.add(jogadoresDisponiveis[jogadorSorteado]);
+        // remove o jogador sorteado da lista de jogadores disponiveis
+        jogadoresDisponiveis.remove(jogadoresDisponiveis[jogadorSorteado]);
+      }
 
-    //   adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
-    //       .whenComplete(() => Provider.of<Jogador>(context, listen: false)
-    //           .jogadorPossuiTime(jogadores))
-    //       .whenComplete(() => Provider.of<Time>(context, listen: false)
-    //           .incrementaQtdParticipantesTime(consultaTimesValidos[timeSorteado].id!));
-    // } else {
-    //   for (var i = 0;
-    //       i <
-    //           Provider.of<Jogador>(context, listen: false)
-    //               .getListaJogadoresDisponiveis()
-    //               .length;
-    //       i++) {
-    //     // sorteia jogador & time
-    //     var jogadorSorteado = Random().nextInt(
-    //         Provider.of<Jogador>(context, listen: false)
-    //             .getListaJogadoresDisponiveis()
-    //             .length);
-    //     jogadores.add(Provider.of<Jogador>(context, listen: false)
-    //         .getListaJogadoresDisponiveis()[jogadorSorteado]);
-    //   }
+      adicionarGrupo(listaJogadoresParaAdicionar,
+              consultaTimesValidos[timeSorteado].id!)
+          .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+              .jogadorPossuiTime(listaJogadoresParaAdicionar));
+      Provider.of<Time>(context, listen: false).incrementaQtdParticipantesTime(
+          consultaTimesValidos[timeSorteado].id!, participantesFaltando);
+    } else {
+      print("sorteio_ forma de sorteio - parcial");
+      participantesFaltando = jogadoresDisponiveis.length;
 
-    //   adicionarGrupo(jogadores, consultaTimesValidos[timeSorteado].id!)
-    //       .whenComplete(() => Provider.of<Jogador>(context, listen: false)
-    //           .jogadorPossuiTime(jogadores))
-    //       .whenComplete(() => Provider.of<Time>(context, listen: false)
-    //           .incrementaQtdParticipantesTime(consultaTimesValidos[timeSorteado].id!));
-    // }
+      for (int i = 0; i < participantesFaltando; i++) {
+        // sorteia jogador
+        var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
+        // adiciona o jogador sorteado na lista de jogadores para adicionar
+        listaJogadoresParaAdicionar.add(jogadoresDisponiveis[jogadorSorteado]);
+        // remove o jogador sorteado da lista de jogadores disponiveis
+        jogadoresDisponiveis.remove(jogadoresDisponiveis[jogadorSorteado]);
+      }
 
-    // int verifica = Provider.of<Jogador>(context, listen: false)
-    //     .getListaJogadoresDisponiveis()
-    //     .length;
-    // if (verifica > 0) {
-    //   sorteiaTimes(context);
-    // }
+      adicionarGrupo(listaJogadoresParaAdicionar,
+              consultaTimesValidos[timeSorteado].id!)
+          .whenComplete(() => Provider.of<Jogador>(context, listen: false)
+              .jogadorPossuiTime(listaJogadoresParaAdicionar));
+      Provider.of<Time>(context, listen: false).incrementaQtdParticipantesTime(
+          consultaTimesValidos[timeSorteado].id!, participantesFaltando);
+    }
+
+    print("sorteio_ fechando -- ${jogadoresDisponiveis.length}");
+    consultaTimesValidos.remove(consultaTimesValidos[timeSorteado]);
+    if (jogadoresDisponiveis.isNotEmpty && consultaTimesValidos.isNotEmpty) {
+      print(
+          "sorteio_ times e jogadores disponiveis: t-${consultaTimesValidos.length} ; j-${jogadoresDisponiveis.length}");
+      print("sorteio_ -------------------------------");
+      Provider.of<Time>(context, listen: false)
+          .retornaListaTimesIncompletos(context);
+      print("sorteio_ -------------------------------");
+      jogadoresDisponiveis.clear();
+      sorteiaTimes(context);
+    } else {
+      print("sorteio_ sorteio finalizado");
+    }
   }
 
 // remove um jogador do time de acordo com seu id
@@ -180,4 +206,4 @@ class Grupo with ChangeNotifier {
       );
     }
   }
-}//final arquivo
+} //final arquivo

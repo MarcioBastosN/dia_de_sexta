@@ -44,7 +44,7 @@ class Jogador with ChangeNotifier {
   List<Jogador> getListaJogadoresDisponiveis() {
     List<Jogador> listaJogadores = [];
     for (var jogador in jogadores) {
-      if (jogador.possuiTime != 1) {
+      if (jogador.possuiTime! != 1) {
         listaJogadores.add(jogador);
       }
     }
@@ -52,7 +52,6 @@ class Jogador with ChangeNotifier {
   }
 
 // remove jogador
-// TODO - deve liberar o jogador do grupo e atualizar a qtdParticipantes
   Future<void> removeJogador(Jogador jogador) async {
     await DbUtil.delete(NomeTabelaDB.jogadores, jogador.id!)
         .whenComplete(() => loadDate());
@@ -62,7 +61,7 @@ class Jogador with ChangeNotifier {
   editarJogador(Jogador jogador) {
     DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
-      "possuiTime": jogador.possuiTime,
+      "possuiTime": jogador.possuiTime!,
     }).whenComplete(() => loadDate());
   }
 
@@ -72,6 +71,7 @@ class Jogador with ChangeNotifier {
       await DbUtil.update(NomeTabelaDB.jogadores, item.id!, {
         "possuiTime": 1,
       }).whenComplete(() => loadDate());
+      notifyListeners();
     }
   }
 
