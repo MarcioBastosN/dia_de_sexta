@@ -94,13 +94,11 @@ class Grupo with ChangeNotifier {
       {required BuildContext context,
       required List<Time> timesValidos,
       required List<Jogador> listaJogadoresDisponiveis}) {
-    print("sorteio_ ==========================");
+    // print("sorteio_ ==========================");
     List<Time> consultaTimesValidos = timesValidos;
-    // Provider.of<Time>(context, listen: false)
-    //     .retornaListaTimesIncompletos(context);
 
     if (consultaTimesValidos.isEmpty) {
-      print("sorteio_ nao ha times disponiveis");
+      // print("sorteio_ nao ha times disponiveis");
       return;
     }
 
@@ -112,25 +110,22 @@ class Grupo with ChangeNotifier {
     //armazena a lista de jogadores disponiveis
     List<Jogador> jogadoresDisponiveis = listaJogadoresDisponiveis;
 
-    // jogadoresDisponiveis = Provider.of<Jogador>(context, listen: false)
-    //     .getListaJogadoresDisponiveis();
-    // armazenar a quantidade de jogadores para adicionar
     List<Jogador> listaJogadoresParaAdicionar = [];
-    print(
-        "sorteio_ times validos: ${consultaTimesValidos.length}, sorteado Time id: ${consultaTimesValidos[timeSorteado].id}");
-    print(
-        "sorteio_ Nome e ID time: (${consultaTimesValidos[timeSorteado].nome}, ${consultaTimesValidos[timeSorteado].id}) - Qtd participantes: ${consultaTimesValidos[timeSorteado].qtdParticipantes}");
-    print("sorteio_ completar participantes: $participantesFaltando");
+    // print(
+    //     "sorteio_ times validos: ${consultaTimesValidos.length}, sorteado Time id: ${consultaTimesValidos[timeSorteado].id}");
+    // print(
+    //     "sorteio_ Nome e ID time: (${consultaTimesValidos[timeSorteado].nome}, ${consultaTimesValidos[timeSorteado].id}) - Qtd participantes: ${consultaTimesValidos[timeSorteado].qtdParticipantes}");
+    // print("sorteio_ completar participantes: $participantesFaltando");
 
-    print(
-        "sorteio_ iniciando jogadores disponiveis-- ${jogadoresDisponiveis.length}");
+    // print(
+    //     "sorteio_ iniciando jogadores disponiveis-- ${jogadoresDisponiveis.length}");
 
-    print(
-        "sorteio_ id time sorteado ${consultaTimesValidos[timeSorteado].id!}");
+    // print(
+    //     "sorteio_ id time sorteado ${consultaTimesValidos[timeSorteado].id!}");
 
     // verifica a quantidade de jogadores
     if (jogadoresDisponiveis.length > participantesFaltando) {
-      print("sorteio_ forma de sorteio - completo");
+      // print("sorteio_ forma de sorteio - completo");
       for (int i = 0; i < participantesFaltando; i++) {
         // sorteia jogador
         var jogadorSorteado = Random().nextInt(jogadoresDisponiveis.length);
@@ -147,7 +142,7 @@ class Grupo with ChangeNotifier {
       Provider.of<Time>(context, listen: false).incrementaQtdParticipantesTime(
           consultaTimesValidos[timeSorteado].id!, participantesFaltando);
     } else {
-      print("sorteio_ forma de sorteio - parcial");
+      // print("sorteio_ forma de sorteio - parcial");
       participantesFaltando = jogadoresDisponiveis.length;
 
       for (int i = 0; i < participantesFaltando; i++) {
@@ -167,21 +162,21 @@ class Grupo with ChangeNotifier {
           consultaTimesValidos[timeSorteado].id!, participantesFaltando);
     }
 
-    print("sorteio_ fechando -- ${jogadoresDisponiveis.length}");
+    // print("sorteio_ fechando -- ${jogadoresDisponiveis.length}");
     consultaTimesValidos.remove(consultaTimesValidos[timeSorteado]);
     if (jogadoresDisponiveis.isNotEmpty && consultaTimesValidos.isNotEmpty) {
-      print(
-          "sorteio_ times e jogadores disponiveis: t-${consultaTimesValidos.length} ; j-${jogadoresDisponiveis.length}");
-      print("sorteio_ -------------------------------");
-      Provider.of<Time>(context, listen: false)
-          .retornaListaTimesIncompletos(context);
-      print("sorteio_ -------------------------------");
+      // print(
+      //     "sorteio_ times e jogadores disponiveis: t-${consultaTimesValidos.length} ; j-${jogadoresDisponiveis.length}");
+      // print("sorteio_ -------------------------------");
+      // Provider.of<Time>(context, listen: false)
+      //     .retornaListaTimesIncompletos(context);
+      // print("sorteio_ -------------------------------");
       sorteiaTimes(
           context: context,
           timesValidos: consultaTimesValidos,
           listaJogadoresDisponiveis: jogadoresDisponiveis);
     } else {
-      print("sorteio_ sorteio finalizado");
+      // print("sorteio_ sorteio finalizado");
     }
   }
 

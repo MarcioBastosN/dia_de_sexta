@@ -104,7 +104,6 @@ class Jogador with ChangeNotifier {
   }
 
 // liberar todos os jogadores de todos os times
-// TODO - verificar qtdParticipantes
   Future<void> liberarJogadores() async {
     for (var jogador in jogadores) {
       DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
