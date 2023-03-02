@@ -184,8 +184,13 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                 color: Theme.of(context).colorScheme.background,
               ),
               onTap: () {
-                Provider.of<Grupo>(context, listen: false)
-                    .sorteiaTimes(context);
+                Provider.of<Grupo>(context, listen: false).sorteiaTimes(
+                    context: context,
+                    listaJogadoresDisponiveis:
+                        Provider.of<Jogador>(context, listen: false)
+                            .getListaJogadoresDisponiveis(),
+                    timesValidos: Provider.of<Time>(context, listen: false)
+                        .retornaListaTimesIncompletos(context));
                 if (controllerFlip.state!.isFront == true) {
                   controllerFlip.flipcard();
                 }

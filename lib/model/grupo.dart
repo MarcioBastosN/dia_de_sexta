@@ -90,10 +90,14 @@ class Grupo with ChangeNotifier {
   }
 
   // o sorteio so inicia se tiver jogadores disponiveis
-  sorteiaTimes(BuildContext context) {
+  sorteiaTimes(
+      {required BuildContext context,
+      required List<Time> timesValidos,
+      required List<Jogador> listaJogadoresDisponiveis}) {
     print("sorteio_ ==========================");
-    List<Time> consultaTimesValidos = Provider.of<Time>(context, listen: false)
-        .retornaListaTimesIncompletos(context);
+    List<Time> consultaTimesValidos = timesValidos;
+    // Provider.of<Time>(context, listen: false)
+    //     .retornaListaTimesIncompletos(context);
 
     if (consultaTimesValidos.isEmpty) {
       print("sorteio_ nao ha times disponiveis");
@@ -104,11 +108,12 @@ class Grupo with ChangeNotifier {
     int participantesFaltando = Provider.of<Definicoes>(context, listen: false)
             .retornaLimiteJogadoresParaUmGrupo() -
         consultaTimesValidos[timeSorteado].qtdParticipantes!;
-    //armazena a lista de jogadores disponiveis
-    List<Jogador> jogadoresDisponiveis = [];
 
-    jogadoresDisponiveis = Provider.of<Jogador>(context, listen: false)
-        .getListaJogadoresDisponiveis();
+    //armazena a lista de jogadores disponiveis
+    List<Jogador> jogadoresDisponiveis = listaJogadoresDisponiveis;
+
+    // jogadoresDisponiveis = Provider.of<Jogador>(context, listen: false)
+    //     .getListaJogadoresDisponiveis();
     // armazenar a quantidade de jogadores para adicionar
     List<Jogador> listaJogadoresParaAdicionar = [];
     print(
@@ -171,8 +176,10 @@ class Grupo with ChangeNotifier {
       Provider.of<Time>(context, listen: false)
           .retornaListaTimesIncompletos(context);
       print("sorteio_ -------------------------------");
-      jogadoresDisponiveis.clear();
-      sorteiaTimes(context);
+      sorteiaTimes(
+          context: context,
+          timesValidos: consultaTimesValidos,
+          listaJogadoresDisponiveis: jogadoresDisponiveis);
     } else {
       print("sorteio_ sorteio finalizado");
     }
