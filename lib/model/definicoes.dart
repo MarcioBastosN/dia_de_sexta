@@ -1,5 +1,9 @@
+import 'dart:ffi';
+
 import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
 import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/view/component/dialog_component.dart';
+import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 
 class Definicoes with ChangeNotifier {
@@ -13,6 +17,9 @@ class Definicoes with ChangeNotifier {
     this.id,
     this.numeroJogadores,
   });
+
+  // controller
+  final qtdJogadores = TextEditingController();
 
   Future<void> loadDate() async {
     final dataList = await DbUtil.getData(NomeTabelaDB.definicoesJogo);
@@ -29,6 +36,10 @@ class Definicoes with ChangeNotifier {
 
   int tamanhoListaDefinicoes() {
     return def.length;
+  }
+
+  Definicoes retornaDefinicaoEditar() {
+    return def[0];
   }
 
 // adiciona definicao.
@@ -51,5 +62,34 @@ class Definicoes with ChangeNotifier {
     DbUtil.update(NomeTabelaDB.definicoesJogo, definicoes.id!, {
       'numeroJogadores': definicoes.numeroJogadores,
     }).whenComplete(() => loadDate());
+  }
+
+  trocaNumeroParticipantes(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => DialogComponent(
+        titulo: "Participantes por Time",
+        listaCompomentes: [
+          TextFormCompoment(
+            controller: qtdJogadores,
+            label: "Nº Jogadores",
+            inputType: TextInputType.phone,
+            maxLength: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                var atualizar = retornaDefinicaoEditar();
+                atualizar.numeroJogadores = (int.parse(qtdJogadores.text));
+                atualizaDefinicoes(atualizar, context);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Salvar"),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

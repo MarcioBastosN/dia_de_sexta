@@ -1,5 +1,7 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/definicoes.dart';
+import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
+import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -29,42 +31,20 @@ class _SobreState extends State<Sobre> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
-          Center(
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 22),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Desenvolvimento"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.person),
-                      Text("Marcio Bastos"),
-                    ],
+          DefaultTextStyle(
+            style: const TextStyle(fontSize: 22),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                DadosDev(),
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Card(
+                    elevation: 2.0,
+                    child: EditaParticipante(),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.phone_android),
-                      Text("(93) 9 9175-3545"),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadoresParaUmGrupo().toString()}",
-                            maxLines: 2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Positioned(
