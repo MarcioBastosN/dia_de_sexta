@@ -1,10 +1,8 @@
 import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
 import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
