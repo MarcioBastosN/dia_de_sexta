@@ -3,6 +3,7 @@ import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
 import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -12,10 +13,18 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  bool? loadSplash = false;
+
   @override
   void initState() {
-    super.initState();
+    _prefs.then((SharedPreferences prefs) {
+      setState(() {
+        loadSplash = prefs.getBool("loadSpalsh");
+      });
+    });
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    super.initState();
   }
 
   @override
@@ -33,9 +42,27 @@ class _SobreState extends State<Sobre> {
             style: const TextStyle(fontSize: 22),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                DadosDev(),
-                Padding(
+              children: [
+                const DadosDev(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text("Exibir tela de introdução:"),
+                    Switch(
+                      value: loadSplash!,
+                      onChanged: (bool value) {
+                        _prefs.then((SharedPreferences prefs) {
+                          prefs.setBool("loadSpalsh", !loadSplash!);
+                        }).whenComplete(() {
+                          setState(() {
+                            loadSplash = !loadSplash!;
+                          });
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Card(
                     elevation: 2.0,
