@@ -7,6 +7,7 @@ import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
 import 'package:dia_de_sexta/view/splash_screen.dart';
+import 'package:dia_de_sexta/view/view_intro.dart';
 import 'package:dia_de_sexta/view/view_lista_placar.dart';
 import 'package:dia_de_sexta/view/view_placar.dart';
 import 'package:dia_de_sexta/view/view_sobre.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         routes: {
+          AppRoutes.intro: (context) => const IntroScreen(),
           AppRoutes.splash: (context) => const SplashScreen(),
           AppRoutes.home: (context) => const HomeScreen(),
           AppRoutes.placar: (context) =>
