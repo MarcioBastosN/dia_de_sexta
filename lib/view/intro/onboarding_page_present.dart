@@ -22,16 +22,14 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
   @override
   void initState() {
     _prefs.then((SharedPreferences prefs) {
-      loadSplash = prefs.getBool("loadSpalsh");
+      setState(() {
+        loadSplash = prefs.getBool("loadSpalsh");
+      });
+    }).whenComplete(() {
+      if (loadSplash!) {
+        widget.onFinish?.call();
+      }
     });
-
-    if (loadSplash!) {
-      print("Tela de splash ja deve ser desabilitada!");
-      widget.onFinish?.call();
-    } else {
-      print("valor load $loadSplash");
-    }
-
     super.initState();
   }
 
