@@ -29,36 +29,34 @@ class _IntroScreenState extends State<IntroScreen> {
           },
           pages: [
             OnboardingPageModel(
-              title: 'Smash, seu app de volêi',
-              description:
-                  'Enjoy the best of the world in the palm of your hands.',
+              title: 'Smash, seu placar do volêi',
+              description: 'Vai jogar!, salva o placar para postar depois.',
               imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
-              bgColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.onPrimary,
+              bgColor: Theme.of(context).colorScheme.secondary,
+              textColor: Theme.of(context).colorScheme.onSecondary,
             ),
             OnboardingPageModel(
-              title: 'Connect with your friends.',
-              description: 'Connect with your friends anytime anywhere.',
+              title: 'Crie times e adicione partipantes',
+              description: 'Vai começar a disputa :)',
               imageUrl:
                   'https://i.ibb.co/LvmZypG/storefront-illustration-2.png',
-              bgColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.onPrimary,
+              bgColor: Theme.of(context).colorScheme.tertiary,
+              textColor: Theme.of(context).colorScheme.onTertiary,
             ),
             OnboardingPageModel(
-              title: 'Bookmark your favourites',
+              title: 'Chega de Grupimho!!!',
               description:
-                  'Bookmark your favourite quotes to read at a leisure time.',
+                  'Utilize a função sorteio, para deixar o jogo mais divertido.',
               imageUrl: 'https://i.ibb.co/420D7VP/building.png',
               bgColor: Theme.of(context).colorScheme.primary,
               textColor: Theme.of(context).colorScheme.onPrimary,
             ),
             OnboardingPageModel(
-              title: 'Follow creators',
-              description:
-                  'Follow your favourite creators to stay in the loop.',
+              title: 'Vamos Jogar',
+              description: 'Após cada jogo você pode compartinhar sua partida.',
               imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
-              bgColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.onPrimary,
+              bgColor: Theme.of(context).colorScheme.secondary,
+              textColor: Theme.of(context).colorScheme.onSecondary,
             ),
           ]),
     );

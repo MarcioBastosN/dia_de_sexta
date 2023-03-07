@@ -34,40 +34,106 @@ class _SobreState extends State<Sobre> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
-          DefaultTextStyle(
-            style: const TextStyle(fontSize: 22),
+          Positioned(
+            top: 60,
+            width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const DadosDev(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text("Exibir tela de introdução:"),
-                    Switch(
-                      value: loadSplash!,
-                      onChanged: (bool value) {
-                        _prefs.then((SharedPreferences prefs) {
-                          prefs.setBool("loadSpalsh", !loadSplash!);
-                        }).whenComplete(() {
-                          setState(() {
-                            loadSplash = !loadSplash!;
-                          });
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Card(
-                    elevation: 2.0,
-                    child: EditaParticipante(),
+                    elevation: 8,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.only(
+                        topStart: Radius.circular(16),
+                        topEnd: Radius.circular(16),
+                        bottomStart: Radius.circular(16),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Smash",
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .fontSize,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          indent: 120.0,
+                          endIndent: 120.0,
+                          thickness: 2.0,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          child: Text(
+                            "Smash é um nome que se refere ao ataque mais forte e rapido do volêi, que sugere força e velocidade.",
+                            textAlign: TextAlign.justify,
+                            textScaleFactor: 1.3,
+                            softWrap: true,
+                            maxLines: 3,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                ),
+                const DadosDev(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Divider(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Exibir tela de introdução:",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Switch(
+                          activeColor: Theme.of(context).colorScheme.secondary,
+                          value: loadSplash!,
+                          onChanged: (bool value) {
+                            _prefs.then((SharedPreferences prefs) {
+                              prefs.setBool("loadSpalsh", !loadSplash!);
+                            }).whenComplete(() {
+                              setState(() {
+                                loadSplash = !loadSplash!;
+                              });
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Card(
+                  child: EditaParticipante(),
                 ),
               ],
             ),

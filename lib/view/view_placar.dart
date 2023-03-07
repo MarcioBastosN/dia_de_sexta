@@ -124,9 +124,10 @@ class _PlacarState extends State<Placar> {
         ButtonBar(children: [
           PopupMenuButton(
             itemBuilder: (BuildContext context) =>
-                Provider.of<Jogo>(context, listen: false).equipe_1 != null
-                    ? <PopupMenuEntry>[menuItem_1, menuItem_2]
-                    : <PopupMenuEntry>[menuItem_1],
+                // Provider.of<Jogo>(context, listen: false).equipe_1 != null
+                //     ? <PopupMenuEntry>[menuItem_1, menuItem_2]
+                //     : <PopupMenuEntry>[menuItem_1],
+                <PopupMenuEntry>[menuItem_2],
           ),
         ])
       ],
