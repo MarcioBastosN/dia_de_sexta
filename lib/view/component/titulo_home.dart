@@ -16,7 +16,7 @@ class TituloHome extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSecondary,
             ),
             children: const [
-              TextSpan(text: "Dia de Sexta"),
+              TextSpan(text: "Smash"),
             ],
           ),
         ),

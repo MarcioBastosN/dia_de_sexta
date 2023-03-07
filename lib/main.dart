@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Dia de Sexta',
+        title: 'Smash',
         themeMode: ThemeMode.system,
         theme: lightTheme,
         darkTheme: darkTheme,
