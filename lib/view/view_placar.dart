@@ -1,4 +1,3 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/component/mostrador_placar_compoment.dart';
@@ -78,21 +77,21 @@ class _PlacarState extends State<Placar> {
       setState(() => trocaLadoJogo = !trocaLadoJogo);
     }
 
-    final menuItem_1 = PopupMenuItem(
-      value: "Home",
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).pop();
-          Navigator.of(context).popAndPushNamed(AppRoutes.home);
-        },
-        child: Row(
-          children: const [
-            Icon(Icons.home),
-            Text("Home"),
-          ],
-        ),
-      ),
-    );
+    // final menuItem_1 = PopupMenuItem(
+    //   value: "Home",
+    //   child: InkWell(
+    //     onTap: () {
+    //       Navigator.of(context).pop();
+    //       Navigator.of(context).popAndPushNamed(AppRoutes.home);
+    //     },
+    //     child: Row(
+    //       children: const [
+    //         Icon(Icons.home),
+    //         Text("Home"),
+    //       ],
+    //     ),
+    //   ),
+    // );
 
     final menuItem_2 = PopupMenuItem(
       value: "Encerrar partida",
