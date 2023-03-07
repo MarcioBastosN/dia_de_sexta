@@ -103,6 +103,7 @@ class Jogo with ChangeNotifier {
 
   fecharPartida(BuildContext context) {
     registraJogoDbLista(context);
+    cancelaContador();
     Navigator.of(context).popAndPushNamed(AppRoutes.home);
   }
 
