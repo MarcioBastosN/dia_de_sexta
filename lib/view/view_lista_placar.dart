@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dia_de_sexta/app_routes/routes.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/component/card_lista_placar.dart';
@@ -44,31 +43,8 @@ class _MyWidgetState extends State<ListaPlacar> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       title: Text(
         "Partidas : ${Provider.of<Jogo>(context, listen: false).tamanhoListaJogos().toString()}",
-        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
       ),
-      actions: [
-        Provider.of<Jogo>(context, listen: false).equipe_1 != null
-            ? PopupMenuButton(
-                // color: Colors.blue,
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).popAndPushNamed(AppRoutes.placar);
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(Icons.games, color: Colors.black),
-                          Text("Jogo"),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : Row(),
-      ],
     );
 
     Provider.of<Jogo>(context, listen: false).loadDate();
@@ -191,7 +167,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                           },
                           backgroundColor: Theme.of(context).colorScheme.error,
                           foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.onError,
                           icon: Icons.delete,
                           label: 'Apagar',
                         ),
@@ -202,7 +178,7 @@ class _MyWidgetState extends State<ListaPlacar> {
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary,
                           foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.onSecondary,
                           icon: Icons.share,
                           label: 'Compartilhar',
                         ),
