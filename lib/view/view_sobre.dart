@@ -1,9 +1,10 @@
+import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
 import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -13,16 +14,11 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  bool? loadSplash = false;
+  ControllerIntroScreen splashController = ControllerIntroScreen();
 
   @override
   void initState() {
-    _prefs.then((SharedPreferences prefs) {
-      setState(() {
-        loadSplash = prefs.getBool("loadSpalsh");
-      });
-    });
+    splashController.getLoadSplash();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.initState();
   }
@@ -115,17 +111,19 @@ class _SobreState extends State<Sobre> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Switch(
-                          activeColor: Theme.of(context).colorScheme.secondary,
-                          value: loadSplash!,
-                          onChanged: (bool value) {
-                            _prefs.then((SharedPreferences prefs) {
-                              prefs.setBool("loadSpalsh", !loadSplash!);
-                            }).whenComplete(() {
-                              setState(() {
-                                loadSplash = !loadSplash!;
-                              });
-                            });
+                        GetX<ControllerIntroScreen>(
+                          init: splashController,
+                          builder: (_) {
+                            return Switch(
+                              activeColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              value: splashController.loadSplash.value,
+                              onChanged: (bool value) {
+                                splashController.updateLoadSplash(
+                                    newValue:
+                                        !splashController.loadSplash.value);
+                              },
+                            );
                           },
                         ),
                       ],
