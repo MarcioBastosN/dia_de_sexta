@@ -187,7 +187,10 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: const Text("reiniciar jogo"),
+        mensagem: Text(
+          "reiniciar jogo",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+        ),
         listaCompomentes: [
           OutlinedButton(
             child: Text(
@@ -246,7 +249,10 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Empate ultimo ponto!",
-        mensagem: const Text("Como deseja continuar?"),
+        mensagem: Text(
+          "Como deseja continuar?",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+        ),
         listaCompomentes: [
           ElevatedButton(
             child: Text(
@@ -272,9 +278,12 @@ class Jogo with ChangeNotifier {
     showDialog(
       barrierDismissible: true,
       context: context,
-      builder: (context) => const DialogComponent(
+      builder: (context) => DialogComponent(
         titulo: "Ultimo Ponto!",
-        mensagem: Text("Ultimo ponto para fechar o jogo"),
+        mensagem: Text(
+          "Ultimo ponto para fechar o jogo",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+        ),
       ),
     );
   }

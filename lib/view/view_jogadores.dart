@@ -52,10 +52,12 @@ class _ListaJogadoresState extends State<ListaJogadores> {
   dicasSorteio(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => const DialogComponent(
+      builder: (context) => DialogComponent(
         titulo: "Sorteio",
         mensagem: Text(
-            "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times"),
+          "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+        ),
       ),
     );
   }

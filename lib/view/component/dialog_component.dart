@@ -26,7 +26,7 @@ class _MyWidgetState extends State<DialogComponent> {
       ),
       title: Text(
         widget.titulo,
-        style: TextStyle(color: Theme.of(context).colorScheme.outlineVariant),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
       ),
       content: widget.mensagem,
       actions: widget.listaCompomentes,
