@@ -27,10 +27,6 @@ class Jogo with ChangeNotifier {
   int? pontosFimJogo;
   // auxiliares
 
-  // contador tempo jogo
-  Timer? timeActive;
-  int time = 0;
-
   Jogo({
     this.id,
     this.equipe_1,
@@ -57,19 +53,6 @@ class Jogo with ChangeNotifier {
           ),
         )
         .toList();
-    notifyListeners();
-  }
-
-  disparaTempo() {
-    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
-      time += 1;
-      notifyListeners();
-    });
-  }
-
-  cancelaContador() {
-    timeActive!.cancel();
-    time = 0;
     notifyListeners();
   }
 
@@ -103,7 +86,6 @@ class Jogo with ChangeNotifier {
 
   fecharPartida(BuildContext context) {
     registraJogoDbLista(context);
-    cancelaContador();
     Navigator.of(context).popAndPushNamed(AppRoutes.home);
   }
 
@@ -214,9 +196,9 @@ class Jogo with ChangeNotifier {
                 ),
               );
               // fecha o tempo do jogo
-              cancelaContador();
+              // cancelaContador();
               // reinicia o tempo
-              disparaTempo();
+              // disparaTempo();
             },
           ),
           ElevatedButton(
@@ -234,7 +216,7 @@ class Jogo with ChangeNotifier {
             onPressed: () {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
-              cancelaContador();
+              // cancelaContador();
               Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),
