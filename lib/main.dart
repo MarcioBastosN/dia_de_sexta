@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.intro: (context) => const IntroScreen(),
           AppRoutes.splash: (context) => const SplashScreen(),
-          AppRoutes.home: (context) => const HomeScreen(),
+          AppRoutes.home: (context) => HomeScreen(),
           AppRoutes.placar: (context) =>
               const Placar(title: "Seu placar vai à:"),
           AppRoutes.lista: (context) => const ListaPlacar(),

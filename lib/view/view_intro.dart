@@ -1,6 +1,10 @@
+import 'package:dia_de_sexta/model/definicoes.dart';
+import 'package:dia_de_sexta/model/grupo.dart';
+import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/model/onboarding_page_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'intro/onboarding_page_present.dart';
 
@@ -14,6 +18,25 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   @override
   void initState() {
+    // defini o limite de jogadores no grupo
+    Provider.of<Definicoes>(context, listen: false).loadDate().whenComplete(() {
+      if (Provider.of<Definicoes>(context, listen: false).listaDef.isEmpty) {
+        Provider.of<Definicoes>(context, listen: false)
+            .adicionarDefinicao(Definicoes(numeroJogadores: 4));
+      }
+    });
+    // inicializa os providers
+    Provider.of<Grupo>(context, listen: false).loadDate();
+
+    // verifica se possui times -se não houver cria.
+    Provider.of<Time>(context, listen: false).loadDate().whenComplete(() {
+      if (Provider.of<Time>(context, listen: false).listaTimes.isEmpty) {
+        Provider.of<Time>(context, listen: false)
+            .adicionarTime(Time(nome: "Time 01", qtdParticipantes: 0));
+        Provider.of<Time>(context, listen: false)
+            .adicionarTime(Time(nome: "Time 02", qtdParticipantes: 0));
+      }
+    });
     super.initState();
   }
 
