@@ -1,13 +1,13 @@
 import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
-import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../app_routes/tabelas_db.dart';
+import '../src/util/tabelas_db.dart';
 
 class Time with ChangeNotifier {
   List<Time> times = [];

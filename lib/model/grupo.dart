@@ -6,8 +6,8 @@ import 'package:dia_de_sexta/model/times.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../app_routes/tabelas_db.dart';
-import '../util/db_util.dart';
+import '../src/util/tabelas_db.dart';
+import '../src/util/db_util.dart';
 
 class Grupo with ChangeNotifier {
   List<Grupo> grupos = [];

@@ -1,6 +1,6 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
-import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
+import 'package:dia_de_sexta/src/util/tabelas_db.dart';
+import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

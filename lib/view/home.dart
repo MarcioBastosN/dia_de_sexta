@@ -1,4 +1,4 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/view/component/alert_exit.dart';
 import 'package:dia_de_sexta/view/component/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/component/titulo_home.dart';

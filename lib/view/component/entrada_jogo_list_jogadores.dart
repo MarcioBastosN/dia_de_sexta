@@ -3,7 +3,7 @@ import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../app_routes/routes.dart';
+import '../../src/util/routes.dart';
 import '../../model/jogo.dart';
 
 class EntradaListajogadores extends StatefulWidget {

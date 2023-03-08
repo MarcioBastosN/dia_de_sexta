@@ -1,4 +1,4 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
 import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
