@@ -1,6 +1,8 @@
+import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
 import 'package:dia_de_sexta/model/onboarding_page_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class OnboardingPagePresenter extends StatefulWidget {
   final List<OnboardingPageModel> pages;
@@ -16,26 +18,19 @@ class OnboardingPagePresenter extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPagePresenter> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  bool? loadSplash = false;
+  ControllerIntroScreen splashController = ControllerIntroScreen();
 
   @override
   void initState() {
-    _prefs.then((SharedPreferences prefs) {
-      setState(() {
-        loadSplash = prefs.getBool("loadSpalsh");
-      });
-    }).whenComplete(() {
-      if (loadSplash!) {
-        widget.onFinish?.call();
-      }
-    });
+    splashController.getLoadSplash();
+
+    if (splashController.loadSplash.value) {
+      widget.onFinish?.call();
+    }
+
     super.initState();
   }
 
-  // Store the currently visible page
-  int _currentPage = 0;
-  // Define a controller for the pageview
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
@@ -43,20 +38,16 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        color: widget.pages[_currentPage].bgColor,
+        color: widget.pages[splashController.currentPage.value].bgColor,
         child: SafeArea(
           child: Column(
             children: [
               Expanded(
-                // Pageview to render each page
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: widget.pages.length,
                   onPageChanged: (idx) {
-                    // Change current page when pageview changes
-                    setState(() {
-                      _currentPage = idx;
-                    });
+                    splashController.updateCurrentPage(page: idx);
                   },
                   itemBuilder: (context, idx) {
                     final item = widget.pages[idx];
@@ -66,7 +57,8 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(32.0),
-                            child: Image.network(item.imageUrl),
+                            // child: Image.network(item.imageUrl),
+                            child: Lottie.asset(item.imageUrl),
                           ),
                         ),
                         Expanded(
@@ -74,14 +66,16 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                             child: Column(children: [
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Text(item.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: item.textColor,
-                                        )),
+                                child: Text(
+                                  item.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: item.textColor,
+                                      ),
+                                ),
                               ),
                               Container(
                                 constraints:
@@ -94,9 +88,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
-                                      ?.copyWith(
-                                        color: item.textColor,
-                                      ),
+                                      ?.copyWith(color: item.textColor),
                                 ),
                               )
                             ]))
@@ -107,22 +99,28 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
               ),
 
               // Current page indicator
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: widget.pages
-                    .map((item) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          width: _currentPage == widget.pages.indexOf(item)
-                              ? 30
-                              : 8,
-                          height: 8,
-                          margin: const EdgeInsets.all(2.0),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ))
-                    .toList(),
+              GetX<ControllerIntroScreen>(
+                init: splashController,
+                builder: (_) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: widget.pages
+                        .map((item) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              width: splashController.currentPage.value ==
+                                      widget.pages.indexOf(item)
+                                  ? 30
+                                  : 8,
+                              height: 8,
+                              margin: const EdgeInsets.all(2.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ))
+                        .toList(),
+                  );
+                },
               ),
 
               // Bottom buttons
@@ -142,10 +140,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           ),
                         ),
                         onPressed: () {
-                          _prefs.then((SharedPreferences prefs) {
-                            prefs.setBool("loadSpalsh", true);
-                            // print("Desabilitou tela intro");
-                          });
+                          splashController.updateLoadSplash(newValue: true);
                           widget.onSkip?.call();
                         },
                         child: const Text("pular")),
@@ -159,32 +154,38 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                             fontWeight: FontWeight.bold,
                           )),
                       onPressed: () {
-                        if (_currentPage == widget.pages.length - 1) {
-                          _prefs.then((SharedPreferences prefs) {
-                            prefs.setBool("loadSpalsh", true);
-                            // print("Desabilitou tela intro");
-                          });
+                        if (splashController.currentPage.value ==
+                            widget.pages.length - 1) {
+                          splashController.updateLoadSplash(newValue: true);
                           widget.onFinish?.call();
                         } else {
-                          _pageController.animateToPage(_currentPage + 1,
+                          _pageController.animateToPage(
+                              splashController.currentPage.value + 1,
                               curve: Curves.easeInOutCubic,
                               duration: const Duration(milliseconds: 250));
                         }
                       },
-                      child: Row(
-                        children: [
-                          Text(
-                            _currentPage == widget.pages.length - 1
-                                ? "Finish"
-                                : "proximo",
-                          ),
-                          const SizedBox(width: 8),
-                          Icon(
-                            _currentPage == widget.pages.length - 1
-                                ? Icons.done
-                                : Icons.arrow_forward,
-                          ),
-                        ],
+                      child: GetX<ControllerIntroScreen>(
+                        init: splashController,
+                        builder: (_) {
+                          return Row(
+                            children: [
+                              Text(
+                                splashController.currentPage.value ==
+                                        widget.pages.length - 1
+                                    ? "Finish"
+                                    : "proximo",
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                splashController.currentPage.value ==
+                                        widget.pages.length - 1
+                                    ? Icons.done
+                                    : Icons.arrow_forward,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ],
