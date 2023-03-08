@@ -23,36 +23,27 @@ class PlacarComponent extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<PlacarComponent> {
-  // bool animatedButton = false;
   ControllerPlacarComponent controllerPlacar = ControllerPlacarComponent();
   @override
   Widget build(BuildContext context) {
     Jogo jogo = Provider.of<Jogo>(context, listen: false);
 
-    Future<void> animatedButtonIncrement(BuildContext context) async {
+    animatedButtonIncrement(BuildContext context) {
       if (widget.addPontosEquipe.toString() == "Equipe_1") {
         jogo.adicionaPontosEqp1(context);
       } else {
         jogo.adicionaPontosEqp2(context);
       }
-
       controllerPlacar.trocaStatusBotao();
-      // setState(() => animatedButton = !animatedButton);
-      // await Future.delayed(const Duration(milliseconds: 1000));
-      // setState(() => animatedButton = !animatedButton);
     }
 
-    Future<void> animatedButtonDecrement(BuildContext context) async {
+    animatedButtonDecrement(BuildContext context) {
       if (widget.decrementaPontosEquipe.toString() == "Equipe_1") {
         jogo.removePontosEquipe_1();
       } else {
         jogo.removePontosEquipe_2();
       }
-
       controllerPlacar.trocaStatusBotao();
-      // setState(() => animatedButton = !animatedButton);
-      // await Future.delayed(const Duration(milliseconds: 1000));
-      // setState(() => animatedButton = !animatedButton);
     }
 
     final media = MediaQuery.of(context).size;
