@@ -5,12 +5,6 @@ import 'package:dia_de_sexta/view/view_lista_placar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen({super.key, int? indiceTela});
-//   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
-// }
-
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
