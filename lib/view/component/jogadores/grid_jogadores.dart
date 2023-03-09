@@ -27,10 +27,8 @@ class _GridJogadoresState extends State<GridJogadores> {
 
     // update jogador
     updateJogadorLista(BuildContext context, Jogador jogador) {
-      setState(() {
-        focusApelidoJogador.requestFocus();
-        _apelidoJogador.text = jogador.nome.toString();
-      });
+      _apelidoJogador.text = jogador.nome.toString();
+      //   focusApelidoJogador.requestFocus();
       showDialog(
         context: context,
         builder: (context) => DialogComponent(
