@@ -1,5 +1,4 @@
 import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
-import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
 import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
