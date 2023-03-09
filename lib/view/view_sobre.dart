@@ -30,136 +30,106 @@ class _SobreState extends State<Sobre> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
-          Positioned(
-            top: 60,
-            width: size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: Card(
-                    elevation: 8,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadiusDirectional.only(
-                        topStart: Radius.circular(16),
-                        topEnd: Radius.circular(16),
-                        bottomStart: Radius.circular(16),
-                      ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Card(
+                  elevation: 8,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      topStart: Radius.circular(16),
+                      topEnd: Radius.circular(16),
+                      bottomStart: Radius.circular(16),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Smash",
-                              style: TextStyle(
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .fontSize,
-                                fontWeight: FontWeight.bold,
-                              ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Smash",
+                            style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge!
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
-                        Divider(
-                          indent: 120.0,
-                          endIndent: 120.0,
-                          thickness: 2.0,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          child: Text(
-                            "Smash é um nome que se refere ao ataque mais forte e rapido do volêi, que sugere força e velocidade.",
-                            textAlign: TextAlign.justify,
-                            textScaleFactor: 1.3,
-                            softWrap: true,
-                            maxLines: 3,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const DadosDev(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Divider(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Exibir tela de introdução:",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        GetX<ControllerIntroScreen>(
-                          init: splashController,
-                          builder: (_) {
-                            return Switch(
-                              activeColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              value: splashController.loadSplash.value,
-                              onChanged: (bool value) {
-                                splashController.updateLoadSplash(
-                                    newValue:
-                                        !splashController.loadSplash.value);
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const Card(
-                  child: EditaParticipante(),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: SafeArea(
-              child: PopupMenuButton(
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    value: "Home",
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(Icons.home),
-                          Text("Home"),
                         ],
                       ),
-                    ),
+                      Divider(
+                        indent: 120.0,
+                        endIndent: 120.0,
+                        thickness: 2.0,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: Text(
+                          "Smash é um nome que se refere ao ataque mais forte e rapido do volêi, que sugere força e velocidade.",
+                          textAlign: TextAlign.justify,
+                          textScaleFactor: 1.3,
+                          softWrap: true,
+                          maxLines: 3,
+                        ),
+                      )
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              const DadosDev(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Divider(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Exibir tela de introdução:",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      GetX<ControllerIntroScreen>(
+                        init: splashController,
+                        builder: (_) {
+                          return Switch(
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
+                            value: splashController.loadSplash.value,
+                            onChanged: (bool value) {
+                              splashController.updateLoadSplash(
+                                  newValue: !splashController.loadSplash.value);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Card(
+                child: EditaParticipante(),
+              ),
+            ],
           ),
         ]),
       ),
