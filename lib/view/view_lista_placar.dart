@@ -1,17 +1,11 @@
-import 'dart:io';
-
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/view/component/card_lista_placar.dart';
-import 'package:dia_de_sexta/view/component/dialog_component.dart';
-import 'package:dia_de_sexta/view/component/titulo_home.dart';
+import 'package:dia_de_sexta/view/component/view_compartilhar/compartilhar_placar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:social_share/social_share.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'component/alert_exit.dart';
 
@@ -23,9 +17,6 @@ class ListaPlacar extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<ListaPlacar> {
-  ScreenshotController screenshotController = ScreenshotController();
-  Uint8List? _imageFile;
-
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -49,98 +40,6 @@ class _MyWidgetState extends State<ListaPlacar> {
 
     Provider.of<Jogo>(context, listen: false).loadDate();
     final listaJogo = Provider.of<Jogo>(context).listaJogos;
-
-    void compartilhar(BuildContext context, Jogo jogo) {
-      String msn = "";
-      String? origemImagem;
-      if (jogo.pontosEquipe_1! > jogo.pontosEquipe_2!) {
-        msn =
-            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)} jogou muito e venceu por ${jogo.pontosEquipe_1} x ${jogo.pontosEquipe_2}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)}";
-      } else {
-        msn =
-            "${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_2!)} jogou muito e venceu por ${jogo.pontosEquipe_2} x ${jogo.pontosEquipe_1}, a equipe ${Provider.of<Time>(context, listen: false).retornaNomeTime(jogo.equipe_1!)}";
-      }
-      // aqui gera a imagem a ser compatilhada;
-      screenshotController
-          .captureFromWidget(
-              InheritedTheme.captureAll(
-                context,
-                Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    // side: const BorderSide(color: Colors.cyan, width: 2),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    height: 300,
-                    child: Column(
-                      children: [
-                        const TituloHome(),
-                        CardListaPlacar(
-                          indexCard: jogo.id.toString(),
-                          equipe1: Provider.of<Time>(context, listen: false)
-                              .retornaNomeTime(jogo.equipe_1!),
-                          equipe2: Provider.of<Time>(context, listen: false)
-                              .retornaNomeTime(jogo.equipe_2!),
-                          pontosEq1: jogo.pontosEquipe_1.toString(),
-                          pontosEq2: jogo.pontosEquipe_2.toString(),
-                          data: jogo.data.toString(),
-                          tempo: jogo.tempoJogo!,
-                        ),
-                        Text(msn),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              delay: const Duration(microseconds: 300))
-          .then((capturedImage) async {
-        // final directory = (await getApplicationDocumentsDirectory()).path;
-        if (capturedImage.isNotEmpty) {
-          final directory = await getApplicationDocumentsDirectory();
-          final imagePath = await File('${directory.path}/image.png').create();
-          await imagePath.writeAsBytes(capturedImage);
-          setState(() {
-            // caminho da imagem para o compartilhamento do plugin socialShare
-            origemImagem = imagePath.path;
-            // arquivo a sex exibido na mensagem
-            _imageFile = capturedImage;
-          });
-        }
-      }).whenComplete(() => {
-                showDialog(
-                  barrierDismissible: true,
-                  context: context,
-                  builder: (context) => DialogComponent(
-                    titulo: "Compartilhe seu placar!",
-                    mensagem: SizedBox(
-                      height: 160,
-                      child: Center(
-                          child: _imageFile != null
-                              ? Image.memory(_imageFile!)
-                              : const Text(
-                                  "Ops!, a imagem ainda não foi carregada")),
-                    ),
-                    listaCompomentes: [
-                      ElevatedButton(
-                        child: const Text("Compartilhar"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          SocialShare.shareOptions(
-                            msn,
-                            imagePath: origemImagem!,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              });
-    }
 
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
@@ -175,7 +74,14 @@ class _MyWidgetState extends State<ListaPlacar> {
                             ),
                             SlidableAction(
                               onPressed: (context) {
-                                compartilhar(context, listaJogo[index]);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CompartilharPlacar(
+                                      jogo: listaJogo[index],
+                                    ),
+                                  ),
+                                );
                               },
                               backgroundColor:
                                   Theme.of(context).colorScheme.secondary,
