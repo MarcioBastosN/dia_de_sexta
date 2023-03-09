@@ -22,11 +22,11 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
 
   @override
   void initState() {
-    splashController.getLoadSplash();
-
-    if (splashController.loadSplash.value) {
-      widget.onFinish?.call();
-    }
+    splashController.getLoadSplash().whenComplete(() {
+      if (splashController.loadSplash.value) {
+        widget.onFinish?.call();
+      }
+    });
 
     super.initState();
   }
