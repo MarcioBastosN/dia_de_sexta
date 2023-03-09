@@ -108,6 +108,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",
                             decrementaPontosEquipe: "Equipe_1",
+                            controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
                             titulo: Provider.of<Time>(context, listen: false)
@@ -115,6 +116,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
                             decrementaPontosEquipe: "Equipe_2",
+                            controllerPlacar: controllerPlacar,
                           ),
                         ],
                       )
@@ -126,6 +128,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
                             decrementaPontosEquipe: "Equipe_2",
+                            controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
                             titulo: Provider.of<Time>(context, listen: false)
@@ -133,6 +136,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",
                             decrementaPontosEquipe: "Equipe_1",
+                            controllerPlacar: controllerPlacar,
                           ),
                         ],
                       ),

@@ -1,3 +1,4 @@
+import 'package:dia_de_sexta/controller/controller_placar_screen.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/util/tabelas_db.dart';
 import 'package:dia_de_sexta/src/util/db_util.dart';
@@ -115,7 +116,8 @@ class Jogo with ChangeNotifier {
     return compara;
   }
 
-  void adicionaPontosEqp1(BuildContext context) {
+  void adicionaPontosEqp1(
+      BuildContext context, ControllerPlacarScreen controllerPlacar) {
     pontosEquipe_1 = pontosEquipe_1! + 1;
     if (pontosEquipe_1! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_1 == (pontosFimJogo! - 1)) &&
@@ -125,14 +127,15 @@ class Jogo with ChangeNotifier {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertpontosFimJogo(context);
+      _alertpontosFimJogo(context, controllerPlacar);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
     }
   }
 
-  void adicionaPontosEqp2(BuildContext context) {
+  void adicionaPontosEqp2(
+      BuildContext context, ControllerPlacarScreen controllerPlacar) {
     pontosEquipe_2 = pontosEquipe_2! + 1;
     if (pontosEquipe_2! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_2 == (pontosFimJogo! - 1)) &&
@@ -142,7 +145,7 @@ class Jogo with ChangeNotifier {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertpontosFimJogo(context);
+      _alertpontosFimJogo(context, controllerPlacar);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
@@ -163,7 +166,8 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  void _alertpontosFimJogo(BuildContext context) {
+  void _alertpontosFimJogo(
+      BuildContext context, ControllerPlacarScreen controllerPlacar) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -196,9 +200,9 @@ class Jogo with ChangeNotifier {
                 ),
               );
               // fecha o tempo do jogo
-              // cancelaContador();
+              controllerPlacar.cancelaContadorTempo();
               // reinicia o tempo
-              // disparaTempo();
+              controllerPlacar.disparaContadorTempo();
             },
           ),
           ElevatedButton(
