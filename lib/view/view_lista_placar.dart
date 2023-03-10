@@ -39,7 +39,7 @@ class _MyWidgetState extends State<ListaPlacar> {
     );
 
     Provider.of<Jogo>(context, listen: false).loadDate();
-    final listaJogo = Provider.of<Jogo>(context).listaJogos;
+    var listaJogo = Provider.of<Jogo>(context).listaJogos;
 
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
