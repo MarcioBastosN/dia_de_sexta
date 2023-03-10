@@ -137,6 +137,9 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(8),
+              ),
               onPressed: () => _iniciaJogo(),
               child: const Text('Iniciar'),
             ),
