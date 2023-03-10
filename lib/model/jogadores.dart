@@ -53,6 +53,7 @@ class Jogador with ChangeNotifier {
 
 // remove jogador
   Future<void> removeJogador(Jogador jogador) async {
+    jogadores.remove(jogador);
     await DbUtil.delete(NomeTabelaDB.jogadores, jogador.id!)
         .whenComplete(() => loadDate());
   }
