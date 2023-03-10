@@ -12,8 +12,8 @@ class SplashScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       backgroundColor: Theme.of(context).colorScheme.primary,
       splashIconSize: 250,
-      animationDuration: const Duration(seconds: 1),
-      duration: 1000,
+      animationDuration: const Duration(milliseconds: 500),
+      duration: 500,
       splash: Lottie.asset('asset/AnikiHamster.json'),
       nextScreen: HomeScreen(),
       pageTransitionType: PageTransitionType.theme,
