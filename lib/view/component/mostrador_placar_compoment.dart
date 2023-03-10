@@ -57,7 +57,7 @@ class _MyWidgetState extends State<PlacarComponent> {
         style: const TextStyle(),
         overflow: TextOverflow.ellipsis,
         child: Container(
-          color: Theme.of(context).copyWith().primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           child: Column(
             children: [
               Padding(
@@ -110,10 +110,12 @@ class _MyWidgetState extends State<PlacarComponent> {
                               ),
                             ],
                           )
-                        : const Center(
+                        : Center(
                             child: Text(
                               "Placar alterado",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
                           ),
                   );
