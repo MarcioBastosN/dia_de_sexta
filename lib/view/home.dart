@@ -42,7 +42,6 @@ class _HomeState extends State<Home> {
               const Expanded(
                 child: TituloHome(),
               ),
-              // parte de baixo - select e inicio
               SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.manual,
@@ -56,6 +55,7 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: const [
+                      // Input user
                       EntradaListajogadores(),
                     ],
                   ),
