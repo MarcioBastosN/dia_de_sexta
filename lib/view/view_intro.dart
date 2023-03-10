@@ -8,17 +8,11 @@ import 'package:provider/provider.dart';
 
 import 'intro/onboarding_page_present.dart';
 
-class IntroScreen extends StatefulWidget {
+class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
 
   @override
-  State<IntroScreen> createState() => _IntroScreenState();
-}
-
-class _IntroScreenState extends State<IntroScreen> {
-  @override
-  void initState() {
-    // defini o limite de jogadores no grupo
+  Widget build(BuildContext context) {
     Provider.of<Definicoes>(context, listen: false).loadDate().whenComplete(() {
       if (Provider.of<Definicoes>(context, listen: false).listaDef.isEmpty) {
         Provider.of<Definicoes>(context, listen: false)
@@ -37,11 +31,7 @@ class _IntroScreenState extends State<IntroScreen> {
             .adicionarTime(Time(nome: "Time 02", qtdParticipantes: 0));
       }
     });
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: OnboardingPagePresenter(
           onFinish: () {
