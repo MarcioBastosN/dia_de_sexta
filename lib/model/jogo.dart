@@ -206,21 +206,16 @@ class Jogo with ChangeNotifier {
             },
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text(
+            child: Text(
               "Salvar e sair",
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
             onPressed: () {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
-              // cancelaContador();
+              controllerPlacar.cancelaContadorTempo();
               Navigator.of(context).popAndPushNamed(AppRoutes.home);
             },
           ),
