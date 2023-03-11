@@ -1,3 +1,5 @@
+import 'package:dia_de_sexta/controller/controller_home_screen.dart';
+import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
 import 'package:dia_de_sexta/model/definicoes.dart';
@@ -12,9 +14,15 @@ import 'package:dia_de_sexta/view/view_lista_placar.dart';
 import 'package:dia_de_sexta/view/view_placar.dart';
 import 'package:dia_de_sexta/view/view_sobre.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // injeção de dependencia com GetX
+  Get.put<ControllerHomeScreen>(ControllerHomeScreen());
+  // Get.lazyPut<ControllerHomeScreen>(() => ControllerHomeScreen());
+  // --nao finalizado - refatorar varias classes
+
   ErrorWidget.builder = (FlutterErrorDetails details) {
     bool inDebug = false;
     assert(() {

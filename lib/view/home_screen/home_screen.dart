@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
-  final ControllerHomeScreen homeController = ControllerHomeScreen();
   final pageController = PageController();
 
   @override
@@ -25,8 +23,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: GetX<ControllerHomeScreen>(
-        init: homeController,
-        builder: (_) {
+        builder: (homeController) {
           return BottomNavigationBar(
             onTap: (index) {
               homeController.updateCurrentIndex(newindex: index);
