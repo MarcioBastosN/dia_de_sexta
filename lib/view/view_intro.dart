@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/model/times.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/model/onboarding_page_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'intro/onboarding_page_present.dart';
@@ -35,10 +36,10 @@ class IntroScreen extends StatelessWidget {
     return Scaffold(
       body: OnboardingPagePresenter(
           onFinish: () {
-            Navigator.of(context).pushReplacementNamed(AppRoutes.splash);
+            Get.offAndToNamed(AppRoutes.splash);
           },
           onSkip: () {
-            Navigator.of(context).pushReplacementNamed(AppRoutes.splash);
+            Get.offAndToNamed(AppRoutes.splash);
           },
           pages: [
             OnboardingPageModel(

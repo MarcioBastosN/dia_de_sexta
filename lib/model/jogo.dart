@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/src/util/tabelas_db.dart';
 import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -87,7 +88,7 @@ class Jogo with ChangeNotifier {
 
   fecharPartida(BuildContext context) {
     registraJogoDbLista(context);
-    Navigator.of(context).popAndPushNamed(AppRoutes.home);
+    Get.offNamed(AppRoutes.home);
   }
 
   void criarjgo(Jogo jogo) {
@@ -216,7 +217,7 @@ class Jogo with ChangeNotifier {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
               controllerPlacar.cancelaContadorTempo();
-              Navigator.of(context).popAndPushNamed(AppRoutes.home);
+              Get.offNamed(AppRoutes.home);
             },
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/view/component/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/component/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -75,7 +76,7 @@ class _HomeState extends State<Home> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(AppRoutes.sobre);
+                        Get.toNamed(AppRoutes.sobre);
                       },
                       child: Row(
                         children: const [

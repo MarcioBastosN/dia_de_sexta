@@ -30,8 +30,7 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           pontosFimJogo: int.parse(_pontos.text.toString()),
         ),
       );
-
-      Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+      Get.offNamed(AppRoutes.placar);
     } else {
       // _alertdialog(context);
     }
