@@ -1,5 +1,5 @@
 import 'package:dia_de_sexta/controller/controller_home_screen.dart';
-import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
+import 'package:dia_de_sexta/src/util/page_routes.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
 import 'package:dia_de_sexta/model/definicoes.dart';
@@ -7,12 +7,6 @@ import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
-import 'package:dia_de_sexta/view/splash_screen.dart';
-import 'package:dia_de_sexta/view/view_intro.dart';
-import 'package:dia_de_sexta/view/view_lista_placar.dart';
-import 'package:dia_de_sexta/view/view_placar.dart';
-import 'package:dia_de_sexta/view/view_sobre.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -73,20 +67,14 @@ class MyApp extends StatelessWidget {
           create: (context) => Grupo(),
         ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Smash',
         themeMode: ThemeMode.system,
         theme: lightTheme,
         darkTheme: darkTheme,
-        routes: {
-          AppRoutes.intro: (context) => const IntroScreen(),
-          AppRoutes.splash: (context) => const SplashScreen(),
-          AppRoutes.home: (context) => HomeScreen(),
-          AppRoutes.placar: (context) => const Placar(),
-          AppRoutes.lista: (context) => const ListaPlacar(),
-          AppRoutes.sobre: (context) => const Sobre(),
-        },
+        initialRoute: AppRoutes.intro,
+        getPages: AppPages.pages,
       ),
     );
   }

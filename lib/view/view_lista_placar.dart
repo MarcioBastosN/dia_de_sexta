@@ -5,6 +5,7 @@ import 'package:dia_de_sexta/view/component/view_compartilhar/compartilhar_placa
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'component/alert_exit.dart';
@@ -74,13 +75,9 @@ class _MyWidgetState extends State<ListaPlacar> {
                             ),
                             SlidableAction(
                               onPressed: (context) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CompartilharPlacar(
-                                      jogo: listaJogo[index],
-                                    ),
-                                  ),
+                                Get.to(
+                                  () => CompartilharPlacar(
+                                      jogo: listaJogo[index]),
                                 );
                               },
                               backgroundColor:

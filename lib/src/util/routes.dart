@@ -1,8 +1,8 @@
-class AppRoutes {
-  static const intro = "/";
-  static const splash = "splash";
-  static const home = "home";
-  static const placar = "placar";
-  static const lista = "lista";
-  static const sobre = "sobre";
+abstract class AppRoutes {
+  static const String intro = "/into";
+  static const String splash = "/splash";
+  static const String home = "/home";
+  static const String placar = "/placar";
+  static const String lista = "/lista";
+  static const String sobre = "/sobre";
 }
