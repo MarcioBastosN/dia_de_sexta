@@ -55,7 +55,7 @@ class _PlacarState extends State<Placar> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).pop();
-          Provider.of<Jogo>(context, listen: false).fecharPartida(context);
+          context.read<Jogo>().fecharPartida(context);
         },
         child: Row(
           children: const [
@@ -103,7 +103,8 @@ class _PlacarState extends State<Placar> {
                     ? Row(
                         children: <Widget>[
                           PlacarComponent(
-                            titulo: Provider.of<Time>(context, listen: false)
+                            titulo: context
+                                .read<Time>()
                                 .retornaNomeTime(jogo.equipe_1!),
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",
@@ -111,7 +112,8 @@ class _PlacarState extends State<Placar> {
                             controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
-                            titulo: Provider.of<Time>(context, listen: false)
+                            titulo: context
+                                .read<Time>()
                                 .retornaNomeTime(jogo.equipe_2!),
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
@@ -123,7 +125,8 @@ class _PlacarState extends State<Placar> {
                     : Row(
                         children: <Widget>[
                           PlacarComponent(
-                            titulo: Provider.of<Time>(context, listen: false)
+                            titulo: context
+                                .read<Time>()
                                 .retornaNomeTime(jogo.equipe_2!),
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
@@ -131,7 +134,8 @@ class _PlacarState extends State<Placar> {
                             controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
-                            titulo: Provider.of<Time>(context, listen: false)
+                            titulo: context
+                                .read<Time>()
                                 .retornaNomeTime(jogo.equipe_1!),
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 void main() {
   // injeção de dependencia com GetX
   Get.put<ControllerHomeScreen>(ControllerHomeScreen());
+  // Get.lazyPut<ControllerPlacarScreen>(() => ControllerPlacarScreen());
   // Get.lazyPut<ControllerHomeScreen>(() => ControllerHomeScreen());
   // --nao finalizado - refatorar varias classes
 

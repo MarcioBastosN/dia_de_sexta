@@ -14,21 +14,22 @@ class IntroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Definicoes>(context, listen: false).loadDate().whenComplete(() {
-      if (Provider.of<Definicoes>(context, listen: false).listaDef.isEmpty) {
-        Provider.of<Definicoes>(context, listen: false)
+    context.read<Definicoes>().loadDate().whenComplete(() {
+      if (context.read<Definicoes>().listaDef.isEmpty) {
+        context
+            .read<Definicoes>()
             .adicionarDefinicao(Definicoes(numeroJogadores: 4));
       }
     });
-    // inicializa os providers
-    Provider.of<Grupo>(context, listen: false).loadDate();
-
+    context.read<Grupo>().loadDate();
     // verifica se possui times -se não houver cria.
-    Provider.of<Time>(context, listen: false).loadDate().whenComplete(() {
-      if (Provider.of<Time>(context, listen: false).listaTimes.isEmpty) {
-        Provider.of<Time>(context, listen: false)
+    context.read<Time>().loadDate().whenComplete(() {
+      if (context.read<Time>().listaTimes.isEmpty) {
+        context
+            .read<Time>()
             .adicionarTime(Time(nome: "Time 01", qtdParticipantes: 0));
-        Provider.of<Time>(context, listen: false)
+        context
+            .read<Time>()
             .adicionarTime(Time(nome: "Time 02", qtdParticipantes: 0));
       }
     });

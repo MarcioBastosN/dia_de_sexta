@@ -50,8 +50,8 @@ class Time with ChangeNotifier {
   // Retorna os times que não estao completos.
   List<Time> retornaListaTimesIncompletos(BuildContext context) {
     loadDate();
-    final limiteJogadores = Provider.of<Definicoes>(context, listen: false)
-        .retornaLimiteJogadoresParaUmGrupo();
+    final limiteJogadores =
+        context.read<Definicoes>().retornaLimiteJogadoresParaUmGrupo();
     List<Time> timesValidos = [];
     for (var time in times) {
       if (time.qtdParticipantes! < limiteJogadores) {
@@ -128,16 +128,14 @@ class Time with ChangeNotifier {
 
   // remove um time e seus participantes
   Future<void> removeTimeEParticipantes(Time time, BuildContext context) async {
-    List<Grupo> jogadoresTime =
-        Provider.of<Grupo>(context, listen: false).listaGrupos;
+    List<Grupo> jogadoresTime = context.read<Grupo>().listaGrupos;
     await DbUtil.delete(NomeTabelaDB.time, time.id)
         .whenComplete(() => loadDate());
     for (var jogador in jogadoresTime) {
       if (jogador.idTime! == time.id) {
         await DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
           "possuiTime": 0,
-        }).whenComplete(
-            () => Provider.of<Jogador>(context, listen: false).loadDate());
+        }).whenComplete(() => context.read<Jogador>().loadDate());
       }
     }
   }

@@ -20,13 +20,13 @@ class GridTimes extends StatefulWidget {
 class _GridTimesState extends State<GridTimes> {
   @override
   void initState() {
-    Provider.of<Grupo>(context, listen: false).loadDate();
+    context.read<Grupo>().loadDate();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final listaTimes = Provider.of<Time>(context).listaTimes;
+    final listaTimes = context.watch<Time>().listaTimes;
 
 // Selecionar Jogadores para um time
     selecionarJogadoresTime(BuildContext context, int idTimeSelecionado) {
@@ -46,7 +46,8 @@ class _GridTimesState extends State<GridTimes> {
               selectedItemsTextStyle: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
-              items: Provider.of<Jogador>(context, listen: false)
+              items: context
+                  .read<Jogador>()
                   .getListaJogadoresDisponiveis()
                   .map((e) => MultiSelectItem(e, e.nome!))
                   .toList(),
@@ -59,17 +60,18 @@ class _GridTimesState extends State<GridTimes> {
               onPressed: () {
                 Navigator.of(context).pop();
                 // 1º marca o jogador como indisponivel
-                Provider.of<Jogador>(context, listen: false)
+                context
+                    .read<Jogador>()
                     .jogadorPossuiTime(jogadoresTemp!)
                     .whenComplete(() {
                   // adiciona a relacao do jogador ao Time
-                  Provider.of<Grupo>(context, listen: false)
+                  context
+                      .read<Grupo>()
                       .adicionarGrupo(jogadoresTemp!, idTimeSelecionado);
 
                   // atualiza a quantidade de participantes do time
-                  Provider.of<Time>(context, listen: false)
-                      .incrementaQtdParticipantesTime(
-                          idTimeSelecionado, jogadoresTemp!.length);
+                  context.read<Time>().incrementaQtdParticipantesTime(
+                      idTimeSelecionado, jogadoresTemp!.length);
                 });
               },
               child: const Text("Salvar"),
@@ -155,11 +157,12 @@ class _GridTimesState extends State<GridTimes> {
                       Icons.edit,
                       color: Theme.of(context).colorScheme.onSecondary,
                     ),
-                    onTap: () => Provider.of<Time>(context, listen: false)
-                        .editaNomeTime(listaTimes[index]),
+                    onTap: () =>
+                        context.read<Time>().editaNomeTime(listaTimes[index]),
                   ),
                   SpeedDialChild(
-                    visible: Provider.of<Jogador>(context)
+                    visible: context
+                            .watch<Jogador>()
                             .getListaJogadoresDisponiveis()
                             .isEmpty
                         ? false
@@ -188,11 +191,12 @@ class _GridTimesState extends State<GridTimes> {
                       Icons.delete,
                       color: Theme.of(context).colorScheme.onSecondary,
                     ),
-                    visible: Provider.of<Time>(context).listaTimes.length > 2
+                    visible: context.watch<Time>().listaTimes.length > 2
                         ? true
                         : false,
                     onTap: () => {
-                      Provider.of<Time>(context, listen: false)
+                      context
+                          .read<Time>()
                           .removeTimeEParticipantes(listaTimes[index], context)
                     },
                   ),

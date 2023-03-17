@@ -23,7 +23,7 @@ class _GridJogadoresState extends State<GridJogadores> {
 
   @override
   Widget build(BuildContext context) {
-    final listaJogadores = Provider.of<Jogador>(context).listaJogadores;
+    final listaJogadores = context.watch<Jogador>().listaJogadores;
 
     // update jogador
     updateJogadorLista(BuildContext context, Jogador jogador) {
@@ -51,8 +51,7 @@ class _GridJogadoresState extends State<GridJogadores> {
                       final player = _apelidoJogador.text.toString().trim();
                       if (player.isNotEmpty) {
                         jogador.nome = player;
-                        Provider.of<Jogador>(context, listen: false)
-                            .editarJogador(jogador);
+                        context.read<Jogador>().editarJogador(jogador);
                         _apelidoJogador.value =
                             const TextEditingValue(text: "");
                         focusApelidoJogador.unfocus();
@@ -170,7 +169,8 @@ class _GridJogadoresState extends State<GridJogadores> {
                         listaJogadores[index].possuiTime != 1 ? true : false,
                     onTap: () {
                       if (listaJogadores[index].possuiTime != 1) {
-                        Provider.of<Jogador>(context, listen: false)
+                        context
+                            .read<Jogador>()
                             .removeJogador(listaJogadores[index]);
                       }
                     },
@@ -191,9 +191,8 @@ class _GridJogadoresState extends State<GridJogadores> {
                     onTap: () {
                       // libera o jogador e remove do grupo
                       if (listaJogadores[index].possuiTime == 1) {
-                        Provider.of<Jogador>(context, listen: false)
-                            .liberaJogadorId(
-                                listaJogadores[index].id!, context);
+                        context.read<Jogador>().liberaJogadorId(
+                            listaJogadores[index].id!, context);
                       }
                     },
                   ),

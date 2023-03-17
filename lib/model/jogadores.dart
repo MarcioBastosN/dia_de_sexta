@@ -116,8 +116,7 @@ class Jogador with ChangeNotifier {
 
   // remover o jogador do grupo e habilitar ele para possuir um novo time
   Future<void> liberaJogadorId(int idjogador, BuildContext context) async {
-    Provider.of<Grupo>(context, listen: false)
-        .removeRegistroJogadorId(idjogador, context);
+    context.read<Grupo>().removeRegistroJogadorId(idjogador, context);
     await DbUtil.update(NomeTabelaDB.jogadores, idjogador, {
       'possuiTime': 0,
     }).whenComplete(() => loadDate());

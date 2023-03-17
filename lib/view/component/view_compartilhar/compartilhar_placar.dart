@@ -73,9 +73,8 @@ class _CompartilharPlacarState extends State<CompartilharPlacar> {
                                 Column(
                                   children: [
                                     Text(
-                                      Provider.of<Time>(context, listen: false)
-                                          .retornaNomeTime(
-                                              widget.jogo!.equipe_1!),
+                                      context.read<Time>().retornaNomeTime(
+                                          widget.jogo!.equipe_1!),
                                     ),
                                     Text(
                                       widget.jogo!.pontosEquipe_1!.toString(),
@@ -86,9 +85,8 @@ class _CompartilharPlacarState extends State<CompartilharPlacar> {
                                 Column(
                                   children: [
                                     Text(
-                                      Provider.of<Time>(context, listen: false)
-                                          .retornaNomeTime(
-                                              widget.jogo!.equipe_2!),
+                                      context.read<Time>().retornaNomeTime(
+                                          widget.jogo!.equipe_2!),
                                     ),
                                     Text(
                                       widget.jogo!.pontosEquipe_2!.toString(),
