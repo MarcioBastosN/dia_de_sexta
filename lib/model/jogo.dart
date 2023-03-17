@@ -123,7 +123,7 @@ class Jogo with ChangeNotifier {
     if (pontosEquipe_1! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_1 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
-        _alertUltimoPonto(context);
+        _alertUltimoPonto();
       }
       notifyListeners();
     } else {
@@ -141,7 +141,7 @@ class Jogo with ChangeNotifier {
     if (pontosEquipe_2! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_2 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
-        _alertUltimoPonto(context);
+        _alertUltimoPonto();
       }
       notifyListeners();
     } else {
@@ -174,10 +174,7 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: Text(
-          "reiniciar jogo",
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
+        mensagem: "reiniciar jogo",
         listaCompomentes: [
           OutlinedButton(
             child: Text(
@@ -231,10 +228,7 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Empate ultimo ponto!",
-        mensagem: Text(
-          "Como deseja continuar?",
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
+        mensagem: "Como deseja continuar?",
         listaCompomentes: [
           ElevatedButton(
             child: Text(
@@ -256,16 +250,12 @@ class Jogo with ChangeNotifier {
     );
   }
 
-  void _alertUltimoPonto(BuildContext context) {
-    showDialog(
+  void _alertUltimoPonto() {
+    Get.dialog(
       barrierDismissible: true,
-      context: context,
-      builder: (context) => DialogComponent(
+      const DialogComponent(
         titulo: "Ultimo Ponto!",
-        mensagem: Text(
-          "Ultimo ponto para fechar o jogo",
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
+        mensagem: "Ultimo ponto para fechar o jogo",
       ),
     );
   }

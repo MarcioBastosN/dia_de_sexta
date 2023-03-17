@@ -156,7 +156,7 @@ class _GridTimesState extends State<GridTimes> {
                       color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     onTap: () => Provider.of<Time>(context, listen: false)
-                        .editaNomeTime(context, listaTimes[index]),
+                        .editaNomeTime(listaTimes[index]),
                   ),
                   SpeedDialChild(
                     visible: Provider.of<Jogador>(context)

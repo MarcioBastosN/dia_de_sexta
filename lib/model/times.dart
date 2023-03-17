@@ -5,6 +5,7 @@ import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../src/util/tabelas_db.dart';
@@ -54,8 +55,6 @@ class Time with ChangeNotifier {
     List<Time> timesValidos = [];
     for (var time in times) {
       if (time.qtdParticipantes! < limiteJogadores) {
-        // print(
-        //     "sorteio_ times disponiveis - ${time.nome} idTime - ${time.id} -- elemet_participantes : ${time.qtdParticipantes}");
         timesValidos.add(time);
       }
     }
@@ -81,7 +80,6 @@ class Time with ChangeNotifier {
     for (var time in times) {
       if (time.id! == idTime) {
         valor = time.qtdParticipantes!;
-        // print("sorteio_ participantes time $idTime valor $valor");
       }
     }
     return valor;
@@ -126,8 +124,6 @@ class Time with ChangeNotifier {
       'qtdParticipantes': time.qtdParticipantes,
     }).whenComplete(() => loadDate());
     notifyListeners();
-    // print(
-    //     " sorteio_E time ${time.id!} novo valor de participantes ${time.qtdParticipantes}");
   }
 
   // remove um time e seus participantes
@@ -158,11 +154,10 @@ class Time with ChangeNotifier {
   }
 
   // chamada para o Dialog, registrar um time
-  addTimeLista(BuildContext context) {
+  addTimeLista() {
     nomeTime.value = const TextEditingValue(text: "");
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+    Get.dialog(
+      DialogComponent(
         titulo: 'Registrar time',
         listaCompomentes: [
           TextFormCompoment(
@@ -185,7 +180,7 @@ class Time with ChangeNotifier {
                         () => nomeTime.value = const TextEditingValue(text: ""),
                       );
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],
@@ -197,12 +192,11 @@ class Time with ChangeNotifier {
   }
 
   // chamada para o Dialog, Editar nome time
-  editaNomeTime(BuildContext context, Time time) {
+  editaNomeTime(Time time) {
     nomeTime.text = time.nome!;
     focusTime.requestFocus();
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+    Get.dialog(
+      DialogComponent(
         titulo: 'Qual novo nome do seu Time?',
         listaCompomentes: [
           TextFormCompoment(
@@ -223,7 +217,7 @@ class Time with ChangeNotifier {
                     if (player.isNotEmpty) {
                       editarNomeTime(Time(id: time.id!, nome: player));
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],

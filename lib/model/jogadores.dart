@@ -4,6 +4,7 @@ import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Jogador with ChangeNotifier {
@@ -122,10 +123,9 @@ class Jogador with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-  addJogadorLista(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+  addJogadorLista() {
+    Get.dialog(
+      DialogComponent(
         titulo: 'Registrar jogador',
         listaCompomentes: [
           TextFormCompoment(
@@ -148,7 +148,7 @@ class Jogador with ChangeNotifier {
                             const TextEditingValue(text: ""),
                       );
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],

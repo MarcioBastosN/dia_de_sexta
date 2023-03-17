@@ -7,6 +7,7 @@ import 'package:dia_de_sexta/view/component/times/grid_times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'component/alert_exit.dart';
@@ -49,17 +50,23 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     return valida;
   }
 
-  dicasSorteio(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
-        titulo: "Sorteio",
-        mensagem: Text(
+  dicasSorteio() {
+    Get.dialog(const DialogComponent(
+      titulo: "Sorteio",
+      mensagem:
           "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times",
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
-      ),
-    );
+    ));
+    // showDialog(
+    //   context: context,
+    //   builder: (context) => const DialogComponent(
+    //     titulo: "Sorteio",
+    //     mensagem:
+    //         "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times",
+    //     // Text(
+    //     //   style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+    //     // ),
+    //   ),
+    // );
   }
 
   @override
@@ -122,10 +129,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   if (controllerFlip.state!.isFront != true) {
                     controllerFlip.flipcard().whenComplete(() =>
                         Provider.of<Jogador>(context, listen: false)
-                            .addJogadorLista(context));
+                            .addJogadorLista());
                   } else {
                     Provider.of<Jogador>(context, listen: false)
-                        .addJogadorLista(context);
+                        .addJogadorLista();
                   }
                 }),
             SpeedDialChild(
@@ -148,10 +155,9 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   if (controllerFlip.state!.isFront == true) {
                     controllerFlip.flipcard().whenComplete(() =>
                         Provider.of<Time>(context, listen: false)
-                            .addTimeLista(context));
+                            .addTimeLista());
                   } else {
-                    Provider.of<Time>(context, listen: false)
-                        .addTimeLista(context);
+                    Provider.of<Time>(context, listen: false).addTimeLista();
                   }
                 }),
             // apagar registros grupos
@@ -210,7 +216,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                 Icons.info_outline,
                 color: Theme.of(context).colorScheme.background,
               ),
-              onTap: () => dicasSorteio(context),
+              onTap: () => dicasSorteio(),
             ),
           ],
         ),
