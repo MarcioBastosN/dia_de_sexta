@@ -50,9 +50,9 @@ class _MyWidgetState extends State<PlacarComponent> {
       controllerPlacar.trocaStatusBotao();
     }
 
-    final media = MediaQuery.of(context).size;
+    final sizeScreen = MediaQuery.of(context).size;
     return SizedBox(
-      width: media.width * .5,
+      width: sizeScreen.width * .5,
       child: DefaultTextStyle(
         style: const TextStyle(),
         overflow: TextOverflow.ellipsis,

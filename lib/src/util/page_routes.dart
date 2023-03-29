@@ -19,7 +19,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => HomeScreen(),
+      page: () => const HomeScreen(),
     ),
     GetPage(
       name: AppRoutes.placar,

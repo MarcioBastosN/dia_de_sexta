@@ -6,7 +6,7 @@ class DadosDev extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var sizeScreen = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Card(
@@ -24,7 +24,7 @@ class DadosDev extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CircleAvatar(
-                radius: size.width * 0.12,
+                radius: sizeScreen.width * 0.12,
                 child: Lottie.asset('asset/AnikiHamster.json'),
               ),
               DefaultTextStyle(

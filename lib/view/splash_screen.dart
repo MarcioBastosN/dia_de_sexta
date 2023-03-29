@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
       animationDuration: const Duration(milliseconds: 500),
       duration: 500,
       splash: Lottie.asset('asset/AnikiHamster.json'),
-      nextScreen: HomeScreen(),
+      nextScreen: const HomeScreen(),
       pageTransitionType: PageTransitionType.theme,
     );
   }

@@ -30,13 +30,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
+    final sizeScreen = MediaQuery.of(context).size;
 
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: SizedBox(
-        height: media.height,
-        width: media.width,
+        height: sizeScreen.height,
+        width: sizeScreen.width,
         child: Stack(children: [
           Column(
             children: [
