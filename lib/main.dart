@@ -1,4 +1,5 @@
 import 'package:dia_de_sexta/controller/controller_home_screen.dart';
+import 'package:dia_de_sexta/controller/controller_placar_screen.dart';
 import 'package:dia_de_sexta/src/util/page_routes.dart';
 import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 void main() {
   // injeção de dependencia com GetX
   Get.put<ControllerHomeScreen>(ControllerHomeScreen());
-  // Get.lazyPut<ControllerPlacarScreen>(() => ControllerPlacarScreen());
+  Get.put<ControllerPlacarScreen>(ControllerPlacarScreen());
   // Get.lazyPut<ControllerHomeScreen>(() => ControllerHomeScreen());
   // --nao finalizado - refatorar varias classes
 

@@ -1,5 +1,4 @@
 import 'package:dia_de_sexta/controller/controller_placar_component.dart';
-import 'package:dia_de_sexta/controller/controller_placar_screen.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,15 +10,12 @@ class PlacarComponent extends StatefulWidget {
   final String addPontosEquipe;
   final String decrementaPontosEquipe;
 
-  final ControllerPlacarScreen controllerPlacar;
-
   const PlacarComponent({
     super.key,
     required this.titulo,
     required this.placar,
     required this.addPontosEquipe,
     required this.decrementaPontosEquipe,
-    required this.controllerPlacar,
   });
 
   @override
@@ -34,9 +30,9 @@ class _MyWidgetState extends State<PlacarComponent> {
 
     animatedButtonIncrement(BuildContext context) {
       if (widget.addPontosEquipe.toString() == "Equipe_1") {
-        jogo.adicionaPontosEqp1(context, widget.controllerPlacar);
+        jogo.adicionaPontosEqp1(context);
       } else {
-        jogo.adicionaPontosEqp2(context, widget.controllerPlacar);
+        jogo.adicionaPontosEqp2(context);
       }
       controllerPlacar.trocaStatusBotao();
     }

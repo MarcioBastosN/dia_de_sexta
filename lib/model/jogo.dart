@@ -117,8 +117,7 @@ class Jogo with ChangeNotifier {
     return compara;
   }
 
-  void adicionaPontosEqp1(
-      BuildContext context, ControllerPlacarScreen controllerPlacar) {
+  void adicionaPontosEqp1(BuildContext context) {
     pontosEquipe_1 = pontosEquipe_1! + 1;
     if (pontosEquipe_1! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_1 == (pontosFimJogo! - 1)) &&
@@ -128,15 +127,14 @@ class Jogo with ChangeNotifier {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertpontosFimJogo(context, controllerPlacar);
+      _alertpontosFimJogo(context);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
     }
   }
 
-  void adicionaPontosEqp2(
-      BuildContext context, ControllerPlacarScreen controllerPlacar) {
+  void adicionaPontosEqp2(BuildContext context) {
     pontosEquipe_2 = pontosEquipe_2! + 1;
     if (pontosEquipe_2! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_2 == (pontosFimJogo! - 1)) &&
@@ -146,7 +144,7 @@ class Jogo with ChangeNotifier {
       notifyListeners();
     } else {
       notifyListeners();
-      _alertpontosFimJogo(context, controllerPlacar);
+      _alertpontosFimJogo(context);
     }
     if (verificaEmpateUltimoPonto()) {
       _alertSegueJogo(context);
@@ -167,8 +165,9 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  void _alertpontosFimJogo(
-      BuildContext context, ControllerPlacarScreen controllerPlacar) {
+  void _alertpontosFimJogo(BuildContext context) {
+    ControllerPlacarScreen controllerPlacar =
+        Get.find<ControllerPlacarScreen>();
     showDialog(
       barrierDismissible: false,
       context: context,

@@ -18,7 +18,7 @@ class Placar extends StatefulWidget {
 }
 
 class _PlacarState extends State<Placar> {
-  ControllerPlacarScreen controllerPlacar = ControllerPlacarScreen();
+  ControllerPlacarScreen controllerPlacar = Get.find<ControllerPlacarScreen>();
 
   @override
   void initState() {
@@ -74,8 +74,7 @@ class _PlacarState extends State<Placar> {
         children: [
           Text("Seu placar vai à: ${jogo.pontosFimJogo.toString()} pontos"),
           GetX<ControllerPlacarScreen>(
-            init: controllerPlacar,
-            builder: (_) {
+            builder: (controllerPlacar) {
               return Text(controllerPlacar.tempoDaPartida.value);
             },
           ),
@@ -95,8 +94,7 @@ class _PlacarState extends State<Placar> {
       child: Scaffold(
         appBar: appBar,
         body: GetX<ControllerPlacarScreen>(
-          init: controllerPlacar,
-          builder: (_) {
+          builder: (controllerPlacar) {
             return Stack(
               children: [
                 controllerPlacar.trocaLadoJogo.value
@@ -109,7 +107,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",
                             decrementaPontosEquipe: "Equipe_1",
-                            controllerPlacar: controllerPlacar,
+                            // controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
                             titulo: context
@@ -118,7 +116,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
                             decrementaPontosEquipe: "Equipe_2",
-                            controllerPlacar: controllerPlacar,
+                            // controllerPlacar: controllerPlacar,
                           ),
                         ],
                       )
@@ -131,7 +129,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_2.toString(),
                             addPontosEquipe: "Equipe_2",
                             decrementaPontosEquipe: "Equipe_2",
-                            controllerPlacar: controllerPlacar,
+                            // controllerPlacar: controllerPlacar,
                           ),
                           PlacarComponent(
                             titulo: context
@@ -140,7 +138,7 @@ class _PlacarState extends State<Placar> {
                             placar: jogo.pontosEquipe_1.toString(),
                             addPontosEquipe: "Equipe_1",
                             decrementaPontosEquipe: "Equipe_1",
-                            controllerPlacar: controllerPlacar,
+                            // controllerPlacar: controllerPlacar,
                           ),
                         ],
                       ),
