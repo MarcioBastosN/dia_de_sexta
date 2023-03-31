@@ -192,6 +192,7 @@ class Time with ChangeNotifier {
   // chamada para o Dialog, Editar nome time
   editaNomeTime(Time time) {
     nomeTime.text = time.nome!;
+    // Get.focusScope!.requestFocus(focusTime); // testar
     focusTime.requestFocus();
     Get.dialog(
       DialogComponent(
