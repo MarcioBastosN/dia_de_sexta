@@ -14,8 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool shouldPop = true;
-
   @override
   void initState() {
     super.initState();
@@ -76,6 +74,7 @@ class _HomeState extends State<Home> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
+                        // Get.back();
                         Get.toNamed(AppRoutes.sobre);
                       },
                       child: Row(
