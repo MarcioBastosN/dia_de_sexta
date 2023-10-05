@@ -82,10 +82,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             onTapFlipping: true,
             frontWidget:
                 Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
-                    ? Center(
+                    ? const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text("Adicione Jogadores"),
                             Text(
                                 "Necessario 2 ou mais jodadores para realizar o sorteio!"),
@@ -94,10 +94,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       )
                     : GridJogadores(flip: controllerFlip),
             backWidget: Provider.of<Time>(context).tamanhoListaTimes() == 0
-                ? Center(
+                ? const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text("Adicione Times"),
                         Text("Crie 2 ou mais times para usalos no inicio!"),
                         Center(child: CircularProgressIndicator()),

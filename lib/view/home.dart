@@ -51,9 +51,9 @@ class _HomeState extends State<Home> {
                         const BorderRadius.vertical(top: Radius.circular(30)),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
+                    children: [
                       // Input user
                       EntradaListajogadores(),
                     ],
@@ -77,8 +77,8 @@ class _HomeState extends State<Home> {
                         // Get.back();
                         Get.toNamed(AppRoutes.sobre);
                       },
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.info_outline),
                           Text("Sobre"),
                         ],

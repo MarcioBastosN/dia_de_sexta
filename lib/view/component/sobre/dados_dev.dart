@@ -32,10 +32,10 @@ class DadosDev extends StatelessWidget {
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Marcio Bastos",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class DadosDev extends StatelessWidget {
                       ),
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Icon(Icons.phone_android),
                         Text("(93) 9 9175-3545"),
                       ],

@@ -57,8 +57,8 @@ class _PlacarState extends State<Placar> {
           Navigator.of(context).pop();
           context.read<Jogo>().fecharPartida(context);
         },
-        child: Row(
-          children: const [
+        child: const Row(
+          children: [
             Icon(Icons.edit_note_sharp),
             Text("Encerrar Partida"),
           ],

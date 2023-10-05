@@ -112,12 +112,12 @@ class _MyWidgetState extends State<ListaPlacar> {
                       );
                     }),
               )
-            : Column(
+            : const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text("Inicie uma partida ...."),
                       CircularProgressIndicator(),
                     ],

@@ -82,8 +82,7 @@ class Jogo with ChangeNotifier {
   }
 
   removeJogo(Jogo jogo) {
-    DbUtil.delete(NomeTabelaDB.placar, jogo.id)
-        .whenComplete(() => {loadDate()});
+    DbUtil.delete(NomeTabelaDB.placar, jogo.id).whenComplete(() => loadDate());
   }
 
   fecharPartida(BuildContext context) {
