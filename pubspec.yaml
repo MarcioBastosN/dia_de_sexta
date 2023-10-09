@@ -51,9 +51,9 @@ dependencies:
   # compatilhar em aplicativos
   social_share: ^2.2.1
   # capture screen
-  screenshot: ^1.2.3
+  screenshot: ^2.1.0
   # save image
-  image_gallery_saver: ^1.7.1
+  image_gallery_saver: ^2.0.3
   permission_handler: ^10.2.0
   # splash screen 
   flutter_native_splash: ^2.2.15
