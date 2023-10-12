@@ -47,7 +47,52 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           child: GetX<ControllerEntradaJogo>(
             init: controllerJogo,
             builder: (_) {
-              return DropdownButtonFormField(
+              return TapRegion(
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                child: DropdownButtonFormField(
+                  isExpanded: true,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  dropdownColor: Theme.of(context).colorScheme.primary,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: "Time",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    ),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  items: Provider.of<Grupo>(context, listen: false)
+                      .listaGruposDisponiveis
+                      .where((e) => e.value != controllerJogo.idTime_2.value)
+                      .toList(),
+                  onChanged: (value) =>
+                      {controllerJogo.updateTime_1(newValue: value!)},
+                ),
+              );
+            },
+          ),
+        ),
+
+        GetX<ControllerEntradaJogo>(
+          init: controllerJogo,
+          builder: (_) {
+            return TapRegion(
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
+              child: DropdownButtonFormField(
                 isExpanded: true,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onSecondary),
@@ -75,49 +120,11 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
                 ),
                 items: Provider.of<Grupo>(context, listen: false)
                     .listaGruposDisponiveis
-                    .where((e) => e.value != controllerJogo.idTime_2.value)
+                    .where((e) => e.value != controllerJogo.idTime_1.value)
                     .toList(),
                 onChanged: (value) =>
-                    {controllerJogo.updateTime_1(newValue: value!)},
-              );
-            },
-          ),
-        ),
-
-        GetX<ControllerEntradaJogo>(
-          init: controllerJogo,
-          builder: (_) {
-            return DropdownButtonFormField(
-              isExpanded: true,
-              style:
-                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-              dropdownColor: Theme.of(context).colorScheme.primary,
-              decoration: InputDecoration(
-                isDense: true,
-                labelText: "Time",
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    width: 2,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer),
-                  borderRadius: const BorderRadius.all(Radius.circular(18)),
-                ),
-                labelStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                    {controllerJogo.updateTime_2(newValue: value!)},
               ),
-              items: Provider.of<Grupo>(context, listen: false)
-                  .listaGruposDisponiveis
-                  .where((e) => e.value != controllerJogo.idTime_1.value)
-                  .toList(),
-              onChanged: (value) =>
-                  {controllerJogo.updateTime_2(newValue: value!)},
             );
           },
         ),
