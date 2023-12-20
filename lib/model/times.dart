@@ -1,13 +1,14 @@
 import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
-import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../app_routes/tabelas_db.dart';
+import '../src/util/tabelas_db.dart';
 
 class Time with ChangeNotifier {
   List<Time> times = [];
@@ -17,17 +18,11 @@ class Time with ChangeNotifier {
   String? nome;
   int? qtdParticipantes;
 
-  Time({
-    this.id,
-    this.nome,
-    this.qtdParticipantes,
-  });
+  Time({this.id, this.nome, this.qtdParticipantes});
 
   // variaveis de controle
   final nomeTime = TextEditingController();
   final focusTime = FocusNode();
-
-  // Inicio funcoes
 
   // retorna dados do banco;
   Future<void> loadDate() async {
@@ -44,7 +39,7 @@ class Time with ChangeNotifier {
     notifyListeners();
   }
 
-  // adiciona Time na lista e no banco
+  // adiciona Time
   Future<void> adicionarTime(Time time) async {
     await DbUtil.insert(NomeTabelaDB.time, {
       'nome': time.nome.toString(),
@@ -52,13 +47,15 @@ class Time with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-  List<Time> retornaTimesValidos(BuildContext context) {
+  // Retorna os times que não estao completos.
+  List<Time> retornaListaTimesIncompletos(BuildContext context) {
+    loadDate();
+    final limiteJogadores =
+        context.read<Definicoes>().retornaLimiteJogadoresParaUmGrupo();
     List<Time> timesValidos = [];
-    for (var element in listaTimes) {
-      if (element.qtdParticipantes! <
-          Provider.of<Definicoes>(context, listen: false)
-              .retornaLimiteJogadores()) {
-        timesValidos.add(element);
+    for (var time in times) {
+      if (time.qtdParticipantes! < limiteJogadores) {
+        timesValidos.add(time);
       }
     }
     return timesValidos;
@@ -69,41 +66,50 @@ class Time with ChangeNotifier {
     return times.length;
   }
 
-// Retorna a lista de Nomes de times
-  List<String> getNomeTimes() {
-    List<String> nomes = [];
-    for (var time in times) {
-      nomes.add(time.nome.toString());
-    }
-    return nomes;
-  }
-
-// Editar nome do time
+// Editar o nome do time
   Future<void> editarNomeTime(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'nome': time.nome,
     }).whenComplete(() => loadDate());
   }
 
+  // retorna a quantidade de participantes do time
   int qtdParticipantesTime(int idTime) {
+    loadDate();
     int valor = 0;
-    for (var element in listaTimes) {
-      if (element.id == idTime) {
-        valor = element.qtdParticipantes!;
+    for (var time in times) {
+      if (time.id! == idTime) {
+        valor = time.qtdParticipantes!;
       }
     }
     return valor;
   }
 
-  atualizaParticipantes(int idTime) {
+  //incrementa a quantidade de participantes de um Time
+  incrementaQtdParticipantesTime(int idTime, int qtdParticipantes) {
+    loadDate();
+    for (var time in times) {
+      if (time.id == idTime) {
+        time.qtdParticipantes =
+            (qtdParticipantesTime(idTime) + qtdParticipantes);
+        editarQtdJogadores(time);
+        notifyListeners();
+      }
+    }
+  }
+
+  // decrementa a quantidade de participantes de um Time
+  decrementaQtdParticipantesTime(int idTime) {
+    loadDate();
     for (var element in listaTimes) {
       if (element.id == idTime) {
-        element.qtdParticipantes = (qtdParticipantesTime(idTime) + 1);
+        element.qtdParticipantes = (qtdParticipantesTime(idTime) - 1);
         editarQtdJogadores(element);
       }
     }
   }
 
+// zera a quantidade de jogadores de todos os time
   zerarJogadoresTime() {
     for (var element in listaTimes) {
       element.qtdParticipantes = 0;
@@ -112,33 +118,44 @@ class Time with ChangeNotifier {
     }
   }
 
+  // atualiza a quantidade de participantes de um time
   Future<void> editarQtdJogadores(Time time) async {
     await DbUtil.update(NomeTabelaDB.time, time.id!, {
       'qtdParticipantes': time.qtdParticipantes,
     }).whenComplete(() => loadDate());
+    notifyListeners();
   }
 
   // remove um time e seus participantes
-  removeTime(Time time, BuildContext context) {
-    DbUtil.delete(NomeTabelaDB.time, time.id).whenComplete(() => {loadDate()});
-    List<Grupo> jogadoresTime =
-        Provider.of<Grupo>(context, listen: false).listaGrupos;
+  Future<void> removeTimeEParticipantes(Time time, BuildContext context) async {
+    List<Grupo> jogadoresTime = context.read<Grupo>().listaGrupos;
+    await DbUtil.delete(NomeTabelaDB.time, time.id)
+        .whenComplete(() => loadDate());
     for (var jogador in jogadoresTime) {
       if (jogador.idTime! == time.id) {
-        DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
+        await DbUtil.update(NomeTabelaDB.jogadores, jogador.idJogador!, {
           "possuiTime": 0,
-        });
+        }).whenComplete(() => context.read<Jogador>().loadDate());
       }
     }
-    Provider.of<Jogador>(context, listen: false).loadDate();
+  }
+
+  // retorna o nome do Time
+  String retornaNomeTime(int idTimeSelecionado) {
+    String nomeTime = "";
+    for (var element in listaTimes) {
+      if (element.id == idTimeSelecionado) {
+        nomeTime = element.nome!;
+      }
+    }
+    return nomeTime;
   }
 
   // chamada para o Dialog, registrar um time
-  addTimeLista(BuildContext context) {
+  addTimeLista() {
     nomeTime.value = const TextEditingValue(text: "");
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+    Get.dialog(
+      DialogComponent(
         titulo: 'Registrar time',
         listaCompomentes: [
           TextFormCompoment(
@@ -161,7 +178,7 @@ class Time with ChangeNotifier {
                         () => nomeTime.value = const TextEditingValue(text: ""),
                       );
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],
@@ -172,13 +189,13 @@ class Time with ChangeNotifier {
     );
   }
 
-  // Editar nome time
-  editaNomeTime(BuildContext context, Time time) {
+  // chamada para o Dialog, Editar nome time
+  editaNomeTime(Time time) {
     nomeTime.text = time.nome!;
+    // Get.focusScope!.requestFocus(focusTime); // testar
     focusTime.requestFocus();
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+    Get.dialog(
+      DialogComponent(
         titulo: 'Qual novo nome do seu Time?',
         listaCompomentes: [
           TextFormCompoment(
@@ -199,7 +216,7 @@ class Time with ChangeNotifier {
                     if (player.isNotEmpty) {
                       editarNomeTime(Time(id: time.id!, nome: player));
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],
@@ -208,29 +225,5 @@ class Time with ChangeNotifier {
         ],
       ),
     );
-  }
-
-  // retornar lista de dropdown Jogadores disponiveis
-  List<DropdownMenuItem<int>> listaJogadoresDisponiveis = [];
-  List<Jogador> listaJogadores = [];
-
-  List<Jogador> loadDisponiveis(BuildContext context) {
-    List<Jogador> jogadores = [];
-    for (var item in Provider.of<Jogador>(context).listaJogadores) {
-      if (item.possuiTime! == 0) {
-        jogadores.add(item);
-      }
-    }
-    return jogadores;
-  }
-
-  String retornaNomeTime(int idTimeSelecionado) {
-    String nomeTime = "";
-    for (var element in listaTimes) {
-      if (element.id == idTimeSelecionado) {
-        nomeTime = element.nome!;
-      }
-    }
-    return nomeTime;
   }
 }

@@ -1,9 +1,11 @@
+import 'package:dia_de_sexta/controller/controller_entrada_jogo.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../app_routes/routes.dart';
+import '../../src/util/routes.dart';
 import '../../model/jogo.dart';
 
 class EntradaListajogadores extends StatefulWidget {
@@ -15,20 +17,20 @@ class EntradaListajogadores extends StatefulWidget {
 
 class _EntradaListajogadoresState extends State<EntradaListajogadores> {
   final _pontos = TextEditingController();
-  int? idTime_1;
-  int? idTime_2;
+  ControllerEntradaJogo controllerJogo = ControllerEntradaJogo();
 
   _iniciaJogo() {
-    if (idTime_1 != null && idTime_2 != null && _pontos.text.isNotEmpty) {
+    if (controllerJogo.idTime_1.value != 0 &&
+        controllerJogo.idTime_2.value != 0 &&
+        _pontos.text.isNotEmpty) {
       Provider.of<Jogo>(context, listen: false).criarjgo(
         Jogo(
-          equipe_1: idTime_1,
-          equipe_2: idTime_2,
+          equipe_1: controllerJogo.idTime_1.value,
+          equipe_2: controllerJogo.idTime_2.value,
           pontosFimJogo: int.parse(_pontos.text.toString()),
         ),
       );
-
-      Navigator.of(context).popAndPushNamed(AppRoutes.placar);
+      Get.offNamed(AppRoutes.placar);
     } else {
       // _alertdialog(context);
     }
@@ -36,80 +38,94 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Grupo>(context).carregaTimesDisponiveis(context);
+    Provider.of<Grupo>(context).carregaListaDropdownTimes(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: DropdownButtonFormField(
-            isExpanded: true,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-            dropdownColor: Theme.of(context).colorScheme.primary,
-            decoration: InputDecoration(
-              isDense: true,
-              labelText: "Time",
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  width: 2,
+          child: GetX<ControllerEntradaJogo>(
+            init: controllerJogo,
+            builder: (_) {
+              return TapRegion(
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                child: DropdownButtonFormField(
+                  isExpanded: true,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                  dropdownColor: Theme.of(context).colorScheme.primary,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    labelText: "Time",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                      borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    ),
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  items: Provider.of<Grupo>(context, listen: false)
+                      .listaGruposDisponiveis
+                      .where((e) => e.value != controllerJogo.idTime_2.value)
+                      .toList(),
+                  onChanged: (value) =>
+                      {controllerJogo.updateTime_1(newValue: value!)},
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(18)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                borderRadius: const BorderRadius.all(Radius.circular(18)),
-              ),
-              labelStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            items: Provider.of<Grupo>(context, listen: false)
-                .listaGruposDisponiveis
-                .where((e) => e.value != idTime_2)
-                .toList(),
-            onChanged: (value) => {
-              setState(() {
-                idTime_1 = value;
-              }),
+              );
             },
           ),
         ),
 
-        DropdownButtonFormField(
-          isExpanded: true,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-          dropdownColor: Theme.of(context).colorScheme.primary,
-          decoration: InputDecoration(
-            isDense: true,
-            labelText: "Time",
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onSecondary,
-                width: 2,
+        GetX<ControllerEntradaJogo>(
+          init: controllerJogo,
+          builder: (_) {
+            return TapRegion(
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
+              child: DropdownButtonFormField(
+                isExpanded: true,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                dropdownColor: Theme.of(context).colorScheme.primary,
+                decoration: InputDecoration(
+                  isDense: true,
+                  labelText: "Time",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      width: 2,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                  ),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                items: Provider.of<Grupo>(context, listen: false)
+                    .listaGruposDisponiveis
+                    .where((e) => e.value != controllerJogo.idTime_1.value)
+                    .toList(),
+                onChanged: (value) =>
+                    {controllerJogo.updateTime_2(newValue: value!)},
               ),
-              borderRadius: const BorderRadius.all(Radius.circular(18)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer),
-              borderRadius: const BorderRadius.all(Radius.circular(18)),
-            ),
-            labelStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          items: Provider.of<Grupo>(context, listen: false)
-              .listaGruposDisponiveis
-              .where((e) => e.value != idTime_1)
-              .toList(),
-          onChanged: (value) => {
-            setState(() {
-              idTime_2 = value;
-            }),
+            );
           },
         ),
 
@@ -127,6 +143,9 @@ class _EntradaListajogadoresState extends State<EntradaListajogadores> {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(8),
+              ),
               onPressed: () => _iniciaJogo(),
               child: const Text('Iniciar'),
             ),

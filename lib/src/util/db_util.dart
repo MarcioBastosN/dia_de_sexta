@@ -1,4 +1,4 @@
-import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
+import 'package:dia_de_sexta/src/util/tabelas_db.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 

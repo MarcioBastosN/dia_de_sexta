@@ -30,6 +30,7 @@ class _TextFormCompomentState extends State<TextFormCompoment> {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: TextFormField(
+        onTapOutside: ((event) => FocusScope.of(context).unfocus()),
         onEditingComplete: widget.submit,
         focusNode: widget.focus,
         cursorColor: Theme.of(context).colorScheme.onSecondary,

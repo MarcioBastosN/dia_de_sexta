@@ -1,8 +1,9 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/model/definicoes.dart';
+import 'package:dia_de_sexta/controller/controller_intro_screen.dart';
+import 'package:dia_de_sexta/view/component/sobre/dados_dev.dart';
+import 'package:dia_de_sexta/view/component/sobre/edita_participantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class Sobre extends StatefulWidget {
   const Sobre({super.key});
@@ -12,10 +13,13 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
+  ControllerIntroScreen splashController = ControllerIntroScreen();
+
   @override
   void initState() {
-    super.initState();
+    splashController.getLoadSplash();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    super.initState();
   }
 
   @override
@@ -26,71 +30,105 @@ class _SobreState extends State<Sobre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Stack(children: [
-          Center(
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 22),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Desenvolvimento"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.person),
-                      Text("Marcio Bastos"),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.phone_android),
-                      Text("(93) 9 9175-3545"),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            "Numero de Participantes por grupo: ${Provider.of<Definicoes>(context).retornaLimiteJogadores().toString()}",
-                            maxLines: 2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: SafeArea(
-              child: PopupMenuButton(
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    value: "Home",
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).popAndPushNamed(AppRoutes.home);
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(Icons.home),
-                          Text("Home"),
-                        ],
-                      ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Card(
+                  elevation: 8,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      topStart: Radius.circular(16),
+                      topEnd: Radius.circular(16),
+                      bottomStart: Radius.circular(16),
                     ),
                   ),
-                ],
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Smash",
+                            style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge!
+                                  .fontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        indent: 120.0,
+                        endIndent: 120.0,
+                        thickness: 2.0,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: Text(
+                          "Smash é um nome que se refere ao ataque mais forte e rapido do volêi, que sugere força e velocidade.",
+                          textAlign: TextAlign.justify,
+                          textScaleFactor: 1.3,
+                          softWrap: true,
+                          maxLines: 3,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
+              const DadosDev(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Divider(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Exibir tela de introdução:",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      GetX<ControllerIntroScreen>(
+                        init: splashController,
+                        builder: (_) {
+                          return Switch(
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
+                            value: splashController.loadSplash.value,
+                            onChanged: (bool value) {
+                              splashController.updateLoadSplash(
+                                  newValue: !splashController.loadSplash.value);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Card(
+                child: EditaParticipante(),
+              ),
+            ],
           ),
         ]),
       ),

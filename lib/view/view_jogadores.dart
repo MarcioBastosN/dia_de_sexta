@@ -7,6 +7,7 @@ import 'package:dia_de_sexta/view/component/times/grid_times.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'component/alert_exit.dart';
@@ -49,15 +50,23 @@ class _ListaJogadoresState extends State<ListaJogadores> {
     return valida;
   }
 
-  dicasSorteio(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const DialogComponent(
-        titulo: "Sorteio",
-        mensagem: Text(
-            "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times"),
-      ),
-    );
+  dicasSorteio() {
+    Get.dialog(const DialogComponent(
+      titulo: "Sorteio",
+      mensagem:
+          "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times",
+    ));
+    // showDialog(
+    //   context: context,
+    //   builder: (context) => const DialogComponent(
+    //     titulo: "Sorteio",
+    //     mensagem:
+    //         "Para realizar o sorteio a quantidade de jogadores disponiveis deve ser maior ou igual a quantidade de times",
+    //     // Text(
+    //     //   style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+    //     // ),
+    //   ),
+    // );
   }
 
   @override
@@ -73,10 +82,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
             onTapFlipping: true,
             frontWidget:
                 Provider.of<Jogador>(context).tamanhoListaJogadores() == 0
-                    ? Center(
+                    ? const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text("Adicione Jogadores"),
                             Text(
                                 "Necessario 2 ou mais jodadores para realizar o sorteio!"),
@@ -85,10 +94,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                       )
                     : GridJogadores(flip: controllerFlip),
             backWidget: Provider.of<Time>(context).tamanhoListaTimes() == 0
-                ? Center(
+                ? const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text("Adicione Times"),
                         Text("Crie 2 ou mais times para usalos no inicio!"),
                         Center(child: CircularProgressIndicator()),
@@ -120,10 +129,10 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   if (controllerFlip.state!.isFront != true) {
                     controllerFlip.flipcard().whenComplete(() =>
                         Provider.of<Jogador>(context, listen: false)
-                            .addJogadorLista(context));
+                            .addJogadorLista());
                   } else {
                     Provider.of<Jogador>(context, listen: false)
-                        .addJogadorLista(context);
+                        .addJogadorLista();
                   }
                 }),
             SpeedDialChild(
@@ -146,10 +155,9 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                   if (controllerFlip.state!.isFront == true) {
                     controllerFlip.flipcard().whenComplete(() =>
                         Provider.of<Time>(context, listen: false)
-                            .addTimeLista(context));
+                            .addTimeLista());
                   } else {
-                    Provider.of<Time>(context, listen: false)
-                        .addTimeLista(context);
+                    Provider.of<Time>(context, listen: false).addTimeLista();
                   }
                 }),
             // apagar registros grupos
@@ -183,14 +191,18 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                 Icons.playlist_add_check_circle_outlined,
                 color: Theme.of(context).colorScheme.background,
               ),
-              onTap: () {},
-              // => Provider.of<Grupo>(context, listen: false)
-              //     .sorteiaTimes(context)
-              //     .whenComplete(() {
-              //   if (controllerFlip.state!.isFront == true) {
-              //     controllerFlip.flipcard();
-              //   }
-              // }),
+              onTap: () {
+                Provider.of<Grupo>(context, listen: false).sorteiaTimes(
+                    context: context,
+                    listaJogadoresDisponiveis:
+                        Provider.of<Jogador>(context, listen: false)
+                            .getListaJogadoresDisponiveis(),
+                    timesValidos: Provider.of<Time>(context, listen: false)
+                        .retornaListaTimesIncompletos(context));
+                if (controllerFlip.state!.isFront == true) {
+                  controllerFlip.flipcard();
+                }
+              },
             ),
             SpeedDialChild(
               visible: !verificaSorteio(),
@@ -204,7 +216,7 @@ class _ListaJogadoresState extends State<ListaJogadores> {
                 Icons.info_outline,
                 color: Theme.of(context).colorScheme.background,
               ),
-              onTap: () => dicasSorteio(context),
+              onTap: () => dicasSorteio(),
             ),
           ],
         ),

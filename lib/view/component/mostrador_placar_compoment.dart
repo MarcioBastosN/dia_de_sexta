@@ -1,5 +1,7 @@
+import 'package:dia_de_sexta/controller/controller_placar_component.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class PlacarComponent extends StatefulWidget {
@@ -21,43 +23,37 @@ class PlacarComponent extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<PlacarComponent> {
-  bool animatedButton = false;
+  ControllerPlacarComponent controllerPlacar = ControllerPlacarComponent();
   @override
   Widget build(BuildContext context) {
     Jogo jogo = Provider.of<Jogo>(context, listen: false);
 
-    Future<void> animatedButtonIncrement(BuildContext context) async {
+    animatedButtonIncrement(BuildContext context) {
       if (widget.addPontosEquipe.toString() == "Equipe_1") {
         jogo.adicionaPontosEqp1(context);
       } else {
         jogo.adicionaPontosEqp2(context);
       }
-
-      setState(() => animatedButton = !animatedButton);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      setState(() => animatedButton = !animatedButton);
+      controllerPlacar.trocaStatusBotao();
     }
 
-    Future<void> animatedButtonDecrement(BuildContext context) async {
+    animatedButtonDecrement(BuildContext context) {
       if (widget.decrementaPontosEquipe.toString() == "Equipe_1") {
         jogo.removePontosEquipe_1();
       } else {
         jogo.removePontosEquipe_2();
       }
-
-      setState(() => animatedButton = !animatedButton);
-      await Future.delayed(const Duration(milliseconds: 1000));
-      setState(() => animatedButton = !animatedButton);
+      controllerPlacar.trocaStatusBotao();
     }
 
-    final media = MediaQuery.of(context).size;
+    final sizeScreen = MediaQuery.of(context).size;
     return SizedBox(
-      width: media.width * .5,
+      width: sizeScreen.width * .5,
       child: DefaultTextStyle(
         style: const TextStyle(),
         overflow: TextOverflow.ellipsis,
         child: Container(
-          color: Theme.of(context).copyWith().primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           child: Column(
             children: [
               Padding(
@@ -76,37 +72,50 @@ class _MyWidgetState extends State<PlacarComponent> {
                 ),
               ),
               // botoes
-              SizedBox(
-                child: animatedButton == false
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) =>
-                                      Theme.of(context).colorScheme.secondary),
+              GetX<ControllerPlacarComponent>(
+                init: controllerPlacar,
+                builder: (_) {
+                  return SizedBox(
+                    child: controllerPlacar.animatedButton.value == false
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith((states) =>
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                ),
+                                onPressed: () =>
+                                    animatedButtonIncrement(context),
+                                child: const Icon(Icons.add),
+                              ),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith((states) =>
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                ),
+                                onPressed: () =>
+                                    animatedButtonDecrement(context),
+                                child: const Icon(Icons.remove),
+                              ),
+                            ],
+                          )
+                        : Center(
+                            child: Text(
+                              "Placar alterado",
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
-                            onPressed: () => animatedButtonIncrement(context),
-                            child: const Icon(Icons.add),
                           ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) =>
-                                      Theme.of(context).colorScheme.secondary),
-                            ),
-                            onPressed: () => animatedButtonDecrement(context),
-                            child: const Icon(Icons.remove),
-                          ),
-                        ],
-                      )
-                    : const Center(
-                        child: Text(
-                          "Placar alterado",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                  );
+                },
               ),
             ],
           ),

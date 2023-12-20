@@ -1,8 +1,10 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
-import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
-import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/controller/controller_placar_screen.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
+import 'package:dia_de_sexta/src/util/tabelas_db.dart';
+import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -26,10 +28,6 @@ class Jogo with ChangeNotifier {
   // bool? jogoEncerado;
   int? pontosFimJogo;
   // auxiliares
-
-  // contador tempo jogo
-  Timer? timeActive;
-  int time = 0;
 
   Jogo({
     this.id,
@@ -60,19 +58,6 @@ class Jogo with ChangeNotifier {
     notifyListeners();
   }
 
-  disparaTempo() {
-    timeActive = Timer.periodic(const Duration(seconds: 1), (timer) {
-      time += 1;
-      notifyListeners();
-    });
-  }
-
-  cancelaContador() {
-    timeActive!.cancel();
-    time = 0;
-    notifyListeners();
-  }
-
   int tamanhoListaJogos() {
     return _jogos.length;
   }
@@ -97,13 +82,12 @@ class Jogo with ChangeNotifier {
   }
 
   removeJogo(Jogo jogo) {
-    DbUtil.delete(NomeTabelaDB.placar, jogo.id)
-        .whenComplete(() => {loadDate()});
+    DbUtil.delete(NomeTabelaDB.placar, jogo.id).whenComplete(() => loadDate());
   }
 
   fecharPartida(BuildContext context) {
     registraJogoDbLista(context);
-    Navigator.of(context).popAndPushNamed(AppRoutes.home);
+    Get.offNamed(AppRoutes.home);
   }
 
   void criarjgo(Jogo jogo) {
@@ -137,7 +121,7 @@ class Jogo with ChangeNotifier {
     if (pontosEquipe_1! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_1 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
-        _alertUltimoPonto(context);
+        _alertUltimoPonto();
       }
       notifyListeners();
     } else {
@@ -154,7 +138,7 @@ class Jogo with ChangeNotifier {
     if (pontosEquipe_2! <= (pontosFimJogo! - 1)) {
       if ((pontosEquipe_2 == (pontosFimJogo! - 1)) &&
           (verificaEmpateUltimoPonto() == false)) {
-        _alertUltimoPonto(context);
+        _alertUltimoPonto();
       }
       notifyListeners();
     } else {
@@ -181,12 +165,14 @@ class Jogo with ChangeNotifier {
   }
 
   void _alertpontosFimJogo(BuildContext context) {
+    ControllerPlacarScreen controllerPlacar =
+        Get.find<ControllerPlacarScreen>();
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Fim de Jogo",
-        mensagem: const Text("reiniciar jogo"),
+        mensagem: "reiniciar jogo",
         listaCompomentes: [
           OutlinedButton(
             child: Text(
@@ -210,28 +196,23 @@ class Jogo with ChangeNotifier {
                 ),
               );
               // fecha o tempo do jogo
-              cancelaContador();
+              controllerPlacar.cancelaContadorTempo();
               // reinicia o tempo
-              disparaTempo();
+              controllerPlacar.disparaContadorTempo();
             },
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text(
+            child: Text(
               "Salvar e sair",
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
             onPressed: () {
               Navigator.of(context).pop();
               registraJogoDbLista(context);
-              cancelaContador();
-              Navigator.of(context).popAndPushNamed(AppRoutes.home);
+              controllerPlacar.cancelaContadorTempo();
+              Get.offNamed(AppRoutes.home);
             },
           ),
         ],
@@ -245,7 +226,7 @@ class Jogo with ChangeNotifier {
       context: context,
       builder: (context) => DialogComponent(
         titulo: "Empate ultimo ponto!",
-        mensagem: const Text("Como deseja continuar?"),
+        mensagem: "Como deseja continuar?",
         listaCompomentes: [
           ElevatedButton(
             child: Text(
@@ -267,13 +248,12 @@ class Jogo with ChangeNotifier {
     );
   }
 
-  void _alertUltimoPonto(BuildContext context) {
-    showDialog(
+  void _alertUltimoPonto() {
+    Get.dialog(
       barrierDismissible: true,
-      context: context,
-      builder: (context) => const DialogComponent(
+      const DialogComponent(
         titulo: "Ultimo Ponto!",
-        mensagem: Text("Ultimo ponto para fechar o jogo"),
+        mensagem: "Ultimo ponto para fechar o jogo",
       ),
     );
   }

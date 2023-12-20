@@ -1,7 +1,7 @@
 // part of == esse arquivo faz parte de outro arquivo
 part of 'my_theme.dart';
 
-const _lightColorScheme = ColorScheme(
+const _darkColorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0xFF006A69),
   onPrimary: Color(0xFFFFFFFF),
@@ -35,7 +35,7 @@ const _lightColorScheme = ColorScheme(
   scrim: Color(0xFF000000),
 );
 
-const _darkColorScheme = ColorScheme(
+const _lightColorScheme = ColorScheme(
   brightness: Brightness.dark,
   primary: Color(0xFF4DDAD8),
   onPrimary: Color(0xFF003736),

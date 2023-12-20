@@ -16,7 +16,7 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
   @override
   Widget build(BuildContext context) {
     List<Jogador> jogadores =
-        Provider.of<Grupo>(context).jogadoresTimes(widget.timeId, context);
+        context.watch<Grupo>().jogadoresTimes(widget.timeId, context);
     return ListView.builder(
       itemCount: jogadores.length,
       itemBuilder: (context, int index) {
@@ -37,7 +37,8 @@ class _ListajogadoresTimeState extends State<ListajogadoresTime> {
               ),
               IconButton(
                 onPressed: () {
-                  Provider.of<Jogador>(context, listen: false)
+                  context
+                      .read<Jogador>()
                       .liberaJogadorId(jogadores[index].id!, context);
                 },
                 icon: Icon(

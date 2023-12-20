@@ -1,9 +1,10 @@
-import 'package:dia_de_sexta/app_routes/tabelas_db.dart';
+import 'package:dia_de_sexta/src/util/tabelas_db.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
-import 'package:dia_de_sexta/util/db_util.dart';
+import 'package:dia_de_sexta/src/util/db_util.dart';
 import 'package:dia_de_sexta/view/component/dialog_component.dart';
 import 'package:dia_de_sexta/view/component/text_form_compoment.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Jogador with ChangeNotifier {
@@ -12,15 +13,10 @@ class Jogador with ChangeNotifier {
 
   int? id;
   String? nome;
-  // equilave ao booleano que nao possui representaçao no sqflite
   // assume valor de 0 || 1
   int? possuiTime;
 
-  Jogador({
-    this.id,
-    this.nome,
-    this.possuiTime,
-  });
+  Jogador({this.id, this.nome, this.possuiTime});
 
 // controller
   final nomeJogador = TextEditingController();
@@ -45,41 +41,43 @@ class Jogador with ChangeNotifier {
     return jogadores.length;
   }
 
-// retorna o nome dos jogadores disponiveis
+// retorna a lista de jogadores disponiveis
   List<Jogador> getListaJogadoresDisponiveis() {
     List<Jogador> listaJogadores = [];
     for (var jogador in jogadores) {
-      if (jogador.possuiTime != 1) {
+      if (jogador.possuiTime! != 1) {
         listaJogadores.add(jogador);
       }
     }
     return listaJogadores;
   }
 
-// remove jogador do banco e da lista
+// remove jogador
   Future<void> removeJogador(Jogador jogador) async {
+    jogadores.remove(jogador);
     await DbUtil.delete(NomeTabelaDB.jogadores, jogador.id!)
         .whenComplete(() => loadDate());
   }
 
-// edita um jogador
+// editar um jogador
   editarJogador(Jogador jogador) {
     DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
       'nome': jogador.nome,
-      "possuiTime": jogador.possuiTime,
+      "possuiTime": jogador.possuiTime!,
     }).whenComplete(() => loadDate());
   }
 
-// informa jogador esta em um time
+// alterar o status do jogador para indiponivel
   Future<void> jogadorPossuiTime(List<Jogador> playes) async {
     for (var item in playes) {
       await DbUtil.update(NomeTabelaDB.jogadores, item.id!, {
         "possuiTime": 1,
       }).whenComplete(() => loadDate());
+      notifyListeners();
     }
   }
 
-// retorna o id do jogador
+// retornar o id do jogador com base no nome
   retornaIdJogador(String nome) {
     for (var jogador in jogadores) {
       if (jogador.nome! == nome) {
@@ -88,7 +86,7 @@ class Jogador with ChangeNotifier {
     }
   }
 
-// retorna o nome do jogador
+// retornar o nome do jogador com base no seu ID
   String retornaNomejogador(int id) {
     String nome = "";
     for (var jogador in jogadores) {
@@ -99,7 +97,7 @@ class Jogador with ChangeNotifier {
     return nome;
   }
 
-// adiciona jogador na lista e no banco
+// adicionar jogador
   Future<void> adicionarJogador(Jogador jogador) async {
     await DbUtil.insert(NomeTabelaDB.jogadores, {
       'nome': jogador.nome.toString(),
@@ -107,8 +105,8 @@ class Jogador with ChangeNotifier {
     }).whenComplete(() => loadDate());
   }
 
-// libera todos os jogadores de todos os times
-  Future<void> liberarjogadores() async {
+// liberar todos os jogadores de todos os times
+  Future<void> liberarJogadores() async {
     for (var jogador in jogadores) {
       DbUtil.update(NomeTabelaDB.jogadores, jogador.id!, {
         'possuiTime': 0,
@@ -116,21 +114,17 @@ class Jogador with ChangeNotifier {
     }
   }
 
-  // remove o jogador do grupo e habilita ele para possuir um novo time
+  // remover o jogador do grupo e habilitar ele para possuir um novo time
   Future<void> liberaJogadorId(int idjogador, BuildContext context) async {
-    Provider.of<Grupo>(context, listen: false)
-        .removeRegistroJogadorId(idjogador);
+    context.read<Grupo>().removeRegistroJogadorId(idjogador, context);
     await DbUtil.update(NomeTabelaDB.jogadores, idjogador, {
       'possuiTime': 0,
     }).whenComplete(() => loadDate());
   }
 
-  liberaJogadoresGrupo() {}
-
-  addJogadorLista(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => DialogComponent(
+  addJogadorLista() {
+    Get.dialog(
+      DialogComponent(
         titulo: 'Registrar jogador',
         listaCompomentes: [
           TextFormCompoment(
@@ -153,7 +147,7 @@ class Jogador with ChangeNotifier {
                             const TextEditingValue(text: ""),
                       );
                     }
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                 ),
               ],

@@ -1,19 +1,24 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/controller/controller_home_screen.dart';
+import 'package:dia_de_sexta/controller/controller_placar_screen.dart';
+import 'package:dia_de_sexta/src/util/page_routes.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/src/shared/themes/my_theme.dart';
 import 'package:dia_de_sexta/model/definicoes.dart';
 import 'package:dia_de_sexta/model/grupo.dart';
 import 'package:dia_de_sexta/model/jogadores.dart';
 import 'package:dia_de_sexta/model/jogo.dart';
 import 'package:dia_de_sexta/model/times.dart';
-import 'package:dia_de_sexta/view/home_screen/home_screen.dart';
-import 'package:dia_de_sexta/view/splash_screen.dart';
-import 'package:dia_de_sexta/view/view_lista_placar.dart';
-import 'package:dia_de_sexta/view/view_placar.dart';
-import 'package:dia_de_sexta/view/view_sobre.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // injeção de dependencia com GetX
+  Get.put<ControllerHomeScreen>(ControllerHomeScreen());
+  Get.put<ControllerPlacarScreen>(ControllerPlacarScreen());
+  // Get.lazyPut<ControllerHomeScreen>(() => ControllerHomeScreen());
+  // --nao finalizado - refatorar varias classes
+
   ErrorWidget.builder = (FlutterErrorDetails details) {
     bool inDebug = false;
     assert(() {
@@ -64,20 +69,14 @@ class MyApp extends StatelessWidget {
           create: (context) => Grupo(),
         ),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Dia de Sexta',
+        title: 'Smash',
         themeMode: ThemeMode.system,
         theme: lightTheme,
         darkTheme: darkTheme,
-        routes: {
-          AppRoutes.splash: (context) => const SplashScreen(),
-          AppRoutes.home: (context) => const HomeScreen(),
-          AppRoutes.placar: (context) =>
-              const Placar(title: "Seu placar vai à:"),
-          AppRoutes.lista: (context) => const ListaPlacar(),
-          AppRoutes.sobre: (context) => const Sobre(),
-        },
+        initialRoute: AppRoutes.intro,
+        getPages: AppPages.pages,
       ),
     );
   }

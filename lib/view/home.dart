@@ -1,9 +1,10 @@
-import 'package:dia_de_sexta/app_routes/routes.dart';
+import 'package:dia_de_sexta/src/util/routes.dart';
 import 'package:dia_de_sexta/view/component/alert_exit.dart';
 import 'package:dia_de_sexta/view/component/entrada_jogo_list_jogadores.dart';
 import 'package:dia_de_sexta/view/component/titulo_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,8 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool shouldPop = true;
-
   @override
   void initState() {
     super.initState();
@@ -29,20 +28,19 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
+    final sizeScreen = MediaQuery.of(context).size;
 
     return WillPopScope(
       onWillPop: () => AlertExit().showExitPopup(context),
       child: SizedBox(
-        height: media.height,
-        width: media.width,
+        height: sizeScreen.height,
+        width: sizeScreen.width,
         child: Stack(children: [
           Column(
             children: [
               const Expanded(
                 child: TituloHome(),
               ),
-              // parte de baixo - select e inicio
               SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.manual,
@@ -53,9 +51,10 @@ class _HomeState extends State<Home> {
                         const BorderRadius.vertical(top: Radius.circular(30)),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
+                    children: [
+                      // Input user
                       EntradaListajogadores(),
                     ],
                   ),
@@ -75,10 +74,11 @@ class _HomeState extends State<Home> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(AppRoutes.sobre);
+                        // Get.back();
+                        Get.toNamed(AppRoutes.sobre);
                       },
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.info_outline),
                           Text("Sobre"),
                         ],

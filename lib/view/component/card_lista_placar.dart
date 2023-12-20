@@ -44,7 +44,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -75,7 +75,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
             ],
           ),
           DefaultTextStyle(
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -83,7 +83,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                   children: [
                     Icon(
                       Icons.calendar_month_outlined,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     Text(widget.data),
                   ],
@@ -92,7 +92,7 @@ class _CardListaPlacarState extends State<CardListaPlacar> {
                   children: [
                     Icon(
                       Icons.timer,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     Text(widget.tempo),
                   ],
